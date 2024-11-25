@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     private static readonly int Property1 = Animator.StringToHash("velocity x");
     private static readonly int Property2 = Animator.StringToHash("velocity z");
     [SerializeField] private LayerMask _layerMask;
+    private GameObject _lastHitObject; // Önceki çarpılan nesne
+    private Color _originalColor;
 
     void Start()
     {
@@ -80,14 +82,19 @@ public class PlayerController : MonoBehaviour
 
     private void CheckCross()
     {
-        if (_hasGun)
+        if (_hasGun && _aim)
         {
             _target.SetActive(true);
             Cross();
+            if (_lastHitObject != null)
+            {
+                _lastHitObject.GetComponent<Renderer>().material.color = Color.red;
+            }
         }
         else
         {
             _target.SetActive(false);
+            ResetLastObjectColor();
         }
     }
 
@@ -436,14 +443,55 @@ public class PlayerController : MonoBehaviour
 
     private void Cross()
     {
-        
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit,float.MaxValue,_layerMask))
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, _layerMask))
         {
-            _target.transform.position = raycastHit.point;
-            string hitObjectName = raycastHit.collider.gameObject.name;
-            Debug.Log("Hit Object: " + hitObjectName);
+           
+            GameObject hitObject = raycastHit.collider.gameObject;
+
+            
+            if (_lastHitObject != hitObject)
+            {
+                ResetLastObjectColor(); 
+
+            
+                _lastHitObject = hitObject;
+                Renderer renderer = hitObject.GetComponent<Renderer>();
+
+                if (renderer != null)
+                {
+                    _originalColor = renderer.material.color; 
+                    renderer.material.color = Color.red; 
+                }
+            }
+
+            
+            _target.transform.position = new Vector3(
+                raycastHit.collider.gameObject.transform.position.x,
+                raycastHit.point.y,
+                raycastHit.point.z);
         }
-       
+        else
+        {
+           
+            if (_lastHitObject != null)
+            {
+               
+            }
+        }
+    }
+    
+    private void ResetLastObjectColor()
+    {
+        if (_lastHitObject != null)
+        {
+            Renderer renderer = _lastHitObject.GetComponent<Renderer>();
+
+            if (renderer != null)
+            {
+                renderer.material.color = _originalColor; // Eski rengi geri yükle
+            }
+            
+        }
     }
 }
