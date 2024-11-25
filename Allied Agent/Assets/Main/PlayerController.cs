@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private static readonly int Ladder = Animator.StringToHash("ladder");
     private static readonly int Property1 = Animator.StringToHash("velocity x");
     private static readonly int Property2 = Animator.StringToHash("velocity z");
+    [SerializeField] private LayerMask _layerMask;
 
     void Start()
     {
@@ -435,11 +436,14 @@ public class PlayerController : MonoBehaviour
 
     private void Cross()
     {
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         
-        if (Physics.Raycast(ray, out RaycastHit raycastHit))
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit raycastHit,float.MaxValue,_layerMask))
         {
             _target.transform.position = raycastHit.point;
+            string hitObjectName = raycastHit.collider.gameObject.name;
+            Debug.Log("Hit Object: " + hitObjectName);
         }
+       
     }
 }
