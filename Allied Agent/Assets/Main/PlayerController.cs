@@ -6,12 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     private Animator _animator;
     private float _velocityZ,_velocityX,_acc,_maxRun,_maxWalk,_maxVelocity; // float
-    private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover; // bool
-    [SerializeField] private GameObject[] gun,flashlights; // game objects arrays
+    private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover,_nearEnemy,_knifeTime; // bool
+    [SerializeField] private GameObject[] flashlights; // game objects arrays
     private RigBuilder _rigBuilder; 
     private Rigidbody _rb; // rb
-    private GameObject _target,_ladderObject; // gameObject
-    private Transform _coverTransform,_coverSide;
+    private GameObject _target,_ladderObject,_crossHair; // gameObject
+    private Transform _coverTransform,_coverSide,_nearEnemyTransform;
     private Camera _mainCamera; // camera
     public bool ladderEnd;
     public bool ladder, ladderStart;
@@ -24,12 +24,17 @@ public class PlayerController : MonoBehaviour
     private static readonly int Ladder = Animator.StringToHash("ladder");
     private static readonly int Property1 = Animator.StringToHash("velocity x");
     private static readonly int Property2 = Animator.StringToHash("velocity z");
-    [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private LayerMask layerMask;
     private GameObject _lastHitObject; // Önceki çarpılan nesne
     private Color _originalColor;
+    [SerializeField]private GameObject[] weapons,weaponsV;
+    [SerializeField] private GameObject secondHand;
+    private GameObject _currentGun;
+    private static readonly int Knife1 = Animator.StringToHash("knife");
 
     void Start()
     {
+        _currentGun = weapons[0];
         _animator = GetComponent<Animator>();
         _rigBuilder = GetComponent<RigBuilder>();
         _rb = GetComponent<Rigidbody>();
@@ -40,6 +45,7 @@ public class PlayerController : MonoBehaviour
         _acc = 2f;
         _boxCollider = GetComponent<BoxCollider>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
+        _crossHair = GameObject.FindWithTag("CrossHair");
     }
     
     void Update()
@@ -50,13 +56,67 @@ public class PlayerController : MonoBehaviour
         CheckCrouch();
         CheckFlashlight();
         CheckCover();
+        ChangeWeapons();
     }
 
     
     private void FixedUpdate()
     {
-        animation_movement();
+        if (!_knifeTime)
+        {
+            animation_movement();
+        }
         CheckCross();
+    }
+
+    private void ChangeWeapons()
+    {
+        if (_hasGun)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                foreach (GameObject w in weapons) // to active or de_active gun_aim objects
+                {
+                    w.SetActive(false);
+                }
+                _currentGun = weapons[0];
+                weaponsV[0].SetActive(false);
+                weaponsV[1].SetActive(true);
+                _currentGun.SetActive(true);
+                secondHand.transform.localPosition = new Vector3(-0.09f, 0.3391f, -0.0388f);
+                secondHand.transform.localRotation = Quaternion.Euler(0,-186.2f,0);
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    foreach (GameObject w in weapons) // to active or de_active gun_aim objects
+                    {
+                        w.SetActive(false);
+                    }
+                    _currentGun = weapons[1];
+                    weaponsV[1].SetActive(false);
+                    weaponsV[0].SetActive(true);
+                    _currentGun.SetActive(true);
+                    secondHand.transform.localPosition = new Vector3(0, 0, 0);
+                    secondHand.transform.localRotation = Quaternion.Euler(0,-186.2f,0);
+                }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.Alpha3))
+                    {
+                        foreach (GameObject w in weapons) // to active or de_active gun_aim objects
+                        {
+                            w.SetActive(false);
+                        }
+                        _currentGun = weapons[2];
+                        _currentGun.SetActive(true);
+                        secondHand.transform.localPosition = new Vector3(0.01131009f, 0.2369997f, 0.0585504f);
+                        secondHand.transform.localRotation = Quaternion.Euler(62.834f,-208.042f,-35.346f);
+                    }
+                }
+            }
+        }
     }
 
     private void CheckCover()
@@ -85,6 +145,7 @@ public class PlayerController : MonoBehaviour
         if (_hasGun && _aim)
         {
             _target.SetActive(true);
+            _crossHair.SetActive(true);
             Cross();
             if (_lastHitObject != null)
             {
@@ -94,6 +155,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             _target.SetActive(false);
+            _crossHair.SetActive(false);
             ResetLastObjectColor();
         }
     }
@@ -118,9 +180,22 @@ public class PlayerController : MonoBehaviour
 
     private void ChangeGunPartsStatus()
     {
-        foreach (GameObject gunParts in gun) // to active or de_active gun_aim objects
+        _currentGun.SetActive(_hasGun);
+        if (_currentGun == weapons[0])
         {
-            gunParts.SetActive(_hasGun);
+            weaponsV[0].SetActive(false);
+        }
+        else
+        {
+            weaponsV[1].SetActive(false);
+        }
+
+        if (_hasGun == false)
+        {
+            foreach (var wv in weaponsV)
+            {
+                wv.SetActive(true);
+            }
         }
     }
     // ReSharper disable Unity.PerformanceAnalysis
@@ -149,35 +224,80 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private void Knife()
+    {
+        //test it with jump 
+        _aim = false;
+        _velocityX = 0;
+        _velocityZ = 0;
+        _hasGun = false;
+        _jump = false;
+        _crouch = false;
+        _crossHair.SetActive(false);
+        _target.SetActive(false);
+        ChangeGunPartsStatus();
+        weaponsV[2].SetActive(false);
+        weaponsV[0].SetActive(true);
+        weaponsV[1].SetActive(true);
+        weapons[3].SetActive(true);
+        SendVarToAnimator();
+        var transform1 = transform;
+        transform1.eulerAngles = new Vector3(0,0,0);
+        var position = _nearEnemyTransform.position;
+        transform1.position = new Vector3(position.x, transform1.position.y, position.z - 1);
+        _animator.SetTrigger(Knife1);
+        StartCoroutine(KnifeFunction());
+    }
+
+    IEnumerator KnifeFunction()
+    {
+        yield return new WaitForSeconds(2.23f);
+        _knifeTime = false;
+        weapons[3].SetActive(false);
+        weaponsV[2].SetActive(true);
+    }
     
     private void GetInputsFunction()
     {
-        if (Input.GetKeyDown(KeyCode.E)&& _coverDetected)
-        {
-                transform.position = _coverSide.position;
-                if (!_hasGun)
-                {
-                    GunStatusChange();
-                }
 
-                if (!_crouch)
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (_nearEnemy && _knifeTime == false)
+            {
+                _knifeTime = true;
+                Knife();
+            }
+            else
+            {
+                if (_coverDetected)
                 {
-                    ChangeCrouchStatus();
+                    transform.position = _coverSide.position;
+                    if (!_hasGun)
+                    {
+                        GunStatusChange();
+                    }
+
+                    if (!_crouch)
+                    {
+                        ChangeCrouchStatus();
+                    } 
                 }
+                else
+                {
+                    if (ladder)
+                    {
+                        CheckLadderStatus();
+                    }
+                }
+            }
         }
         
         if (_hasGun) {
-            _aim = Input.GetMouseButton(1); // if you carry weapon, you can aim
+            _aim = Input.GetMouseButton(1);
+            // if you carry weapon, you can aim
         }
         
-        if (ladder)
-        {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                CheckLadderStatus();
-            }
-        }
-
         _flashlightButton = Input.GetKeyDown(KeyCode.F);
         _forward = Input.GetKey(KeyCode.W);
         _left = Input.GetKey(KeyCode.A);
@@ -403,9 +523,18 @@ public class PlayerController : MonoBehaviour
             ladderEnd = true;
         }
 
-        if (!other.gameObject.CompareTag("cover")) return;
-        _coverDetected = true;
-        _coverTransform = other.transform;
+        if (other.gameObject.CompareTag("cover"))
+        {
+            _coverDetected = true;
+            _coverTransform = other.transform;
+        }
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            _nearEnemy = true;
+            _nearEnemyTransform = other.transform;
+        }
+
 
     }
 
@@ -426,6 +555,11 @@ public class PlayerController : MonoBehaviour
         {
             _coverDetected = false;
         }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            _nearEnemy = false;
+            _nearEnemyTransform = null;
+        }
     }
 
     IEnumerator WaitBeforeSetGravityTrue()
@@ -444,40 +578,31 @@ public class PlayerController : MonoBehaviour
     private void Cross()
     {
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, _layerMask))
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask))
         {
-           
-            GameObject hitObject = raycastHit.collider.gameObject;
 
-            
-            if (_lastHitObject != hitObject)
-            {
-                ResetLastObjectColor(); 
-
-            
-                _lastHitObject = hitObject;
-                Renderer renderer = hitObject.GetComponent<Renderer>();
-
-                if (renderer != null)
+            if (raycastHit.transform.gameObject.layer == 6)
+            {//
+                GameObject hitObject = raycastHit.collider.gameObject;
+                if (_lastHitObject != hitObject)
                 {
-                    _originalColor = renderer.material.color; 
-                    renderer.material.color = Color.red; 
+                    ResetLastObjectColor(); 
+
+            
+                    _lastHitObject = hitObject;
+                    Renderer renderer = hitObject.GetComponent<Renderer>();
+
+                    if (renderer != null)
+                    {
+                        _originalColor = renderer.material.color; 
+                        renderer.material.color = Color.red; 
+                    }
                 }
             }
-
-            
             _target.transform.position = new Vector3(
                 raycastHit.collider.gameObject.transform.position.x,
                 raycastHit.point.y,
                 raycastHit.point.z);
-        }
-        else
-        {
-           
-            if (_lastHitObject != null)
-            {
-               
-            }
         }
     }
     
@@ -493,5 +618,6 @@ public class PlayerController : MonoBehaviour
             }
             
         }
+        _lastHitObject = null;
     }
 }

@@ -10,6 +10,8 @@ TagManager:
   - ladderDown
   - cover
   - target
+  - Enemy
+  - CrossHair
   layers:
   - Default
   - TransparentFX
