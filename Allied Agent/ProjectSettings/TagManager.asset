@@ -12,6 +12,7 @@ TagManager:
   - target
   - Enemy
   - CrossHair
+  - enemynose
   layers:
   - Default
   - TransparentFX
