@@ -58,7 +58,7 @@ public class Gun : MonoBehaviour
     {
         currentCapacity--;
         Vector3 direction = bulletSpawnPoint.forward;
-        GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.LookRotation(-bulletSpawnPoint.up));
+        GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
         currentBullet.GetComponent<Rigidbody>().mass = projectileMass;
         currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
     }
