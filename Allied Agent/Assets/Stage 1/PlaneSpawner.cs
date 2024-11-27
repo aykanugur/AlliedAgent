@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlaneSpawner : MonoBehaviour
 {
+    public float waitSecond = 10;
     private bool _wait = false ;
     [SerializeField] private GameObject _planes;
     private void FixedUpdate()
@@ -18,7 +19,7 @@ public class PlaneSpawner : MonoBehaviour
 
     IEnumerator waitBeforeSpawn()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(waitSecond);
         _wait = false;
         GameObject plane =Instantiate(_planes, transform.position, transform.rotation);
 
