@@ -1441,6 +1441,8 @@ MonoBehaviour:
   isAuto: 1
   shootForce: 25
   projectileMass: 1
+  magazineCapacity: 30
+  currentCapacity: 0
   bullet: {fileID: 2032689912584210912, guid: 2af6ce20103ce2448bb9e176f99cff09, type: 3}
   bulletSpawnPoint: {fileID: 1517787516}
 --- !u!1 &399614172
