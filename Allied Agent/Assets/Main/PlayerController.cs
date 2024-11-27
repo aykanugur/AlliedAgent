@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private Animator _animator;
     private float _velocityZ,_velocityX,_acc,_maxRun,_maxWalk,_maxVelocity; // float
-    private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover,_nearEnemy,_knifeTime; // bool
+    private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover,_nearEnemy,_knifeTime,_grenade; // bool
     [SerializeField] private GameObject[] flashlights; // game objects arrays
     private RigBuilder _rigBuilder; 
     private Rigidbody _rb; // rb
@@ -27,10 +27,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     private GameObject _lastHitObject; // Önceki çarpılan nesne
     private Color _originalColor;
-    [SerializeField]private GameObject[] weapons,weaponsV;
+    [SerializeField]private GameObject[] weapons,weaponsV,weaponsGrenade;
     [SerializeField] private GameObject secondHand;
     private GameObject _currentGun;
     private static readonly int Knife1 = Animator.StringToHash("knife");
+    private static readonly int Grenade1 = Animator.StringToHash("grenade");
 
     void Start()
     {
@@ -257,11 +258,43 @@ public class PlayerController : MonoBehaviour
         weapons[3].SetActive(false);
         weaponsV[2].SetActive(true);
     }
+
+    IEnumerator Grenade(int val)
+    {
+        yield return new WaitForSeconds(2.23f);
+        _grenade = false;
+        _currentGun.SetActive(true);
+        weaponsGrenade[val].SetActive(false);
+    }
     
     private void GetInputsFunction()
     {
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.G)&& _hasGun && _aim == false)
+        {
+            _grenade = true;
+            _aim = false;
+            int val = 0;
+            _animator.SetTrigger(Grenade1);
+            _currentGun.SetActive(false);
+            if (_currentGun == weapons[0])
+            {
+                // set active 
+                weaponsGrenade[0].SetActive(true);
+            }
+            else
+            {
+                if (_currentGun == weapons[1])
+                {
+                    weaponsGrenade[1].SetActive(true);
+                    val = 1;
+                }
+            }
+
+            StartCoroutine(Grenade(val));
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && _grenade == false)
         {
             if (_nearEnemy && _knifeTime == false)
             {
@@ -294,7 +327,10 @@ public class PlayerController : MonoBehaviour
         }
         
         if (_hasGun) {
-            _aim = Input.GetMouseButton(1);
+            if (_grenade == false)
+            {
+                _aim = Input.GetMouseButton(1);
+            }
             // if you carry weapon, you can aim
         }
         
@@ -599,10 +635,8 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            _target.transform.position = new Vector3(
-                raycastHit.collider.gameObject.transform.position.x,
-                raycastHit.point.y,
-                raycastHit.point.z);
+
+            _target.transform.position = raycastHit.point;
         }
     }
     
