@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eee004c50747340e49d1dfa859c3384b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bomb: {fileID: 3231045290046843554, guid: 55802e67b1eb04873a068511e8139114, type: 3}
+  planes: {fileID: 4997455854552708693}
 --- !u!82 &6856302060403335565
 AudioSource:
   m_ObjectHideFlags: 0
