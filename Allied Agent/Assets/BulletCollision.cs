@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class BulletCollision : MonoBehaviour
 {
+    private Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb=GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -17,7 +18,7 @@ public class BulletCollision : MonoBehaviour
     }
 
     
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         switch (other.gameObject.tag)
         {
@@ -26,7 +27,7 @@ public class BulletCollision : MonoBehaviour
                 break;
             
             case "Reflective":
-
+                ReflectBullet(other.gameObject.transform.forward);
                 break;
             
             default:
@@ -34,6 +35,13 @@ public class BulletCollision : MonoBehaviour
                 break;
                 
         }
+    }
+
+    private void ReflectBullet(Vector3 normal)
+    {
+        Vector3 direction = rb.velocity.normalized;
+        direction = Vector3.Reflect(direction, normal);
+        rb.velocity = direction * rb.velocity.magnitude;
     }
     
     /*
