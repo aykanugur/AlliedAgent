@@ -12,11 +12,14 @@ public class Rocket : MonoBehaviour
     public float rocketMass;
 
     private bool hasFired = false;
+    private Rigidbody rb;
+    private Transform tf;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
+        tf = GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -26,6 +29,15 @@ public class Rocket : MonoBehaviour
         {
             hasFired = true;
             Fire();
+        }
+        
+    }
+
+    void FixedUpdate()
+    {
+        if (hasFired)
+        {
+            PointNoseToMovementVector();
         }
     }
 
@@ -44,10 +56,16 @@ public class Rocket : MonoBehaviour
     private void Fire()
     {
         onRocketShoot?.Invoke();
-        gameObject.GetComponent<Transform>().SetParent(null);
-        GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<Rigidbody>().mass = rocketMass;
-        GetComponent<Rigidbody>().AddForce(transform.TransformDirection(-Vector3.right).normalized * shootForce, ForceMode.Impulse);
+        tf.SetParent(null);
+        rb.isKinematic = false;
+        rb.mass = rocketMass;
+        rb.AddForce(transform.TransformDirection(-Vector3.right).normalized * shootForce, ForceMode.Impulse);
         trail.emitting = true;
+    }
+
+    private void PointNoseToMovementVector()
+    {
+        Vector3 direction = rb.velocity.normalized;
+        tf.right = -direction;
     }
 }
