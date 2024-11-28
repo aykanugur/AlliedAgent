@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Rocket : MonoBehaviour
 {
-
+    public TrailRenderer trail;
     public UnityEvent onRocketShoot;
     public float shootForce;
     public float rocketMass;
@@ -29,24 +29,25 @@ public class Rocket : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         Explode();
     }
 
-    void Explode()
+    private void Explode()
     {
         //call DrawCircle here to deal splash damage
         
         Destroy(this.gameObject);
     }
 
-    void Fire()
+    private void Fire()
     {
         onRocketShoot?.Invoke();
         gameObject.GetComponent<Transform>().SetParent(null);
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<Rigidbody>().mass = rocketMass;
         GetComponent<Rigidbody>().AddForce(transform.TransformDirection(-Vector3.right).normalized * shootForce, ForceMode.Impulse);
+        trail.emitting = true;
     }
 }
