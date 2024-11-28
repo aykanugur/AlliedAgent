@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - CrossHair
   - enemynose
+  - Reflective
   layers:
   - Default
   - TransparentFX
