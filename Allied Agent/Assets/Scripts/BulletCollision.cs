@@ -5,6 +5,7 @@ using UnityEngine;
 public class BulletCollision : MonoBehaviour
 {
     private Rigidbody rb;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +29,8 @@ public class BulletCollision : MonoBehaviour
             
             case "Reflective":
                 ReflectBullet(other.gameObject.transform.forward);
+                break;
+            case "DoNotDestroy":
                 break;
             
             default:

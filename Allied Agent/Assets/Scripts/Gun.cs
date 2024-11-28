@@ -10,6 +10,7 @@ public class Gun : MonoBehaviour
     public float projectileMass;
     public int magazineCapacity;
     public int currentCapacity;
+    public Material[] materials;
 
     private float currentCooldown;
 
@@ -59,6 +60,11 @@ public class Gun : MonoBehaviour
         currentCapacity--;
         Vector3 direction = bulletSpawnPoint.forward;
         GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
+        if (Random.Range(0, 5) == 0) // aykan kod
+        {
+            int random = Random.Range(0, 2);
+            currentBullet.GetComponent<Renderer>().material = materials[random];
+        }
         currentBullet.GetComponent<Rigidbody>().mass = projectileMass;
         currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
     }
