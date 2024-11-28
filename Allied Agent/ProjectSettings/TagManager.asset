@@ -14,6 +14,8 @@ TagManager:
   - CrossHair
   - enemynose
   - Reflective
+  - DoNotDestroy
+  - Plane
   layers:
   - Default
   - TransparentFX
