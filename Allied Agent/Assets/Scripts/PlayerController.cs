@@ -6,11 +6,11 @@ public class PlayerController : MonoBehaviour
 {
     private Animator _animator;
     private float _velocityZ,_velocityX,_acc,_maxRun,_maxWalk,_maxVelocity; // float
-    private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover,_nearEnemy,_knifeTime,_grenade; // bool
+    private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover,_nearEnemy,_knifeTime,_grenade,_reload; // bool
     [SerializeField] private GameObject[] flashlights; // game objects arrays
     private RigBuilder _rigBuilder; 
     private Rigidbody _rb; // rb
-    private GameObject _target,_ladderObject,_crossHair; // gameObject
+    private GameObject _target,_ladderObject,_crossHair,_magazine; // gameObject
     private Transform _coverTransform,_coverSide,_nearEnemyTransform;
     private Camera _mainCamera; // camera
     public bool ladderEnd;
@@ -29,9 +29,11 @@ public class PlayerController : MonoBehaviour
     private Color _originalColor;
     [SerializeField]private GameObject[] weapons,weaponsV,weaponsGrenade;
     [SerializeField] private GameObject secondHand;
-    private GameObject _currentGun;
+    private GameObject _currentGun,_childMagazine;
     private static readonly int Knife1 = Animator.StringToHash("knife");
     private static readonly int Grenade1 = Animator.StringToHash("grenade");
+    private static readonly int Reload = Animator.StringToHash("Reload");
+    private int _currentGunIndex;
 
     void Start()
     {
@@ -58,12 +60,14 @@ public class PlayerController : MonoBehaviour
         CheckFlashlight();
         CheckCover();
         ChangeWeapons();
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            StartReload();
+        }
     }
-
-    
     private void FixedUpdate()
     {
-        if (!_knifeTime)
+        if (!_knifeTime && (_reload && _crouch) == false)
         {
             animation_movement();
         }
@@ -143,7 +147,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckCross()
     {
-        if (_hasGun && _aim)
+        if (_hasGun && _aim && _reload == false)
         {
             _target.SetActive(true);
             _crossHair.SetActive(true);
@@ -248,12 +252,10 @@ public class PlayerController : MonoBehaviour
         var position = _nearEnemyTransform.position;
         transform1.position = new Vector3(position.x, transform1.position.y, position.z - 1);
         _animator.SetTrigger(Knife1);
-        StartCoroutine(KnifeFunction());
+        StopKnife();
     }
-
-    IEnumerator KnifeFunction()
+    public void StopKnife()
     {
-        yield return new WaitForSeconds(2.23f);
         _knifeTime = false;
         weapons[3].SetActive(false);
         weaponsV[2].SetActive(true);
@@ -270,7 +272,7 @@ public class PlayerController : MonoBehaviour
     private void GetInputsFunction()
     {
 
-        if (Input.GetKeyDown(KeyCode.G)&& _hasGun && _aim == false)
+        if (Input.GetKeyDown(KeyCode.G)&& _hasGun && _aim == false && _reload == false)
         {
             _grenade = true;
             _aim = false;
@@ -327,7 +329,7 @@ public class PlayerController : MonoBehaviour
         }
         
         if (_hasGun) {
-            if (_grenade == false)
+            if (_grenade == false && _reload == false)
             {
                 _aim = Input.GetMouseButton(1);
             }
@@ -371,7 +373,7 @@ public class PlayerController : MonoBehaviour
     private void CheckGunStatus()
     {
         _rigBuilder.enabled = _aim; // if you aim, enable rigBuilder
-        if (Input.GetKeyDown(KeyCode.R)&& _aim== false && _jump == false&& ladderStart == false)
+        if (Input.GetKeyDown(KeyCode.R)&& _aim== false && _jump == false&& ladderStart == false && _reload == false)
         {
            GunStatusChange();
         }
@@ -639,7 +641,36 @@ public class PlayerController : MonoBehaviour
             _target.transform.position = raycastHit.point;
         }
     }
+
+    public void StartReload()
+    {
+        _reload = true;
+        _aim = false;
+        _animator.SetBool(Aim,_aim);
+        _animator.SetTrigger(Reload);
+        _magazine = _currentGun.transform.Find("Magazine").gameObject;
+        GameObject child = Instantiate(_magazine, _currentGun.transform, true);
+        child.GetComponent<Rigidbody>().isKinematic = true;
+        child.name = "Magazine";
+        child.SetActive(false);
+        _magazine.GetComponent<Rigidbody>().isKinematic = false;
+        _magazine.GetComponent<BoxCollider>().enabled = true;
+        _magazine.transform.SetParent(null);
+        _childMagazine = child;
+    }
     
+    public void StopReload()
+    {
+        Debug.Log("reload stop");
+        _reload = false;
+        _animator.SetTrigger("StopReload");
+        _childMagazine.SetActive(true);
+    }
+
+    public bool isReload()
+    {
+        return _reload;
+    }
     private void ResetLastObjectColor()
     {
         if (_lastHitObject != null)

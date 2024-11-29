@@ -15,7 +15,8 @@ public class Gun : MonoBehaviour
     private float currentCooldown;
     private int currentCapacity;
     private int tracerCount = 0;
-
+    private PlayerController _playerController;
+    
     public GameObject bullet;
     public Transform bulletSpawnPoint;
     
@@ -25,36 +26,40 @@ public class Gun : MonoBehaviour
     {
         currentCooldown = timeBetweenShots;
         currentCapacity = magazineCapacity;
+        _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isAuto)
+        if (_playerController.isReload() == false)
         {
-            if (Input.GetButton("Fire1") && Input.GetButton("Fire2") && currentCooldown <= 0f && currentCapacity>0)
+            if (isAuto)
             {
-                onGunShoot?.Invoke();
-                currentCooldown = timeBetweenShots;
-                Shoot();
+                if (Input.GetButton("Fire1") && Input.GetButton("Fire2") && currentCooldown <= 0f && currentCapacity>0)
+                {
+                    onGunShoot?.Invoke();
+                    currentCooldown = timeBetweenShots;
+                    Shoot();
+                }
             }
-        }
-        else
-        {
-            if (Input.GetButtonDown("Fire1") && Input.GetButton("Fire2") && currentCooldown <= 0f && currentCapacity>0)
+            else
             {
-                onGunShoot?.Invoke();
-                currentCooldown = timeBetweenShots;
-                Shoot();
+                if (Input.GetButtonDown("Fire1") && Input.GetButton("Fire2") && currentCooldown <= 0f && currentCapacity>0)
+                {
+                    onGunShoot?.Invoke();
+                    currentCooldown = timeBetweenShots;
+                    Shoot();
+                }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Reload();
-        }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Reload();
+            }
         
-        currentCooldown -= Time.deltaTime;
+            currentCooldown -= Time.deltaTime;
+        }
     }
 
     private void Shoot()
@@ -82,9 +87,11 @@ public class Gun : MonoBehaviour
         tracerCount--;
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void Reload()
     {
         currentCapacity = magazineCapacity;
         tracerCount = tracerInterval;
+        _playerController.StartReload();
     }
 }
