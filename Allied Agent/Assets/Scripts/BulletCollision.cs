@@ -48,8 +48,6 @@ public class BulletCollision : MonoBehaviour
                 break;
             
             default:
-                Debug.Log("Tag: "+other.gameObject.tag);
-                Debug.Log("Name: "+other.gameObject);
                 Destroy(this.gameObject);
                 break;
                 
