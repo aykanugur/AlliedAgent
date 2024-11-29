@@ -4,14 +4,17 @@ using UnityEngine.Events;
 
 public class Rocket : MonoBehaviour
 {
-    public TrailRenderer trail;
+    public TrailRenderer fireTrail;
+    public TrailRenderer smokeTrail;
     public UnityEvent onRocketShoot;
     public float shootForce;
     public float rocketMass;
+    public float fireTrailTime = 0.25f;
 
     private bool hasFired = false;
     private Rigidbody rb;
     private Transform tf;
+    private float timeSinceFired = 0f;
     
     // Start is called before the first frame update
     void Start()
@@ -23,12 +26,15 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (hasFired)
+        {
+            ActivateTrail();
+        }
         if (Input.GetButtonDown("Fire1") && Input.GetButton("Fire2") && !hasFired)
         {
             hasFired = true;
             Fire();
         }
-        
     }
 
     void FixedUpdate()
@@ -58,12 +64,26 @@ public class Rocket : MonoBehaviour
         rb.isKinematic = false;
         rb.mass = rocketMass;
         rb.AddForce(transform.TransformDirection(-Vector3.right).normalized * shootForce, ForceMode.Impulse);
-        trail.emitting = true;
     }
 
     private void PointNoseToMovementVector()
     {
         Vector3 direction = rb.velocity.normalized;
         tf.right = -direction;
+    }
+
+    private void ActivateTrail()
+    {
+        if (timeSinceFired <= fireTrailTime)
+        {
+            fireTrail.emitting = true;
+            timeSinceFired += Time.deltaTime;
+        }
+        else
+        {
+            fireTrail.emitting = false;
+            smokeTrail.emitting = true;
+            rb.useGravity = true;
+        }
     }
 }
