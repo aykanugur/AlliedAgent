@@ -726,7 +726,8 @@ GameObject:
   - component: {fileID: 6192196994624152384}
   - component: {fileID: 3125355041040141501}
   - component: {fileID: 7827772192912172956}
-  - component: {fileID: 3633383654794312949}
+  - component: {fileID: 1375596491800573823}
+  - component: {fileID: 1103141722435108583}
   m_Layer: 0
   m_Name: Cylinder.009
   m_TagString: Untagged
@@ -818,7 +819,25 @@ MonoBehaviour:
       m_Calls: []
   shootForce: 125
   rocketMass: 2.5
---- !u!54 &3633383654794312949
+--- !u!114 &1375596491800573823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185357101088574156}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc385235dd0192e419161dce4bd4e029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trail: {fileID: 0}
+  onRocketShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  shootForce: 50
+  rocketMass: 1
+--- !u!54 &1103141722435108583
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1580,6 +1599,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2481502497752583134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3964323126498495543}
+  m_Layer: 3
+  m_Name: muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3964323126498495543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2481502497752583134}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -2.258, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7039697031994762485}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &2558244468431167984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,6 +1805,9 @@ MonoBehaviour:
   projectileMass: 1
   magazineCapacity: 30
   currentCapacity: 0
+  materials:
+  - {fileID: 2100000, guid: db455aeeb9bc74685a88be343dbce918, type: 2}
+  - {fileID: 2100000, guid: 765c61d40414943baa01df4eb09e0af7, type: 2}
   bullet: {fileID: 2032689912584210912, guid: 2af6ce20103ce2448bb9e176f99cff09, type: 3}
   bulletSpawnPoint: {fileID: 6907403947920371448}
 --- !u!1 &2962948707218151012
@@ -2412,6 +2465,7 @@ Transform:
   - {fileID: 1999025826713682740}
   - {fileID: 4897907064219522292}
   - {fileID: 4318906454050900006}
+  - {fileID: 3964323126498495543}
   m_Father: {fileID: 1760753424624753351}
   m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
 --- !u!33 &7594734682535123226
@@ -2486,6 +2540,9 @@ MonoBehaviour:
   projectileMass: 1
   magazineCapacity: 30
   currentCapacity: 0
+  materials:
+  - {fileID: 2100000, guid: db455aeeb9bc74685a88be343dbce918, type: 2}
+  - {fileID: 2100000, guid: 765c61d40414943baa01df4eb09e0af7, type: 2}
   bullet: {fileID: 2032689912584210912, guid: 2af6ce20103ce2448bb9e176f99cff09, type: 3}
   bulletSpawnPoint: {fileID: 4318906454050900006}
 --- !u!1 &4426841240660699796
