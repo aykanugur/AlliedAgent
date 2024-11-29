@@ -9,10 +9,12 @@ public class Gun : MonoBehaviour
     public float shootForce;
     public float projectileMass;
     public int magazineCapacity;
-    public int currentCapacity;
     public Material[] materials;
+    public int tracerInterval = 5;
 
     private float currentCooldown;
+    private int currentCapacity;
+    private int tracerCount = 0;
 
     public GameObject bullet;
     public Transform bulletSpawnPoint;
@@ -60,6 +62,16 @@ public class Gun : MonoBehaviour
         currentCapacity--;
         Vector3 direction = bulletSpawnPoint.forward;
         GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
+        if (tracerCount <= 0)
+        {
+            tracerCount = tracerInterval;
+            currentBullet.gameObject.GetComponent<BulletCollision>().MakeTracer();
+        }
+        else
+        {
+            currentBullet.gameObject.GetComponent<BulletCollision>().makeNonTracer();
+        }
+        
         if (Random.Range(0, 5) == 0) // aykan kod
         {
             int random = Random.Range(0, 2);
@@ -67,10 +79,12 @@ public class Gun : MonoBehaviour
         }
         currentBullet.GetComponent<Rigidbody>().mass = projectileMass;
         currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
+        tracerCount--;
     }
 
     private void Reload()
     {
         currentCapacity = magazineCapacity;
+        tracerCount = tracerInterval;
     }
 }
