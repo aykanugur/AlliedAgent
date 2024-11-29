@@ -1,21 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class BulletCollision : MonoBehaviour
 {
+    
+    
+    public bool isTracer = false;
+    public TrailRenderer trail;
+    public float tracerTimeout = 3.5f;
+    
     private Rigidbody rb;
+    private Transform tf;
     
     // Start is called before the first frame update
     void Start()
     {
         rb=GetComponent<Rigidbody>();
+        tf=GetComponent<Transform>();
+        trail.emitting=isTracer;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        tracerTimeout-=Time.deltaTime;
+        trail.emitting=isTracer && tracerTimeout>=0;
+    }
+
+    void FixedUpdate()
+    {
+        PointNoseToMovementVector();
     }
 
     
@@ -34,6 +48,8 @@ public class BulletCollision : MonoBehaviour
                 break;
             
             default:
+                Debug.Log("Tag: "+other.gameObject.tag);
+                Debug.Log("Name: "+other.gameObject);
                 Destroy(this.gameObject);
                 break;
                 
@@ -47,27 +63,20 @@ public class BulletCollision : MonoBehaviour
         rb.velocity = direction * rb.velocity.magnitude;
     }
     
-    /*
-    void OnCollisionEnter(Collision collision)
+    private void PointNoseToMovementVector()
     {
-        switch (collision.gameObject.tag)
-        {
-            case "Enemy":
-
-                break;
-            
-            case "Reflective":
-
-                break;
-            
-            default:
-                Destroy(this.gameObject);
-                break;
-                
-        }
+        Vector3 direction = rb.velocity.normalized;
+        tf.up = direction;
     }
-    */
-     
-     
+
+    public void MakeTracer()
+    {
+        this.isTracer=true;
+    }
+
+    public void makeNonTracer()
+    {
+        this.isTracer=false;
+    }
 }
 
