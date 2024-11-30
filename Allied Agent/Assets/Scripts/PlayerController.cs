@@ -60,14 +60,10 @@ public class PlayerController : MonoBehaviour
         CheckFlashlight();
         CheckCover();
         ChangeWeapons();
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            StartReload();
-        }
     }
     private void FixedUpdate()
     {
-        if (!_knifeTime && (_reload && _crouch) == false)
+        if (_knifeTime == false && (_reload && _crouch) == false)
         {
             animation_movement();
         }
@@ -76,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     private void ChangeWeapons()
     {
-        if (_hasGun)
+        if (_hasGun && _reload == false)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -248,11 +244,10 @@ public class PlayerController : MonoBehaviour
         weapons[3].SetActive(true);
         SendVarToAnimator();
         var transform1 = transform;
-        transform1.eulerAngles = new Vector3(0,0,0);
+        transform1.eulerAngles = new Vector3(0,90,0);
         var position = _nearEnemyTransform.position;
-        transform1.position = new Vector3(position.x, transform1.position.y, position.z - 1);
+        transform1.position = new Vector3(position.x - 0.5f, transform1.position.y, position.z);
         _animator.SetTrigger(Knife1);
-        StopKnife();
     }
     public void StopKnife()
     {
@@ -521,6 +516,14 @@ public class PlayerController : MonoBehaviour
     
     private void SendVarToAnimator() 
     {
+        if (_velocityZ < 0)
+        {
+            _animator.SetLayerWeight(1,0.9f);
+        }
+        else
+        {
+            _animator.SetLayerWeight(1,0);
+        }
         _animator.SetBool(Crouch,_crouch);
         _animator.SetBool(Aim,_aim);
         _animator.SetFloat(Property1,_velocityX);
