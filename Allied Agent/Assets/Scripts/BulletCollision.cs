@@ -8,7 +8,7 @@ public class BulletCollision : MonoBehaviour
     public bool isTracer = false;
     public TrailRenderer trail;
     public float tracerTimeout = 3.5f;
-    
+    public GameObject blood;
     private Rigidbody rb;
     private Transform tf;
     
@@ -38,7 +38,10 @@ public class BulletCollision : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Enemy":
-
+                GameObject child = Instantiate(blood, other.transform, true);
+                child.transform.position = transform.position;
+                child.transform.eulerAngles = transform.eulerAngles;
+                Destroy(this.gameObject);
                 break;
             
             case "Reflective":

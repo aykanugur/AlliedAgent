@@ -102,6 +102,7 @@ MonoBehaviour:
   isTracer: 1
   trail: {fileID: 833534580854196268}
   tracerTimeout: 1.232
+  blood: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
 --- !u!136 &497023973541082698
 CapsuleCollider:
   m_ObjectHideFlags: 0
