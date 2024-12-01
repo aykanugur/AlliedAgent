@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private Color _originalColor;
     [SerializeField]private GameObject[] weapons,weaponsV,weaponsGrenade;
     [SerializeField] private GameObject secondHand;
-    private GameObject _currentGun,_childMagazine;
+    public GameObject _currentGun,_childMagazine;
     private static readonly int Knife1 = Animator.StringToHash("knife");
     private static readonly int Grenade1 = Animator.StringToHash("grenade");
     private static readonly int Reload = Animator.StringToHash("Reload");
@@ -643,6 +643,11 @@ public class PlayerController : MonoBehaviour
 
             _target.transform.position = raycastHit.point;
         }
+    }
+
+    public GameObject GetCurrentGun()
+    {
+        return _currentGun;
     }
 
     public void StartReload()
