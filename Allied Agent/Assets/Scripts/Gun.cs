@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 public class Gun : MonoBehaviour
 {
@@ -11,15 +13,15 @@ public class Gun : MonoBehaviour
     public int magazineCapacity;
     public Material[] materials;
     public int tracerInterval = 5;
-
+    public float time = 0.05f;
+    
     private float currentCooldown;
-    private int currentCapacity;
+    public int currentCapacity;
     private int tracerCount = 0;
     private PlayerController _playerController;
     
     public GameObject bullet;
     public Transform bulletSpawnPoint;
-    
     
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,7 @@ public class Gun : MonoBehaviour
     {
         if (_playerController.isReload() == false)
         {
+            
             if (isAuto)
             {
                 if (Input.GetButton("Fire1") && Input.GetButton("Fire2") && currentCooldown <= 0f && currentCapacity>0)
@@ -94,4 +97,5 @@ public class Gun : MonoBehaviour
         tracerCount = tracerInterval;
         _playerController.StartReload();
     }
+    
 }
