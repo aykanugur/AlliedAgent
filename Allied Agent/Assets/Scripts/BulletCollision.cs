@@ -39,13 +39,20 @@ public class BulletCollision : MonoBehaviour
         {
             case "Enemy":
                 GameObject child = Instantiate(blood, other.transform, true);
-                child.transform.position = transform.position;
-                child.transform.eulerAngles = transform.eulerAngles;
+                var transform1 = transform;
+                child.transform.position = transform1.position;
+                child.transform.eulerAngles = transform1.eulerAngles;
                 Destroy(this.gameObject);
                 break;
             
             case "Reflective":
                 ReflectBullet(other.gameObject.transform.forward);
+                break;
+            
+            case  "cover":
+                other.gameObject.GetComponent<Cover>().hp = other.gameObject.GetComponent<Cover>().hp - 10;
+                other.GetComponent<Cover>().CheckHp();
+                Destroy(this.gameObject);
                 break;
             case "DoNotDestroy":
                 break;

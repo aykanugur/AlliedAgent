@@ -16,6 +16,8 @@ TagManager:
   - Reflective
   - DoNotDestroy
   - Plane
+  - FxTemporaire
+  - coverSide
   layers:
   - Default
   - TransparentFX
