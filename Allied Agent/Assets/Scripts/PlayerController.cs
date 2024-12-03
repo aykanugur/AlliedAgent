@@ -103,6 +103,8 @@ public class PlayerController : MonoBehaviour
                     _currentGun.SetActive(true);
                     secondHand.transform.localPosition = new Vector3(0, 0, 0);
                     secondHand.transform.localRotation = Quaternion.Euler(0,-186.2f,0);
+                    _currentGun.GetComponent<AudioSource>().clip = _currentGun.GetComponent<Gun>()._audioClips[3];
+                    _currentGun.GetComponent<AudioSource>().Play();
                 }
                 else
                 {
@@ -135,7 +137,10 @@ public class PlayerController : MonoBehaviour
 
             if (!(distance < shortestDistance)) continue;
             shortestDistance = distance;
-            nearestChild = child;
+            if (child.CompareTag("coverSide"))
+            {
+                nearestChild = child;
+            }
         }
         if (nearestChild != null)
         {
@@ -187,13 +192,13 @@ public class PlayerController : MonoBehaviour
         if (_currentGun == weapons[0])
         {
             weaponsV[0].SetActive(false);
-            _currentGun.GetComponent<AudioSource>().clip = _currentGun.GetComponent<Gun>()._audioClips[3];
-            _currentGun.GetComponent<AudioSource>().Play();
         }
         else
         {
             weaponsV[1].SetActive(false);
         }
+        _currentGun.GetComponent<AudioSource>().clip = _currentGun.GetComponent<Gun>()._audioClips[3];
+        _currentGun.GetComponent<AudioSource>().Play();
 
         if (_hasGun == false)
         {
@@ -271,7 +276,7 @@ public class PlayerController : MonoBehaviour
     private void GetInputsFunction()
     {
 
-        if (Input.GetKeyDown(KeyCode.G)&& _hasGun && _aim == false && _reload == false)
+        if (Input.GetKeyDown(KeyCode.G)&& _hasGun && _aim == false && _reload == false && _crouch == false)
         {
             _grenade = true;
             _aim = false;
@@ -360,7 +365,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckCrouch()
     {
-        if (Input.GetKeyDown(KeyCode.C)&& _jump == false&& ladderStart == false) // crouch 
+        if (Input.GetKeyDown(KeyCode.C)&& _jump == false&& ladderStart == false && _reload == false) // crouch 
         {
             ChangeCrouchStatus();
         }
@@ -696,5 +701,10 @@ public class PlayerController : MonoBehaviour
             
         }
         _lastHitObject = null;
+    }
+
+    public void SetAim(bool set)
+    {
+        _aim = set;
     }
 }
