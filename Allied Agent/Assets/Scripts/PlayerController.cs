@@ -86,6 +86,8 @@ public class PlayerController : MonoBehaviour
                 _currentGun.SetActive(true);
                 secondHand.transform.localPosition = new Vector3(-0.09f, 0.3391f, -0.0388f);
                 secondHand.transform.localRotation = Quaternion.Euler(0,-186.2f,0);
+                _currentGun.GetComponent<AudioSource>().clip = _currentGun.GetComponent<Gun>()._audioClips[3];
+                _currentGun.GetComponent<AudioSource>().Play();
             }
             else
             {
@@ -185,6 +187,8 @@ public class PlayerController : MonoBehaviour
         if (_currentGun == weapons[0])
         {
             weaponsV[0].SetActive(false);
+            _currentGun.GetComponent<AudioSource>().clip = _currentGun.GetComponent<Gun>()._audioClips[3];
+            _currentGun.GetComponent<AudioSource>().Play();
         }
         else
         {

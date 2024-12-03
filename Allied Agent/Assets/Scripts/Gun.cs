@@ -23,12 +23,16 @@ public class Gun : MonoBehaviour
     public GameObject bullet;
     public Transform bulletSpawnPoint;
     
+    public AudioClip[] _audioClips;
+    private AudioSource _audioSource;
+    
     // Start is called before the first frame update
     void Start()
     {
         currentCooldown = timeBetweenShots;
         currentCapacity = magazineCapacity;
         _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -67,6 +71,8 @@ public class Gun : MonoBehaviour
 
     private void Shoot()
     {
+        _audioSource.clip = _audioClips[0];
+        _audioSource.Play();
         currentCapacity--;
         Vector3 direction = bulletSpawnPoint.forward;
         GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
