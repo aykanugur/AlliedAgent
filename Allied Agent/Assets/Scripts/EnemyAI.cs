@@ -1,21 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SocialPlatforms;
 
 public class EnemyAI : MonoBehaviour
 {
-
-    private bool moving = false;
-    private NavMeshAgent agent;
+    
     public float maxDistance = 200f;
     public float maxSpeed = 30;
     public float actionDistance = 10;
-    public float sphereCastRadius = 10f;
+    [SerializeField] private float minDistance = 0.2f;
+    [SerializeField] private float minSpeed = 2.6f;
+
+    private NavMeshAgent agent;
+    [SerializeField] private float range;
+    private Vector3 oldPosition;
+    
+    private bool following; //is enemy following the player
+    
     // Start is called before the first frame update
     void Start()
     {
-        agent = transform.parent.gameObject.GetComponent<NavMeshAgent>();
+        agent = transform.gameObject.GetComponent<NavMeshAgent>();
+        following = false;
+        oldPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -23,44 +32,60 @@ public class EnemyAI : MonoBehaviour
     {
         //Enemy follows player
         RaycastHit hitInfo;
-        bool hit = Physics.Raycast(transform.position,transform.forward,out hitInfo,maxDistance);
-        Debug.DrawRay(transform.position,new Vector3(0,0,maxDistance),Color.red);
+        
+        bool hit = Physics.CapsuleCast(transform.position,transform.forward,
+            agent.radius,transform.forward,out hitInfo,maxDistance);
+        //Debug.DrawRay(transform.position,new Vector3(0,0,maxDistance),Color.red);
         if (hit)
         {
             MoveToPlayer(hitInfo); 
         }
         else
         {
-            agent.isStopped = true;
-            moving = false;
+            StopFollow();
         }
 
     }
 
     void MoveToPlayer(RaycastHit hitInfo)
     {
-        moving = true;
         if (hitInfo.transform.gameObject.tag.Equals("Player"))
         {
-            transform.parent.transform.LookAt(hitInfo.transform.gameObject.transform.position);
+            Debug.Log("Follow player");
+            following = true;
+            agent.isStopped = false;
+
+            
+            transform.LookAt(hitInfo.transform.gameObject.transform.position);
+
             if(hitInfo.distance < actionDistance)
             {
-                agent.speed = agent.speed > maxSpeed ? maxSpeed : agent.speed + (0.01f * hitInfo.distance);
+                agent.speed = agent.speed > maxSpeed ? maxSpeed : agent.speed + (0.001f * hitInfo.distance);
+                if(hitInfo.distance < minDistance)
+                    StopFollow();
             }
             else
             {
-                agent.speed = 1;
+                agent.speed = minSpeed;
             }
             agent.destination = hitInfo.transform.gameObject.transform.position;
-
             
+            
+
+
         }
-
-        moving = false;
+        else
+        {
+            StopFollow();
+        }
+       
     }
 
-    bool IsMoving()
+    void StopFollow()
     {
-        return moving;
+        agent.destination = oldPosition;
+        following = false;
+
     }
+    
 }
