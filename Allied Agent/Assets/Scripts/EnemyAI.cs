@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -11,17 +12,24 @@ public class EnemyAI : MonoBehaviour
     public float maxSpeed = 30;
     public float actionDistance = 10;
     [SerializeField] private float minDistance = 0.2f;
+    [SerializeField] private float minCoverDistance = 3f;
     [SerializeField] private float minSpeed = 2.6f;
+    [SerializeField] private float range;
 
     private NavMeshAgent agent;
-    [SerializeField] private float range;
+    
+    
     private Vector3 oldPosition;
+    private Vector3 patrolDest;
     
     private bool following; //is enemy following the player
+
+    private GameObject[] coverPlaces;
     
     // Start is called before the first frame update
     void Start()
     {
+        coverPlaces = GameObject.FindGameObjectsWithTag("cover");
         agent = transform.gameObject.GetComponent<NavMeshAgent>();
         following = false;
         oldPosition = transform.position;
@@ -44,6 +52,8 @@ public class EnemyAI : MonoBehaviour
         {
             StopFollow();
         }
+        
+        Patrol();
 
     }
 
@@ -51,24 +61,37 @@ public class EnemyAI : MonoBehaviour
     {
         if (hitInfo.transform.gameObject.tag.Equals("Player"))
         {
-            Debug.Log("Follow player");
             following = true;
-            agent.isStopped = false;
 
             
             transform.LookAt(hitInfo.transform.gameObject.transform.position);
 
+
+            if (Vector3.Distance(oldPosition, transform.position) > maxDistance) //Stop following if the enemy goes beyond range
+            {
+                StopFollow();
+                agent.SetDestination(oldPosition);
+                return;
+            }
+            //Action speeding
+            
             if(hitInfo.distance < actionDistance)
             {
                 agent.speed = agent.speed > maxSpeed ? maxSpeed : agent.speed + (0.001f * hitInfo.distance);
-                if(hitInfo.distance < minDistance)
-                    StopFollow();
+                if (hitInfo.distance < minDistance)
+                {
+                    //Stop in a distance
+                    //TODO: Cover and shoot, following is still active
+                }
+
+                
             }
             else
             {
                 agent.speed = minSpeed;
             }
             agent.destination = hitInfo.transform.gameObject.transform.position;
+
             
             
 
@@ -81,11 +104,46 @@ public class EnemyAI : MonoBehaviour
        
     }
 
+    //Return to the home
     void StopFollow()
     {
-        agent.destination = oldPosition;
+        if(!agent.hasPath)
+            agent.SetDestination(oldPosition);
         following = false;
+        
 
+    }
+
+    //TODO: Cover and shoot
+    bool Cover()
+    {
+        foreach (GameObject place in coverPlaces)
+        {
+            float distance = Vector3.Distance(transform.position, place.transform.position);
+            if (distance < minCoverDistance)
+            {
+                following = false;
+                agent.SetDestination(place.transform.position);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    void Patrol()
+    {
+        if (!following && !agent.hasPath) //If enemy currently does not moving, make a patrol
+        {
+                Vector3 randomDirection = Random.insideUnitSphere * range;
+                randomDirection += transform.position;
+                NavMeshHit hit;
+                NavMesh.SamplePosition(randomDirection, out hit, range, 1);
+                patrolDest = hit.position;
+                agent.SetDestination(patrolDest);
+
+        }
+        
     }
     
 }
