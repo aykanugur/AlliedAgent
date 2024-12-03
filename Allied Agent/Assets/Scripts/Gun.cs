@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 public class Gun : MonoBehaviour
 {
@@ -11,15 +13,18 @@ public class Gun : MonoBehaviour
     public int magazineCapacity;
     public Material[] materials;
     public int tracerInterval = 5;
-
+    public float time = 0.05f;
+    
     private float currentCooldown;
-    private int currentCapacity;
+    public int currentCapacity;
     private int tracerCount = 0;
     private PlayerController _playerController;
     
     public GameObject bullet;
     public Transform bulletSpawnPoint;
     
+    public AudioClip[] _audioClips;
+    private AudioSource _audioSource;
     
     // Start is called before the first frame update
     void Start()
@@ -27,6 +32,7 @@ public class Gun : MonoBehaviour
         currentCooldown = timeBetweenShots;
         currentCapacity = magazineCapacity;
         _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -34,6 +40,7 @@ public class Gun : MonoBehaviour
     {
         if (_playerController.isReload() == false)
         {
+            
             if (isAuto)
             {
                 if (Input.GetButton("Fire1") && Input.GetButton("Fire2") && currentCooldown <= 0f && currentCapacity>0)
@@ -64,6 +71,8 @@ public class Gun : MonoBehaviour
 
     private void Shoot()
     {
+        _audioSource.clip = _audioClips[0];
+        _audioSource.Play();
         currentCapacity--;
         Vector3 direction = bulletSpawnPoint.forward;
         GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
@@ -94,4 +103,5 @@ public class Gun : MonoBehaviour
         tracerCount = tracerInterval;
         _playerController.StartReload();
     }
+    
 }

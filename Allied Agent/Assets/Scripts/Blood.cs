@@ -14,7 +14,6 @@ public class Blood : MonoBehaviour
     IEnumerator StopBlood()
     {
         yield return new WaitForSeconds(1);
-        Debug.Log("Stop");
         Destroy(this.gameObject);
     }
 }
