@@ -1,5 +1,6 @@
 
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 public class PlayerController : MonoBehaviour
@@ -34,7 +35,19 @@ public class PlayerController : MonoBehaviour
     private static readonly int Grenade1 = Animator.StringToHash("grenade");
     private static readonly int Reload = Animator.StringToHash("Reload");
     private int _currentGunIndex;
+    public GameObject tutor;
 
+
+
+    public bool GetCrouch()
+    {
+        return _crouch;
+    }
+    public bool GetGranade()
+    {
+        return _grenade;
+    }
+    
     void Start()
     {
         _currentGun = weapons[0];
@@ -585,6 +598,16 @@ public class PlayerController : MonoBehaviour
             _nearEnemyTransform = other.transform;
         }
 
+        if (other.gameObject.CompareTag("checkPoint"))
+        {
+            Destroy(other.gameObject);
+            _velocityX = 0;
+            _velocityZ = 0;
+            SendVarToAnimator();
+            tutor.SetActive(true);
+            tutor.GetComponent<DialogManager>().ContDialog();
+        }
+
 
     }
 
@@ -632,7 +655,7 @@ public class PlayerController : MonoBehaviour
         {
 
             if (raycastHit.transform.gameObject.layer == 6)
-            {//
+            {
                 GameObject hitObject = raycastHit.collider.gameObject;
                 if (_lastHitObject != hitObject)
                 {
@@ -651,6 +674,18 @@ public class PlayerController : MonoBehaviour
             }
 
             _target.transform.position = raycastHit.point;
+            if (math.abs(_target.transform.position.z - raycastHit.transform.position.z) > 0.4)
+            {
+                if ( _target.transform.position.z < raycastHit.transform.position.z)
+                {
+                    _target.transform.position += new Vector3(0, 0, 0.6f);
+                }
+            
+                else if (_target.transform.position.z > raycastHit.transform.position.z)
+                {
+                    _target.transform.position -= new Vector3(0, 0, 0.6f);
+                }
+            }
         }
     }
 
