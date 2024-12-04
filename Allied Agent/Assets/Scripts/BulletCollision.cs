@@ -50,9 +50,12 @@ public class BulletCollision : MonoBehaviour
                 break;
             
             case  "cover":
-                other.gameObject.GetComponent<Cover>().hp = other.gameObject.GetComponent<Cover>().hp - 10;
-                other.GetComponent<Cover>().CheckHp();
-                Destroy(this.gameObject);
+                if (other.gameObject.GetComponent<Cover>() != null)
+                {
+                    other.gameObject.GetComponent<Cover>().hp = other.gameObject.GetComponent<Cover>().hp - 10;
+                    other.GetComponent<Cover>().CheckHp();
+                    Destroy(this.gameObject);
+                }
                 break;
             case "DoNotDestroy":
                 break;

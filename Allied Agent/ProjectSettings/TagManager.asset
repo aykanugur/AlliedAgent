@@ -18,6 +18,7 @@ TagManager:
   - Plane
   - FxTemporaire
   - coverSide
+  - checkPoint
   layers:
   - Default
   - TransparentFX

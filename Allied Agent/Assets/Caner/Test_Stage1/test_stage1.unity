@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17053787, g: 0.16542515, b: 0.1600636, a: 1}
+  m_IndirectSpecularColor: {r: 0.17053331, g: 0.16542697, b: 0.1600613, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2446,6 +2446,9 @@ MonoBehaviour:
   maxDistance: 20
   maxSpeed: 30
   actionDistance: 10
+  minDistance: 0.2
+  minCoverDistance: 3
+  minSpeed: 2.6
   range: 0
 --- !u!195 &202229535
 NavMeshAgent:
@@ -29994,6 +29997,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1072136594223233343, guid: 537dacdbb0be7412791243dcdd95b52c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7727770664794243566, guid: 537dacdbb0be7412791243dcdd95b52c,
         type: 3}
