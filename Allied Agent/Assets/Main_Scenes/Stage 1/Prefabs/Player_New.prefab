@@ -14679,7 +14679,7 @@ GameObject:
   - component: {fileID: 1607703901141673965}
   - component: {fileID: 3183739796595217516}
   m_Layer: 0
-  m_Name: Muzzle_Flash_Partiacle
+  m_Name: Muzzle_Flash_Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25851,6 +25851,7 @@ GameObject:
   - component: {fileID: 2654399913314615479}
   - component: {fileID: 7157493144333711248}
   - component: {fileID: 9132752272798186097}
+  - component: {fileID: 6450178617617922986}
   m_Layer: 3
   m_Name: Player_New
   m_TagString: Player
@@ -25913,6 +25914,7 @@ MonoBehaviour:
   flashlights:
   - {fileID: 8639208406025643914}
   - {fileID: 8172873772604778860}
+  currentGun: {fileID: 4384383091093713195}
   ladderEnd: 0
   ladder: 0
   ladderStart: 0
@@ -25932,8 +25934,9 @@ MonoBehaviour:
   - {fileID: 8180438569315979555}
   - {fileID: 6235577781773893174}
   secondHand: {fileID: 2154650421837154734}
-  _currentGun: {fileID: 4384383091093713195}
-  _childMagazine: {fileID: 0}
+  childMagazine: {fileID: 0}
+  tutor: {fileID: 0}
+  _grenadeThrow: {fileID: 0}
 --- !u!54 &5580269436160308246
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26241,6 +26244,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 465283c44ed0d4dc2af742d09f3e1eed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6450178617617922986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8534337631839018516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d89ed06abf20493bb0e8f42054415ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  missions:
+  - 
+  - Walk forward
+  - Press R to equip weapon
+  - Press G to throw granade
+  - Press C to crouch
+  - 'Press Q to reload '
+  - Destroy that box
+  - 'Survive '
+  index: 0
+  _dialogManager: {fileID: 0}
+  tutor: {fileID: 0}
+  playerController: {fileID: 4435812188145956969}
+  box: {fileID: 0}
+  active: 1
 --- !u!1 &8535537872548542620
 GameObject:
   m_ObjectHideFlags: 0
@@ -26253,7 +26284,7 @@ GameObject:
   - component: {fileID: 5577696935889389095}
   - component: {fileID: 9024913979428788145}
   m_Layer: 0
-  m_Name: Muzzle_Flash_Partiacle
+  m_Name: Muzzle_Flash_Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

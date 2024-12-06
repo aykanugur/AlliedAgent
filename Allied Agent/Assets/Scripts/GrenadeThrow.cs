@@ -45,7 +45,7 @@ public class GrenadeThrow : MonoBehaviour
         
     }
 
-    private void Throw()
+    public void Throw()
     {
         GameObject grenadeInUse;
         if (molotofActive)

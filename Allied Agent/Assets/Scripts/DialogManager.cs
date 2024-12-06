@@ -54,7 +54,7 @@ public class DialogManager : MonoBehaviour
         
     }
 
-    public void StartDialog()
+    private void StartDialog()
     {
         playerController.enabled = false;
         _index = 0;
@@ -63,14 +63,14 @@ public class DialogManager : MonoBehaviour
 
     public void ContDialog()
     {
-        playerController._currentGun.GetComponent<Gun>().enabled = false;
+        playerController.currentGun.GetComponent<Gun>().enabled = false;
         playerController.enabled = false;
         _index++;
         text.text = String.Empty;
         StartCoroutine(TypeLine());
     }
 
-    IEnumerator TypeLine()
+    private IEnumerator TypeLine()
     {
         _audioSource.clip = clips[_index];
         _audioSource.Play();
@@ -85,7 +85,7 @@ public class DialogManager : MonoBehaviour
         
     }
 
-    public void NextLine()
+    private void NextLine()
     {
         if (_index < lines.Length - 1 && checkpoints[_index] == false) // do not forget array bound
         {
@@ -99,7 +99,7 @@ public class DialogManager : MonoBehaviour
             {
                 gameObject.SetActive(false);
                 playerController.enabled = true;
-                playerController._currentGun.GetComponent<Gun>().enabled = true;
+                playerController.currentGun.GetComponent<Gun>().enabled = true;
                 missions.changeMissions();
             }
             else
@@ -107,7 +107,7 @@ public class DialogManager : MonoBehaviour
                 bismarck.SetActive(true);
                 missions.changeMissions();
                 playerController.enabled = true;
-                playerController._currentGun.GetComponent<Gun>().enabled = true;
+                playerController.currentGun.GetComponent<Gun>().enabled = true;
                 Destroy(wall);
                 Destroy(this.gameObject);
             }

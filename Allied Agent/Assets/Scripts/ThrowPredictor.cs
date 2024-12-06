@@ -31,8 +31,11 @@ public class ThrowPredictor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.T));
+        if (Input.GetKey(KeyCode.G))
+        {
             PredictTrajectory();
+        }
+        
     }
 
     private void PredictTrajectory()
