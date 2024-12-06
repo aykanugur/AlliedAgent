@@ -46,7 +46,7 @@ public class Bismarck : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         _playerController.SetAim(false);
-        _playerController._currentGun.GetComponent<Gun>().enabled = false;
+        _playerController.currentGun.GetComponent<Gun>().enabled = false;
         _playerController.enabled = false;
         
         _start = true;
@@ -71,7 +71,7 @@ public class Bismarck : MonoBehaviour
         cameras[1].SetActive(false);
         cameras[0].SetActive(true);
         player.GetComponent<PlayerController>().enabled = true;
-        _playerController._currentGun.GetComponent<Gun>().enabled = true;
+        _playerController.currentGun.GetComponent<Gun>().enabled = true;
         Destroy(ships);
     }
     

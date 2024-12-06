@@ -3,16 +3,19 @@ using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+
 public class PlayerController : MonoBehaviour
 {
     private Animator _animator;
     private float _velocityZ,_velocityX,_acc,_maxRun,_maxWalk,_maxVelocity; // float
     private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover,_nearEnemy,_knifeTime,_grenade,_reload; // bool
     [SerializeField] private GameObject[] flashlights; // game objects arrays
+    private bool _grenadeAim;
     private RigBuilder _rigBuilder; 
     private Rigidbody _rb; // rb
     private GameObject _target,_ladderObject,_crossHair,_magazine; // gameObject
     private Transform _coverTransform,_coverSide,_nearEnemyTransform;
+    public GameObject currentGun;
     private Camera _mainCamera; // camera
     public bool ladderEnd;
     public bool ladder, ladderStart;
@@ -30,15 +33,16 @@ public class PlayerController : MonoBehaviour
     private Color _originalColor;
     [SerializeField]private GameObject[] weapons,weaponsV,weaponsGrenade;
     [SerializeField] private GameObject secondHand;
-    public GameObject _currentGun,_childMagazine;
+    public GameObject childMagazine;
     private static readonly int Knife1 = Animator.StringToHash("knife");
     private static readonly int Grenade1 = Animator.StringToHash("grenade");
     private static readonly int Reload = Animator.StringToHash("Reload");
     private int _currentGunIndex;
     public GameObject tutor;
+    private static readonly int StopReload1 = Animator.StringToHash("StopReload");
+    [SerializeField] private GrenadeThrow _grenadeThrow;
 
-
-
+    
     public bool GetCrouch()
     {
         return _crouch;
@@ -50,7 +54,7 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
-        _currentGun = weapons[0];
+        currentGun = weapons[0];
         _animator = GetComponent<Animator>();
         _rigBuilder = GetComponent<RigBuilder>();
         _rb = GetComponent<Rigidbody>();
@@ -83,56 +87,53 @@ public class PlayerController : MonoBehaviour
         CheckCross();
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void ChangeWeapons()
     {
-        if (_hasGun && _reload == false)
+        if (!_hasGun || _reload) return;
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            foreach (GameObject w in weapons) // to active or de_active gun_aim objects
+            {
+                w.SetActive(false);
+            }
+            currentGun = weapons[0];
+            weaponsV[0].SetActive(false);
+            weaponsV[1].SetActive(true);
+            currentGun.SetActive(true);
+            secondHand.transform.localPosition = new Vector3(-0.09f, 0.3391f, -0.0388f);
+            secondHand.transform.localRotation = Quaternion.Euler(0,-186.2f,0);
+            currentGun.GetComponent<AudioSource>().clip = currentGun.GetComponent<Gun>()._audioClips[3];
+            currentGun.GetComponent<AudioSource>().Play();
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 foreach (GameObject w in weapons) // to active or de_active gun_aim objects
                 {
                     w.SetActive(false);
                 }
-                _currentGun = weapons[0];
-                weaponsV[0].SetActive(false);
-                weaponsV[1].SetActive(true);
-                _currentGun.SetActive(true);
-                secondHand.transform.localPosition = new Vector3(-0.09f, 0.3391f, -0.0388f);
+                currentGun = weapons[1];
+                weaponsV[1].SetActive(false);
+                weaponsV[0].SetActive(true);
+                currentGun.SetActive(true);
+                secondHand.transform.localPosition = new Vector3(0, 0, 0);
                 secondHand.transform.localRotation = Quaternion.Euler(0,-186.2f,0);
-                _currentGun.GetComponent<AudioSource>().clip = _currentGun.GetComponent<Gun>()._audioClips[3];
-                _currentGun.GetComponent<AudioSource>().Play();
+                currentGun.GetComponent<AudioSource>().clip = currentGun.GetComponent<Gun>()._audioClips[3];
+                currentGun.GetComponent<AudioSource>().Play();
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                if (!Input.GetKeyDown(KeyCode.Alpha3)) return;
+                foreach (GameObject w in weapons) // to active or de_active gun_aim objects
                 {
-                    foreach (GameObject w in weapons) // to active or de_active gun_aim objects
-                    {
-                        w.SetActive(false);
-                    }
-                    _currentGun = weapons[1];
-                    weaponsV[1].SetActive(false);
-                    weaponsV[0].SetActive(true);
-                    _currentGun.SetActive(true);
-                    secondHand.transform.localPosition = new Vector3(0, 0, 0);
-                    secondHand.transform.localRotation = Quaternion.Euler(0,-186.2f,0);
-                    _currentGun.GetComponent<AudioSource>().clip = _currentGun.GetComponent<Gun>()._audioClips[3];
-                    _currentGun.GetComponent<AudioSource>().Play();
+                    w.SetActive(false);
                 }
-                else
-                {
-                    if (Input.GetKeyDown(KeyCode.Alpha3))
-                    {
-                        foreach (GameObject w in weapons) // to active or de_active gun_aim objects
-                        {
-                            w.SetActive(false);
-                        }
-                        _currentGun = weapons[2];
-                        _currentGun.SetActive(true);
-                        secondHand.transform.localPosition = new Vector3(0.01131009f, 0.2369997f, 0.0585504f);
-                        secondHand.transform.localRotation = Quaternion.Euler(62.834f,-208.042f,-35.346f);
-                    }
-                }
+                currentGun = weapons[2];
+                currentGun.SetActive(true);
+                secondHand.transform.localPosition = new Vector3(0.01131009f, 0.2369997f, 0.0585504f);
+                secondHand.transform.localRotation = Quaternion.Euler(62.834f,-208.042f,-35.346f);
             }
         }
     }
@@ -161,6 +162,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void CheckCross()
     {
         if (_hasGun && _aim && _reload == false)
@@ -199,10 +201,11 @@ public class PlayerController : MonoBehaviour
     }
     
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void ChangeGunPartsStatus()
     {
-        _currentGun.SetActive(_hasGun);
-        if (_currentGun == weapons[0])
+        currentGun.SetActive(_hasGun);
+        if (currentGun == weapons[0])
         {
             weaponsV[0].SetActive(false);
         }
@@ -210,8 +213,8 @@ public class PlayerController : MonoBehaviour
         {
             weaponsV[1].SetActive(false);
         }
-        _currentGun.GetComponent<AudioSource>().clip = _currentGun.GetComponent<Gun>()._audioClips[3];
-        _currentGun.GetComponent<AudioSource>().Play();
+        currentGun.GetComponent<AudioSource>().clip = currentGun.GetComponent<Gun>()._audioClips[3];
+        currentGun.GetComponent<AudioSource>().Play();
 
         if (_hasGun == false)
         {
@@ -278,32 +281,59 @@ public class PlayerController : MonoBehaviour
         weaponsV[2].SetActive(true);
     }
 
-    IEnumerator Grenade(int val)
+    public void StartThrowGrenade()
+    {
+        // animation throw  end call will's code 
+        Debug.Log("Start throw granade");
+        _grenadeThrow.Throw();
+    }
+
+    private IEnumerator Grenade(int val)
     {
         yield return new WaitForSeconds(2.23f);
         _grenade = false;
-        _currentGun.SetActive(true);
+        currentGun.SetActive(true);
         weaponsGrenade[val].SetActive(false);
+    }
+
+    private void PositionCorrector()
+    {
+        if (Input.GetKeyUp(KeyCode.G) && _hasGun == false)
+        {
+           GunStatusChange();
+           if(_crouch) ChangeCrouchStatus();
+        }
+        
     }
     
     private void GetInputsFunction()
     {
+        PositionCorrector();
+        if (Input.GetKey(KeyCode.G)&& _hasGun && _aim == false && _reload == false && _crouch == false)
+        {
+            //grenade aim
+            _grenadeAim = true;
+        }
+        else
+        {
+            _grenadeAim = false;
+        }
 
-        if (Input.GetKeyDown(KeyCode.G)&& _hasGun && _aim == false && _reload == false && _crouch == false)
+        if (Input.GetKeyUp(KeyCode.G)&& _hasGun && _aim == false && _reload == false && _crouch == false)
         {
             _grenade = true;
             _aim = false;
-            int val = 0;
+            var val = 0;
             _animator.SetTrigger(Grenade1);
-            _currentGun.SetActive(false);
-            if (_currentGun == weapons[0])
+            currentGun.SetActive(false);
+            if (currentGun == weapons[0])
             {
                 // set active 
                 weaponsGrenade[0].SetActive(true);
             }
             else
             {
-                if (_currentGun == weapons[1])
+                if (currentGun == weapons[1])
                 {
                     weaponsGrenade[1].SetActive(true);
                     val = 1;
@@ -663,63 +693,49 @@ public class PlayerController : MonoBehaviour
 
             
                     _lastHitObject = hitObject;
-                    Renderer renderer = hitObject.GetComponent<Renderer>();
+                    Renderer rendererLocal = hitObject.GetComponent<Renderer>();
 
-                    if (renderer != null)
+                    if (rendererLocal != null)
                     {
-                        _originalColor = renderer.material.color; 
-                        renderer.material.color = Color.red; 
+                        var material = rendererLocal.material;
+                        _originalColor = material.color; 
+                        material.color = Color.red; 
                     }
                 }
             }
 
             _target.transform.position = raycastHit.point;
-            if (math.abs(_target.transform.position.z - raycastHit.transform.position.z) > 0.4)
-            {
-                if ( _target.transform.position.z < raycastHit.transform.position.z)
-                {
-                    _target.transform.position += new Vector3(0, 0, 0.6f);
-                }
-            
-                else if (_target.transform.position.z > raycastHit.transform.position.z)
-                {
-                    _target.transform.position -= new Vector3(0, 0, 0.6f);
-                }
-            }
+            var position = _target.transform.position;
+            position = new Vector3(position.x,position.y,raycastHit.transform.position.z );
+            _target.transform.position = position;
+            //code complex and not clear change it later :)
         }
     }
-
-    public GameObject GetCurrentGun()
-    {
-        return _currentGun;
-    }
-
     public void StartReload()
     {
         _reload = true;
         _aim = false;
         _animator.SetBool(Aim,_aim);
         _animator.SetTrigger(Reload);
-        _magazine = _currentGun.transform.Find("Magazine").gameObject;
-        GameObject child = Instantiate(_magazine, _currentGun.transform, true);
+        _magazine = currentGun.transform.Find("Magazine").gameObject;
+        GameObject child = Instantiate(_magazine, currentGun.transform, true);
         child.GetComponent<Rigidbody>().isKinematic = true;
         child.name = "Magazine";
         child.SetActive(false);
         _magazine.GetComponent<Rigidbody>().isKinematic = false;
         _magazine.GetComponent<BoxCollider>().enabled = true;
         _magazine.transform.SetParent(null);
-        _childMagazine = child;
+        childMagazine = child;
     }
     
     public void StopReload()
     {
-        Debug.Log("reload stop");
         _reload = false;
-        _animator.SetTrigger("StopReload");
-        _childMagazine.SetActive(true);
+        _animator.SetTrigger(StopReload1);
+        childMagazine.SetActive(true);
     }
 
-    public bool isReload()
+    public bool IsReload()
     {
         return _reload;
     }
@@ -727,11 +743,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_lastHitObject != null)
         {
-            Renderer renderer = _lastHitObject.GetComponent<Renderer>();
+            Renderer rendererLocal = _lastHitObject.GetComponent<Renderer>();
 
-            if (renderer != null)
+            if (rendererLocal != null)
             {
-                renderer.material.color = _originalColor; // Eski rengi geri yükle
+                rendererLocal.material.color = _originalColor; // Eski rengi geri yükle
             }
             
         }
