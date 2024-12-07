@@ -8366,7 +8366,7 @@ GameObject:
   - component: {fileID: 610695022}
   - component: {fileID: 610695021}
   - component: {fileID: 610695020}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Back
   m_TagString: DoNotDestroy
   m_Icon: {fileID: 0}
