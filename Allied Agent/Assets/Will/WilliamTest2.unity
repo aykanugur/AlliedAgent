@@ -17614,6 +17614,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 639469775}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1344548190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1573636990501355758, guid: eb83a5eebd18e44f7a3556063ffd6f83,
+    type: 3}
+  m_PrefabInstance: {fileID: 7399465524171749671}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1345666578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22757,75 +22763,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2021266950}
   m_SourcePrefab: {fileID: 100100000, guid: 779020ebd9fe748af811ad60eaef477d, type: 3}
---- !u!1 &1692960757
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1692960758}
-  - component: {fileID: 1692960760}
-  - component: {fileID: 1692960759}
-  m_Layer: 3
-  m_Name: GrenadeSpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1692960758
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1692960757}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.005, y: 0.064, z: 0.0151}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1776212300}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &1692960759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1692960757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d9e7883ab948764786cc995884a2dc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grenadeThrow: {fileID: 1692960760}
-  grenadeSpawnPoint: {fileID: 1692960758}
-  maxIncrements: 50
-  incrementSize: 0.025
-  rayOverlap: 1.1
-  trajectoryLine: {fileID: 0}
-  hitMarker: {fileID: 1993920724}
---- !u!114 &1692960760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1692960757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c46550d4ee172c4c8d577820d98e672, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grenadeMass: 30
-  throwForce: 10
-  throwDelay: 1.7
-  grenade: {fileID: 0}
-  molotof: {fileID: 0}
 --- !u!1 &1696994215
 GameObject:
   m_ObjectHideFlags: 0
@@ -23993,12 +23930,90 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed2b753036d9c463a94174a6ea7eb6ff, type: 3}
---- !u!4 &1776212300 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1760753424624753351, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
-    type: 3}
-  m_PrefabInstance: {fileID: 6389664524440020706}
+--- !u!1 &1776179780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1776179781}
+  - component: {fileID: 1776179782}
+  - component: {fileID: 1776179784}
+  - component: {fileID: 1776179783}
+  m_Layer: 3
+  m_Name: TestGrenadeSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1776179781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776179780}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.257, y: 1.758, z: 0.032}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8185602079025218364}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &1776179782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776179780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb453b2987190849be700a4a84923d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1344548190}
+  ground: {fileID: 1905787864}
+--- !u!114 &1776179783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776179780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c46550d4ee172c4c8d577820d98e672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadeMass: 5
+  throwForce: 10
+  throwDelay: 2.7
+  grenade: {fileID: 1110313022349748024, guid: c774da8728cfa62408d541525b2ca1b8, type: 3}
+  molotof: {fileID: 1110313022349748024, guid: c774da8728cfa62408d541525b2ca1b8, type: 3}
+--- !u!114 &1776179784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776179780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d9e7883ab948764786cc995884a2dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadeThrow: {fileID: 1776179783}
+  grenadeSpawnPoint: {fileID: 1776179781}
+  maxIncrements: 50
+  incrementSize: 0.025
+  rayOverlap: 1.1
+  trajectoryLine: {fileID: 0}
+  hitMarker: {fileID: 1993920724}
 --- !u!1001 &1777339686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29665,10 +29680,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1760753424624753351, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
+    - targetCorrespondingSourceObject: {fileID: 5053676421319549821, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1692960758}
+      addedObject: {fileID: 1776179781}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6cf7dee6ca0564878b3d8bd34897d0b9, type: 3}
 --- !u!1001 &7399465524171749671

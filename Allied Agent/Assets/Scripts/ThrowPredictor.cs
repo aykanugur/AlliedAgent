@@ -25,7 +25,7 @@ public class ThrowPredictor : MonoBehaviour
         direction = grenadeSpawnPoint.forward.normalized;
         if(trajectoryLine == null)
             trajectoryLine = GetComponent<LineRenderer>();
-        
+        SetTrajectoryVisible(false);
     }
 
     // Update is called once per frame
@@ -34,6 +34,11 @@ public class ThrowPredictor : MonoBehaviour
         if (Input.GetKey(KeyCode.G))
         {
             PredictTrajectory();
+            SetTrajectoryVisible(true);
+        }
+        else
+        {
+            SetTrajectoryVisible(false);
         }
         
     }
