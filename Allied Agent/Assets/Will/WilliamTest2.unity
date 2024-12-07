@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17053787, g: 0.16542515, b: 0.1600636, a: 1}
+  m_IndirectSpecularColor: {r: 0.17053331, g: 0.16542697, b: 0.1600613, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7355,7 +7355,7 @@ GameObject:
   - component: {fileID: 610695022}
   - component: {fileID: 610695021}
   - component: {fileID: 610695020}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Back
   m_TagString: DoNotDestroy
   m_Icon: {fileID: 0}
@@ -14714,7 +14714,7 @@ GameObject:
   - component: {fileID: 1114122510}
   - component: {fileID: 1114122509}
   - component: {fileID: 1114122508}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29599,6 +29599,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7745070046606660079, guid: 537dacdbb0be7412791243dcdd95b52c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29752,7 +29757,7 @@ PrefabInstance:
     - target: {fileID: 7963520801945593270, guid: eb83a5eebd18e44f7a3556063ffd6f83,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -309,7 +309,7 @@ public class PlayerController : MonoBehaviour
     private void GetInputsFunction()
     {
         PositionCorrector();
-        if (Input.GetKey(KeyCode.G)&& _hasGun && _aim == false && _reload == false && _crouch == false)
+        if (Input.GetKey(KeyCode.G)&& _hasGun && _reload == false && _crouch == false)
         {
             //grenade aim
             _grenadeAim = true;
@@ -319,7 +319,7 @@ public class PlayerController : MonoBehaviour
             _grenadeAim = false;
         }
 
-        if (Input.GetKeyUp(KeyCode.G)&& _hasGun && _aim == false && _reload == false && _crouch == false)
+        if (Input.GetKeyUp(KeyCode.G)&& _hasGun  && _reload == false && _crouch == false)
         {
             _grenade = true;
             _aim = false;
@@ -419,7 +419,14 @@ public class PlayerController : MonoBehaviour
     }
     private void CheckGunStatus()
     {
-        _rigBuilder.enabled = _aim; // if you aim, enable rigBuilder
+        if (_grenadeAim == false)
+        {
+            _rigBuilder.enabled = _aim;
+        }
+        else
+        {
+            _rigBuilder.enabled = false;
+        } // if you aim, enable rigBuilder
         if (Input.GetKeyDown(KeyCode.R)&& _aim== false && _jump == false&& ladderStart == false && _reload == false)
         {
            GunStatusChange();
@@ -577,7 +584,14 @@ public class PlayerController : MonoBehaviour
             _animator.SetLayerWeight(1,0);
         }
         _animator.SetBool(Crouch,_crouch);
-        _animator.SetBool(Aim,_aim);
+        if (_grenadeAim)
+        {
+            _animator.SetBool(Aim,false);
+        }
+        else
+        {
+            _animator.SetBool(Aim,_aim);
+        }
         _animator.SetFloat(Property1,_velocityX);
         _animator.SetFloat(Property2,_velocityZ);
         _animator.SetBool(HasGun,_hasGun);
@@ -684,7 +698,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask))
         {
 
-            if (raycastHit.transform.gameObject.layer == 6)
+            if (raycastHit.transform.gameObject.layer == 6 || raycastHit.transform.gameObject.layer == 7)
             {
                 GameObject hitObject = raycastHit.collider.gameObject;
                 if (_lastHitObject != hitObject)
@@ -705,9 +719,12 @@ public class PlayerController : MonoBehaviour
             }
 
             _target.transform.position = raycastHit.point;
-            var position = _target.transform.position;
-            position = new Vector3(position.x,position.y,raycastHit.transform.position.z );
-            _target.transform.position = position;
+            if ( raycastHit.transform.gameObject.layer == 6)
+            {
+                var position = _target.transform.position;
+                position = new Vector3(position.x,position.y,raycastHit.transform.position.z );
+                _target.transform.position = position;
+            }
             //code complex and not clear change it later :)
         }
     }
