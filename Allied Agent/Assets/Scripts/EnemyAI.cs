@@ -167,7 +167,6 @@ public class EnemyAI : MonoBehaviour
             if (distanceToCover > 0)
             {
                 //If we have a cover object which the gun can shoot go to there
-                Debug.Log("Cover");
                 agent.SetDestination(coverPos); //We can't use hasPath bcz player can shoot while moving
                 covering = true;
             }
