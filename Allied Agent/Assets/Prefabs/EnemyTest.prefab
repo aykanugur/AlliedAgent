@@ -145,11 +145,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 20
   maxSpeed: 30
-  actionDistance: 10
+  actionDistance: 6.54
   minDistance: 0.2
-  minCoverDistance: 3
   minSpeed: 2.6
-  range: 10
+  range: 5
+  gunRange: 3
 --- !u!54 &5186261990857674800
 Rigidbody:
   m_ObjectHideFlags: 0
