@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17053331, g: 0.16542697, b: 0.1600613, a: 1}
+  m_IndirectSpecularColor: {r: 0.17053787, g: 0.16542515, b: 0.1600636, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23958,7 +23958,7 @@ Transform:
   m_GameObject: {fileID: 1776179780}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.257, y: 1.758, z: 0.032}
+  m_LocalPosition: {x: 0.426, y: 2.18, z: 0.032}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23990,9 +23990,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c46550d4ee172c4c8d577820d98e672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grenadeMass: 5
+  grenadeMass: 1
   throwForce: 10
-  throwDelay: 2.7
+  throwDelay: 2
   grenade: {fileID: 1110313022349748024, guid: c774da8728cfa62408d541525b2ca1b8, type: 3}
   molotof: {fileID: 1110313022349748024, guid: c774da8728cfa62408d541525b2ca1b8, type: 3}
 --- !u!114 &1776179784
