@@ -44,6 +44,21 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        //Stop cover if player is too far away
+        double enemyDistance = Vector3.Distance(transform.position, player.transform.position);
+        if (enemyDistance > gunRange)
+        {
+            covering = false;
+        }
+        else if (!covering && damaging)
+        {
+            //Cover if not covering and player is shooting to us
+            Cover();
+            
+        }
+        
+        if(covering && agent.pathStatus == NavMeshPathStatus.PathComplete) //If we completed covering, look at player
+            transform.LookAt(player.transform.position);
         if (!covering)
         {
             //Enemy follows player
@@ -67,14 +82,7 @@ public class EnemyAI : MonoBehaviour
             
         }
 
-        //Stop cover if player is too far away
-        double enemyDistance = Vector3.Distance(transform.position, player.transform.position);
-        if (enemyDistance > gunRange)
-        {
-            covering = false;
-        }
-        else if (!covering && damaging) //Cover if not covering and player is shooting to us
-            Cover();
+
 
     }
 
@@ -102,8 +110,7 @@ public class EnemyAI : MonoBehaviour
                 agent.speed = agent.speed > maxSpeed ? maxSpeed : agent.speed + (0.001f * hitInfo.distance);
                 if (hitInfo.distance < minDistance)
                 {
-                    //Stop in a distance
-                    //TODO: Cover and shoot, following is still active
+                    //TODO: Stop 
                 }
 
                 
@@ -140,10 +147,9 @@ public class EnemyAI : MonoBehaviour
     //TODO: Cover and shoot
     void Cover()
     {
-        
         if (!covering)
         {
-            Debug.Log("Cover");
+
 
             double distanceToCover = -1;
             Vector3 coverPos = Vector3.zero;
@@ -164,6 +170,7 @@ public class EnemyAI : MonoBehaviour
             if (distanceToCover > 0)
             {
                 //If we have a cover object which the gun can shoot go to there
+                Debug.Log("Cover");
                 agent.SetDestination(coverPos);
                 covering = true;
             }
