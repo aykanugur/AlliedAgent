@@ -20,13 +20,9 @@ public class GrenadeSpawnRotator : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (Input.GetButton("Fire2") && Input.GetKey(KeyCode.G))
-        {
-            RotateToTarget();
-            RotateToThrowAngle();
-        }
+        RotateToThrowAngle();
     }
 
     private void RotateToThrowAngle()
@@ -52,16 +48,13 @@ public class GrenadeSpawnRotator : MonoBehaviour
             
             float teta = Mathf.Rad2Deg * Mathf.Atan(x / h);
             angle = (Mathf.Rad2Deg * Mathf.Acos(firstEquationResult) + teta) / 2;
+            if (angle < 0)
+            {
+                angle += 90;
+            }
         }
         
         
-        transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, angle);
-    }
-
-    private void RotateToTarget()
-    {
-        Vector3 direction = targetTransform.position - transform.position;
-        direction.Normalize();
-        transform.rotation = Quaternion.Euler(transform.rotation.x, direction.y, transform.rotation.z);
+        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, angle);
     }
 }

@@ -52,7 +52,7 @@ public class GrenadeThrow : MonoBehaviour
             grenadeInUse = grenade;
         }
         GameObject currentGrenade = Instantiate(grenadeInUse, transform.position, Quaternion.identity);
-        currentGrenade.GetComponent<Rigidbody>().AddForce(transform.forward.normalized * throwForce, ForceMode.Impulse);
+        currentGrenade.GetComponent<Rigidbody>().AddForce(transform.right.normalized * throwForce, ForceMode.Impulse);
         currentGrenade.GetComponent<Rigidbody>().mass = grenadeMass;
     }
 }
