@@ -103,5 +103,13 @@ public class Gun : MonoBehaviour
         tracerCount = tracerInterval;
         _playerController.StartReload();
     }
+
+    public float GetRange()
+    {
+        float v = shootForce / projectileMass;
+        float sin2Teta = Mathf.Sin(90 * Mathf.Deg2Rad);
+        
+        return (v * v * sin2Teta) / Mathf.Abs(Physics.gravity.y);
+    }
     
 }
