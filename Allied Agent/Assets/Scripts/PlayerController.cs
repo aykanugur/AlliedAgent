@@ -13,12 +13,10 @@ public class PlayerController : MonoBehaviour
     private bool _grenadeAim;
     private RigBuilder _rigBuilder; 
     private Rigidbody _rb; // rb
-    private GameObject _target,_ladderObject,_crossHair,_magazine; // gameObject
+    private GameObject _target,_crossHair,_magazine; // gameObject
     private Transform _coverTransform,_coverSide,_nearEnemyTransform;
     public GameObject currentGun;
     private Camera _mainCamera; // camera
-    public bool ladderEnd;
-    public bool ladder, ladderStart;
     private BoxCollider _boxCollider;
     private CapsuleCollider _capsuleCollider;
     private static readonly int Crouch = Animator.StringToHash("crouch");
@@ -41,6 +39,9 @@ public class PlayerController : MonoBehaviour
     public GameObject tutor;
     private static readonly int StopReload1 = Animator.StringToHash("StopReload");
     [SerializeField] private GrenadeThrow _grenadeThrow;
+    private bool _coverTime,_ladderDown,_ladderUp;
+    private GameObject _ladderDownObject, _ladderUpObject;
+    public GameObject freeCamera;
 
     
     public bool GetCrouch()
@@ -170,16 +171,13 @@ public class PlayerController : MonoBehaviour
             _target.SetActive(true);
             _crossHair.SetActive(true);
             Cross();
-            if (_lastHitObject != null)
-            {
-                _lastHitObject.GetComponent<Renderer>().material.color = Color.red;
-            }
+            
         }
         else
         {
             _target.SetActive(false);
             _crossHair.SetActive(false);
-            ResetLastObjectColor();
+            
         }
     }
 
@@ -192,13 +190,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    private void ChangeLadderStatus(bool status)
-    {
-        ladderStart = !status;
-        _rb.useGravity = status;
-        _capsuleCollider.enabled = status;
-        _boxCollider.enabled = !status;
-    }
+    
     
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -225,31 +217,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     // ReSharper disable Unity.PerformanceAnalysis
-    private void CheckLadderStatus()
-    {
-        if (ladderStart)
-        {
-            ChangeLadderStatus(true);
-            //relase
-        }
-        else
-        {
-            ChangeLadderStatus(false);
-            //grab
-            var transform1 = transform;
-            transform1.eulerAngles = new Vector3(0,-90,0);
-            var position = _ladderObject.transform.position;
-            transform1.position = new Vector3(position.x + 0.5f, transform1.position.y, position.z);
-            _aim = false;
-            _hasGun = false;
-           ChangeGunPartsStatus();
-
-            if (ladderEnd == false)
-            {
-                transform.position = _ladderObject.transform.Find("ladderStartDown").transform.position;
-            }
-        }
-    }
+    
 
     private void Knife()
     {
@@ -298,10 +266,26 @@ public class PlayerController : MonoBehaviour
 
     private void PositionCorrector()
     {
-        if (Input.GetKeyUp(KeyCode.G) && _hasGun == false)
+        if (Input.GetKeyUp(KeyCode.G))
         {
-           GunStatusChange();
+           if(_hasGun == false) GunStatusChange();
            if(_crouch) ChangeCrouchStatus();
+        }
+
+        if (Input.GetMouseButton(1) && _hasGun == false)
+        {
+            GunStatusChange();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if(_hasGun) GunStatusChange();
+            if(_crouch) ChangeCrouchStatus();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && _reload == false && _crouch == false)
+        {
+            if(_hasGun) GunStatusChange();
         }
         
     }
@@ -355,6 +339,9 @@ public class PlayerController : MonoBehaviour
                 if (_coverDetected)
                 {
                     transform.position = _coverSide.position;
+                    _coverTime = true;
+                    _coverDetected = false;
+                    _coverTransform.GetComponent<CoverTriggerArea>().ActiveOrDeactiveText(false);
                     if (!_hasGun)
                     {
                         GunStatusChange();
@@ -367,10 +354,8 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    if (ladder)
-                    {
-                        CheckLadderStatus();
-                    }
+                    if (_ladderDown) transform.position = _ladderUpObject.transform.position;
+                    if (_ladderUp) transform.position = _ladderDownObject.transform.position;
                 }
             }
         }
@@ -398,7 +383,7 @@ public class PlayerController : MonoBehaviour
             _right = Input.GetKey(KeyCode.D);
         }
 
-        if (_crouch == false && _jump == false && _hasGun == false&& ladderStart == false) // run 
+        if (_crouch == false && _jump == false && _hasGun == false) // run 
         {
             _run = Input.GetKey(KeyCode.LeftShift);
         } else {
@@ -408,7 +393,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckCrouch()
     {
-        if (Input.GetKeyDown(KeyCode.C)&& _jump == false&& ladderStart == false && _reload == false) // crouch 
+        if (Input.GetKeyDown(KeyCode.C)&& _jump == false && _reload == false) // crouch 
         {
             ChangeCrouchStatus();
         }
@@ -427,7 +412,7 @@ public class PlayerController : MonoBehaviour
         {
             _rigBuilder.enabled = false;
         } // if you aim, enable rigBuilder
-        if (Input.GetKeyDown(KeyCode.R)&& _aim== false && _jump == false&& ladderStart == false && _reload == false)
+        if (Input.GetKeyDown(KeyCode.R)&& _aim== false && _jump == false && _reload == false)
         {
            GunStatusChange();
         }
@@ -448,7 +433,7 @@ public class PlayerController : MonoBehaviour
 
     private void JumpFunction()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !_hasGun && !_crouch && !_doubleJump && ladderStart == false)
+        if (Input.GetKeyDown(KeyCode.Space) && !_hasGun && !_crouch && !_doubleJump )
         {
             if (_jump)
             {
@@ -471,7 +456,7 @@ public class PlayerController : MonoBehaviour
 
     private void AddJumpForce()
     {
-        _rb.AddForce(Vector3.up * 300);
+        _rb.AddForce(Vector3.up * 150);
     }
     private void animation_movement()
     {
@@ -536,8 +521,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if (ladderStart==false)
-            {
+            
                 float speedValue;
                 if (_aim)
                 {
@@ -556,19 +540,8 @@ public class PlayerController : MonoBehaviour
                 var transform1 = transform;
                 var movement = transform1.forward * _velocityZ;
                 _rb.MovePosition(transform1.position + movement*speedValue);
-            }
-            else
-            {
-                var movement = new Vector3(0, _velocityZ, 0);
-                _rb.MovePosition(transform.position + movement * 0.05f);
-                if (_velocityZ < 0 && ladderEnd)
-                {
-                    ladderStart = false;
-                    _rb.useGravity = true;
-                    _capsuleCollider.enabled = true;
-                    _boxCollider.enabled = false;
-                }
-            }
+            
+           
 
             SendVarToAnimator();
     }
@@ -596,12 +569,12 @@ public class PlayerController : MonoBehaviour
         _animator.SetFloat(Property2,_velocityZ);
         _animator.SetBool(HasGun,_hasGun);
         _animator.SetBool(Jump,_jump);
-        _animator.SetBool(Ladder,ladderStart);
+        
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("ground"))
+        if (other.gameObject.CompareTag("ground") || other.gameObject.CompareTag("cover"))
         {
             StartCoroutine(WaitAfterTouchedGround());
         }
@@ -613,27 +586,28 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("ladder"))
         {
-            ladder = true;
-            _ladderObject = other.gameObject;
+            _ladderDownObject = other.transform.GetChild(0).gameObject;
+            _ladderUpObject = other.transform.GetChild(1).gameObject;
+            other.GetComponent<CoverTriggerArea>().ActiveOrDeactiveText(true);
         }
-        if (other.gameObject.CompareTag("ladderEnd")&& ladderStart)
+        if (other.gameObject.CompareTag("Ladder_Up"))
         {
-            ladderStart = false;
-            StartCoroutine(WaitBeforeSetGravityTrue());
-            _capsuleCollider.enabled = true;
-            _boxCollider.enabled = false;
-            transform.position = other.gameObject.transform.position;
+            _ladderUp = true;
         }
-
         if (other.gameObject.CompareTag("ladderDown"))
         {
-            ladderEnd = true;
+            _ladderDown = true;
         }
-
+        if (other.gameObject.CompareTag("CameraDontMoveZone"))
+        {
+            freeCamera.GetComponent<Camerafollow>().cameraDontMove = true;   
+        }
+        
         if (other.gameObject.CompareTag("cover"))
         {
             _coverDetected = true;
             _coverTransform = other.transform;
+            other.gameObject.GetComponent<CoverTriggerArea>().ActiveOrDeactiveText(true);
         }
 
         if (other.gameObject.CompareTag("Enemy"))
@@ -657,33 +631,37 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("ladder"))
+        if (other.gameObject.CompareTag("CameraDontMoveZone"))
         {
-            ladder = false;
-            ladderStart = false;
-            StartCoroutine(WaitBeforeSetGravityTrue());
+            freeCamera.GetComponent<Camerafollow>().cameraDontMove = false;   
         }
-        if (other.gameObject.CompareTag("ladderDown"))
-        {
-            ladderEnd = false;
-        }
-
         if (other.gameObject.CompareTag("cover"))
         {
             _coverDetected = false;
+            other.GetComponent<CoverTriggerArea>().ActiveOrDeactiveText(false);
         }
         if (other.gameObject.CompareTag("Enemy"))
         {
             _nearEnemy = false;
             _nearEnemyTransform = null;
         }
+        if (other.gameObject.CompareTag("Ladder_Up"))
+        {
+            _ladderUp = false;
+        }
+        if (other.gameObject.CompareTag("ladderDown"))
+        {
+            _ladderDown = false;
+        }
+        if (other.gameObject.CompareTag("ladder"))
+        {
+            _ladderDownObject = null;
+            _ladderUpObject = null;
+            other.GetComponent<CoverTriggerArea>().ActiveOrDeactiveText(false);
+        }
     }
 
-    IEnumerator WaitBeforeSetGravityTrue()
-    {
-        yield return new WaitForSeconds(0.1f);
-        _rb.useGravity = true;
-    }
+    
 
     IEnumerator WaitAfterTouchedGround()
     {
@@ -697,35 +675,14 @@ public class PlayerController : MonoBehaviour
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask))
         {
-
+            _target.transform.position = raycastHit.point;
             if (raycastHit.transform.gameObject.layer == 6 || raycastHit.transform.gameObject.layer == 7)
             {
-                GameObject hitObject = raycastHit.collider.gameObject;
-                if (_lastHitObject != hitObject)
-                {
-                    ResetLastObjectColor(); 
-
-            
-                    _lastHitObject = hitObject;
-                    Renderer rendererLocal = hitObject.GetComponent<Renderer>();
-
-                    if (rendererLocal != null)
-                    {
-                        var material = rendererLocal.material;
-                        _originalColor = material.color; 
-                        material.color = Color.red; 
-                    }
-                }
-            }
-
-            _target.transform.position = raycastHit.point;
-            if ( raycastHit.transform.gameObject.layer == 6)
-            {
                 var position = _target.transform.position;
-                position = new Vector3(position.x,position.y,raycastHit.transform.position.z );
+                position = new Vector3(raycastHit.transform.position.x,position.y,raycastHit.transform.position.z );
                 _target.transform.position = position;
             }
-            //code complex and not clear change it later :)
+            currentGun.transform.GetChild(4).transform.LookAt(_target.transform);
         }
     }
     public void StartReload()
@@ -756,20 +713,7 @@ public class PlayerController : MonoBehaviour
     {
         return _reload;
     }
-    private void ResetLastObjectColor()
-    {
-        if (_lastHitObject != null)
-        {
-            Renderer rendererLocal = _lastHitObject.GetComponent<Renderer>();
-
-            if (rendererLocal != null)
-            {
-                rendererLocal.material.color = _originalColor; // Eski rengi geri yükle
-            }
-            
-        }
-        _lastHitObject = null;
-    }
+    
 
     public void SetAim(bool set)
     {

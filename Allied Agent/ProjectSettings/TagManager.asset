@@ -19,6 +19,9 @@ TagManager:
   - FxTemporaire
   - coverSide
   - checkPoint
+  - FlashBang
+  - CameraDontMoveZone
+  - Ladder_Up
   layers:
   - Default
   - TransparentFX

@@ -103,6 +103,7 @@ MonoBehaviour:
   trail: {fileID: 833534580854196268}
   tracerTimeout: 1.232
   blood: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
+  hp: 10
 --- !u!136 &497023973541082698
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -150,9 +151,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!1 &2926513597283506796
 GameObject:
   m_ObjectHideFlags: 0

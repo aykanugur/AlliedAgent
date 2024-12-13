@@ -2380,8 +2380,8 @@ Transform:
   - {fileID: 8708112188520481445}
   - {fileID: 4720209224541114349}
   - {fileID: 5331241629417777556}
-  - {fileID: 9067701450686015535}
   - {fileID: 6907403947920371448}
+  - {fileID: 9067701450686015535}
   - {fileID: 5104916896133414112}
   m_Father: {fileID: 1760753424624753351}
   m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
@@ -20018,6 +20018,90 @@ Transform:
   - {fileID: 4604178779169194680}
   m_Father: {fileID: 4380581725161258483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6850382800812773573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5105581132844809033}
+  - component: {fileID: 3996278792040410736}
+  - component: {fileID: 5611531386516814870}
+  - component: {fileID: 87525137742692510}
+  m_Layer: 3
+  m_Name: TestGrenadeSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5105581132844809033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850382800812773573}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.426, y: 2.18, z: 0.032}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5053676421319549821}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &3996278792040410736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850382800812773573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb453b2987190849be700a4a84923d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  ground: {fileID: 0}
+--- !u!114 &5611531386516814870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850382800812773573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d9e7883ab948764786cc995884a2dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadeThrow: {fileID: 87525137742692510}
+  grenadeSpawnPoint: {fileID: 5105581132844809033}
+  maxIncrements: 50
+  incrementSize: 0.025
+  rayOverlap: 1.1
+  trajectoryLine: {fileID: 0}
+  hitMarker: {fileID: 0}
+--- !u!114 &87525137742692510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850382800812773573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c46550d4ee172c4c8d577820d98e672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadeMass: 1
+  throwForce: 10
+  throwDelay: 2
+  grenade: {fileID: 1110313022349748024, guid: c774da8728cfa62408d541525b2ca1b8, type: 3}
+  molotof: {fileID: 1110313022349748024, guid: c774da8728cfa62408d541525b2ca1b8, type: 3}
 --- !u!1 &6882416834504987956
 GameObject:
   m_ObjectHideFlags: 0
@@ -25876,6 +25960,7 @@ Transform:
   - {fileID: 801960154226993613}
   - {fileID: 2345617994899335709}
   - {fileID: 4126397309594376041}
+  - {fileID: 5105581132844809033}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &645189714103906388
@@ -25915,9 +26000,6 @@ MonoBehaviour:
   - {fileID: 8639208406025643914}
   - {fileID: 8172873772604778860}
   currentGun: {fileID: 4384383091093713195}
-  ladderEnd: 0
-  ladder: 0
-  ladderStart: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 65
@@ -25937,6 +26019,7 @@ MonoBehaviour:
   childMagazine: {fileID: 0}
   tutor: {fileID: 0}
   _grenadeThrow: {fileID: 0}
+  freeCamera: {fileID: 0}
 --- !u!54 &5580269436160308246
 Rigidbody:
   m_ObjectHideFlags: 0
