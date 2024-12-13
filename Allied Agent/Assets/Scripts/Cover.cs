@@ -6,6 +6,7 @@ using UnityEngine;
 public class Cover : MonoBehaviour
 {
     public int hp = 100;
+   
 
 
     public void CheckHp()
@@ -18,6 +19,7 @@ public class Cover : MonoBehaviour
             {
                 Transform child = transform.GetChild(i);
                 if(child.CompareTag("coverSide"))continue;
+                if(child.name == "Canvas") continue;
                 if (child.name == "CoverTriggerArea")
                 {
                     Destroy(child.gameObject);
@@ -30,4 +32,7 @@ public class Cover : MonoBehaviour
             
         }
     }
+
+    
+    
 }

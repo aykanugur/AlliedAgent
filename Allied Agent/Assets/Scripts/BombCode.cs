@@ -9,8 +9,11 @@ public class BombCode : MonoBehaviour
     
     private void OnCollisionEnter(Collision other)
     {
-        if (!other.gameObject.CompareTag("ground")) return;
-        Instantiate(bombFire, transform.position, bombFire.transform.rotation);
-        GetComponent<Rigidbody>().isKinematic = true;
+        if (other.gameObject.CompareTag("ground"))
+        {
+            Instantiate(bombFire, transform.position, bombFire.transform.rotation);
+            GetComponent<Rigidbody>().isKinematic = true;
+            Destroy(this.gameObject);
+        }
     }
 }

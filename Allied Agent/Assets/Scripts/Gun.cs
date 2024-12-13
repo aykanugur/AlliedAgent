@@ -1,4 +1,5 @@
 using System.Collections;
+using EZCameraShake;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
@@ -19,6 +20,7 @@ public class Gun : MonoBehaviour
     public int currentCapacity;
     private int tracerCount = 0;
     private PlayerController _playerController;
+    public float magn, rough, fadeIn, fadeOut;
     
     public GameObject bullet;
     public Transform bulletSpawnPoint;
@@ -71,6 +73,7 @@ public class Gun : MonoBehaviour
 
     private void Shoot()
     {
+        CameraShaker.Instance.ShakeOnce(magn, rough, fadeIn, fadeOut); // camera shake val
         _audioSource.clip = _audioClips[0];
         _audioSource.Play();
         currentCapacity--;

@@ -11,6 +11,7 @@ public class BulletCollision : MonoBehaviour
     public GameObject blood;
     private Rigidbody rb;
     private Transform tf;
+    public int hp;
     
     // Start is called before the first frame update
     void Start()
@@ -38,10 +39,12 @@ public class BulletCollision : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Enemy":
-                GameObject child = Instantiate(blood, other.transform, true);
+                Debug.Log("enemy hit");
+                GameObject child = Instantiate(blood, other.transform);
                 var transform1 = transform;
-                child.transform.position = transform1.position;
+                child.transform.position = new Vector3(other.transform.position.x,transform1.position.y,transform1.position.z);
                 child.transform.eulerAngles = transform1.eulerAngles;
+                other.gameObject.GetComponent<EnemyAnimations>().hp -= hp; 
                 Destroy(this.gameObject);
                 break;
             
@@ -52,7 +55,7 @@ public class BulletCollision : MonoBehaviour
             case  "cover":
                 if (other.gameObject.GetComponent<Cover>() != null)
                 {
-                    other.gameObject.GetComponent<Cover>().hp = other.gameObject.GetComponent<Cover>().hp - 10;
+                    other.gameObject.GetComponent<Cover>().hp = other.gameObject.GetComponent<Cover>().hp - hp;
                     other.GetComponent<Cover>().CheckHp();
                     Destroy(this.gameObject);
                 }
