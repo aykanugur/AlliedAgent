@@ -15,6 +15,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float range = 10; //Range to patrol
     [SerializeField] private double gunRange = 10;
 
+    [SerializeField] private CapsuleCollider coverCollider;
+    [SerializeField] private CapsuleCollider normalCollider;
+
     
     
     private NavMeshAgent agent;
@@ -26,14 +29,17 @@ public class EnemyAI : MonoBehaviour
     private bool following; //is enemy following the player
     private bool covering = true;
     
-    private bool damaging; //If player shooting to us
+    [SerializeField] private bool damaging; //If player shooting to us
 
     private GameObject player;
     private GameObject[] coverPlaces;
+
+    private EnemyAnimations animations;
     
     // Start is called before the first frame update
     void Start()
     {
+        animations = GetComponent<EnemyAnimations>();
         coverPlaces = GameObject.FindGameObjectsWithTag("cover");
         agent = transform.gameObject.GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -46,6 +52,10 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (agent.isStopped)
+        {
+            agent.isStopped = false;
+        }
         //Stop cover if player is too far away
         double enemyDistance = Vector3.Distance(transform.position, player.transform.position);
         if (enemyDistance > gunRange)
@@ -63,6 +73,7 @@ public class EnemyAI : MonoBehaviour
             transform.LookAt(player.transform.position);
         if (!covering)
         {
+            
             //Enemy follows player
             RaycastHit hitInfo;
 
@@ -72,6 +83,7 @@ public class EnemyAI : MonoBehaviour
             if (hit)
             {
                 MoveToPlayer(hitInfo);
+                
             }
             else
             {
@@ -82,6 +94,10 @@ public class EnemyAI : MonoBehaviour
                 Patrol();
 
             
+        }
+        else
+        {
+            DisableCoverCollider();
         }
 
 
@@ -94,7 +110,6 @@ public class EnemyAI : MonoBehaviour
         {
             following = true; //States: following / covering
 
-            
             transform.LookAt(hitInfo.transform.gameObject.transform.position); //Look to the player
             
 
@@ -112,7 +127,7 @@ public class EnemyAI : MonoBehaviour
                 agent.speed = agent.speed > maxSpeed ? maxSpeed : agent.speed + (0.001f * hitInfo.distance);
                 if (hitInfo.distance < minDistance)
                 {
-                    //TODO: Stop for collision
+                    agent.isStopped = true;
                 }
 
                 
@@ -122,6 +137,7 @@ public class EnemyAI : MonoBehaviour
                 agent.speed = minSpeed;
             }
                 agent.destination = hitInfo.transform.gameObject.transform.position; //Follow player every frame
+            
         }
         else
         {
@@ -144,10 +160,9 @@ public class EnemyAI : MonoBehaviour
     //TODO: Cover and shoot
     void Cover()
     {
+        
         if (!covering)
         {
-
-
             double distanceToCover = -1;
             Vector3 coverPos = Vector3.zero;
 
@@ -170,10 +185,11 @@ public class EnemyAI : MonoBehaviour
                 agent.SetDestination(coverPos); //We can't use hasPath bcz player can shoot while moving
                 covering = true;
             }
+
+            normalCollider.enabled = false;
+            coverCollider.enabled = true; 
+            animations.Cover(true);
         }
-
-
-
     }
 
   
@@ -187,6 +203,7 @@ public class EnemyAI : MonoBehaviour
                 NavMeshHit hit;
                 NavMesh.SamplePosition(randomDirection, out hit, range, 1);
                 patrolDest = hit.position;
+                
                 agent.SetDestination(patrolDest);
 
         }
@@ -196,6 +213,15 @@ public class EnemyAI : MonoBehaviour
     void SetDamaging(bool damaging)
     {
         this.damaging = damaging;
+    }
+
+    void DisableCoverCollider()
+    {
+        if (coverCollider.enabled)
+        {
+            coverCollider.enabled = false;
+            normalCollider.enabled = true;
+        }
     }
     
     private void OnTriggerEnter(Collider other)

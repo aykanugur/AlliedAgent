@@ -29957,12 +29957,17 @@ PrefabInstance:
     - target: {fileID: 1778974060139260398, guid: 6eca62478f1b198459f22025b8b60109,
         type: 3}
       propertyPath: range
-      value: 4.89
+      value: 4.79
       objectReference: {fileID: 0}
     - target: {fileID: 1778974060139260398, guid: 6eca62478f1b198459f22025b8b60109,
         type: 3}
       propertyPath: damaging
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778974060139260398, guid: 6eca62478f1b198459f22025b8b60109,
+        type: 3}
+      propertyPath: gunRange
+      value: 3.48
       objectReference: {fileID: 0}
     - target: {fileID: 6815047222962103658, guid: 6eca62478f1b198459f22025b8b60109,
         type: 3}
