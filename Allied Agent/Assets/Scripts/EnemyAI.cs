@@ -56,6 +56,7 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        //TODO: automatize Shooting=false
         if (agent.isStopped)
         {
             agent.isStopped = false;
@@ -79,6 +80,12 @@ public class EnemyAI : MonoBehaviour
             transform.LookAt(player.transform.position);
         if (!covering)
         {
+            if (agent.hasPath && !shooting)
+            {
+                animations.ChangeMovement(agent.speed);
+                Debug.Log("Moving");
+            }
+            
             DisableCoverCollider();
             
             //Enemy follows player
@@ -103,10 +110,7 @@ public class EnemyAI : MonoBehaviour
             
         }
 
-        if (agent.hasPath && !covering && !shooting)
-        {
-            animations.ChangeMovement(agent.speed);
-        }
+        
             
 
 
@@ -150,6 +154,7 @@ public class EnemyAI : MonoBehaviour
             else
             {
                 agent.speed = minSpeed;
+                shooting = false;
             }
                 agent.destination = hitInfo.transform.gameObject.transform.position; //Follow player every frame
             
@@ -165,6 +170,7 @@ public class EnemyAI : MonoBehaviour
     //Return to the home
     void StopFollow()
     {
+        shooting = false;
         if(!agent.hasPath)
             agent.SetDestination(oldPosition);
         following = false;
@@ -214,6 +220,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (!following && !agent.hasPath && !covering) //If enemy currently does not moving, make a patrol
         {
+            shooting = false;
                 Vector3 randomDirection = Random.insideUnitSphere * range;
                 randomDirection += transform.position;
                 NavMeshHit hit;
