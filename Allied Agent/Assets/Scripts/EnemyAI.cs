@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -10,7 +9,6 @@ public class EnemyAI : MonoBehaviour
     public float maxSpeed = 30;
     public float actionDistance = 10;
    
-    [SerializeField] private float minDistance = 1f; //Stop distance
     [SerializeField] private float minSpeed = 2.6f;
     [SerializeField] private float range = 7; //Range to patrol
     [SerializeField] private double gunRange = 2;
@@ -28,6 +26,7 @@ public class EnemyAI : MonoBehaviour
     
     private bool following; //is enemy following the player
     private bool covering = true;
+    private bool shooting;
     
     [SerializeField] private bool damaging; //If player shooting to us
 
@@ -47,7 +46,7 @@ public class EnemyAI : MonoBehaviour
         
         coverPlaces = GameObject.FindGameObjectsWithTag("cover");
         agent = transform.gameObject.GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player"); //Our okayer
+        player = GameObject.FindGameObjectWithTag("Player"); //Our player
         following = false; //Enemy is following player
         damaging = false; //Player is shooting to us
         covering = false;
@@ -72,6 +71,7 @@ public class EnemyAI : MonoBehaviour
         {
             //Cover if not covering and player is shooting to us
             Cover();
+            //TODO: Stop covering and shoot in intervals
             
         }
         
@@ -103,9 +103,9 @@ public class EnemyAI : MonoBehaviour
             
         }
 
-        if (agent.hasPath && !covering)
+        if (agent.hasPath && !covering && !shooting)
         {
-            //Movement animation
+            animations.ChangeMovement(agent.speed);
         }
             
 
@@ -134,10 +134,15 @@ public class EnemyAI : MonoBehaviour
             if(hitInfo.distance < actionDistance)
             {
                 agent.speed = agent.speed > maxSpeed ? maxSpeed : agent.speed + (0.001f * hitInfo.distance);
-                if (hitInfo.distance < minDistance)
+                if (hitInfo.distance < gunRange) //Stop and shoot in gunRange
                 {
                     transform.LookAt(player.transform);
                     agent.isStopped = true;
+                    Shoot();
+                }
+                else
+                {
+                    shooting = false;
                 }
 
                 
@@ -166,8 +171,7 @@ public class EnemyAI : MonoBehaviour
         
 
     }
-
-    //TODO: Cover and shoot
+    
     void Cover()
     {
         
@@ -176,7 +180,7 @@ public class EnemyAI : MonoBehaviour
             double distanceToCover = -1;
             Vector3 coverPos = Vector3.zero;
 
-            //Look for suitiable places to shoot
+            //Look for suitable places to shoot
             foreach (GameObject place in coverPlaces)
             {
                 double temp = Vector3.Distance(player.transform.position, place.transform.position);
@@ -188,10 +192,10 @@ public class EnemyAI : MonoBehaviour
                 }
             }
 
-            //If found a place, go to there
+            //If found a place, go there
             if (distanceToCover > 0)
             {
-                //If we have a cover object which the gun can shoot go to there
+                //If we have a cover object which the gun can shoot go there
                 agent.SetDestination(coverPos); //We can't use hasPath bcz player can shoot while moving
                 covering = true;
                 normalCollider.enabled = false;
@@ -220,6 +224,22 @@ public class EnemyAI : MonoBehaviour
 
         }
         
+    }
+
+    void Shoot()
+    {
+        if (!shooting)
+        {
+            //Place animation here Aykan if singular
+            shooting = true;
+            Debug.Log("Shooting");
+            animations.Aim(true);
+           
+        }
+        //Place animation here Aykan if in every frame
+        
+
+
     }
     
     void SetDamaging(bool damaging)
