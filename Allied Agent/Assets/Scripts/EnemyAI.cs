@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -10,10 +9,12 @@ public class EnemyAI : MonoBehaviour
     public float maxSpeed = 30;
     public float actionDistance = 10;
    
-    [SerializeField] private float minDistance = 0.2f; //Stop distance
     [SerializeField] private float minSpeed = 2.6f;
-    [SerializeField] private float range = 10; //Range to patrol
-    [SerializeField] private double gunRange = 10;
+    [SerializeField] private float range = 7; //Range to patrol
+    [SerializeField] private double gunRange = 2;
+
+    [SerializeField] private CapsuleCollider coverCollider; //Collider active in cover
+    [SerializeField] private CapsuleCollider normalCollider; //Collider active normal
 
     
     
@@ -25,19 +26,28 @@ public class EnemyAI : MonoBehaviour
     
     private bool following; //is enemy following the player
     private bool covering = true;
+    private bool shooting;
     
-    private bool damaging; //If player shooting to us
+    [SerializeField] private bool damaging; //If player shooting to us
 
     private GameObject player;
     private GameObject[] coverPlaces;
+
+    private EnemyAnimations animations; //Enemy animations script
+    private EnemyGun gun;
     
     // Start is called before the first frame update
     void Start()
     {
+        animations = GetComponent<EnemyAnimations>();
+        gun = GetComponentInChildren<EnemyGun>();
+        if (gun.GetRange() > 0.1) //Set gun range
+            gunRange = gun.GetRange();
+        
         coverPlaces = GameObject.FindGameObjectsWithTag("cover");
         agent = transform.gameObject.GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player");
-        following = false;
+        player = GameObject.FindGameObjectWithTag("Player"); //Our player
+        following = false; //Enemy is following player
         damaging = false; //Player is shooting to us
         covering = false;
         oldPosition = transform.position; //Spawn position
@@ -46,6 +56,12 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        //TODO: automatize Shooting=false
+        if (agent.isStopped)
+        {
+            agent.isStopped = false;
+        }
+        
         //Stop cover if player is too far away
         double enemyDistance = Vector3.Distance(transform.position, player.transform.position);
         if (enemyDistance > gunRange)
@@ -56,6 +72,7 @@ public class EnemyAI : MonoBehaviour
         {
             //Cover if not covering and player is shooting to us
             Cover();
+            //TODO: Stop covering and shoot in intervals
             
         }
         
@@ -63,6 +80,14 @@ public class EnemyAI : MonoBehaviour
             transform.LookAt(player.transform.position);
         if (!covering)
         {
+            if (agent.hasPath && !shooting)
+            {
+                animations.ChangeMovement(agent.speed);
+                Debug.Log("Moving");
+            }
+            
+            DisableCoverCollider();
+            
             //Enemy follows player
             RaycastHit hitInfo;
 
@@ -72,6 +97,7 @@ public class EnemyAI : MonoBehaviour
             if (hit)
             {
                 MoveToPlayer(hitInfo);
+                
             }
             else
             {
@@ -84,6 +110,9 @@ public class EnemyAI : MonoBehaviour
             
         }
 
+        
+            
+
 
 
     }
@@ -94,7 +123,6 @@ public class EnemyAI : MonoBehaviour
         {
             following = true; //States: following / covering
 
-            
             transform.LookAt(hitInfo.transform.gameObject.transform.position); //Look to the player
             
 
@@ -110,9 +138,15 @@ public class EnemyAI : MonoBehaviour
             if(hitInfo.distance < actionDistance)
             {
                 agent.speed = agent.speed > maxSpeed ? maxSpeed : agent.speed + (0.001f * hitInfo.distance);
-                if (hitInfo.distance < minDistance)
+                if (hitInfo.distance < gunRange) //Stop and shoot in gunRange
                 {
-                    //TODO: Stop for collision
+                    transform.LookAt(player.transform);
+                    agent.isStopped = true;
+                    Shoot();
+                }
+                else
+                {
+                    shooting = false;
                 }
 
                 
@@ -120,8 +154,10 @@ public class EnemyAI : MonoBehaviour
             else
             {
                 agent.speed = minSpeed;
+                shooting = false;
             }
                 agent.destination = hitInfo.transform.gameObject.transform.position; //Follow player every frame
+            
         }
         else
         {
@@ -134,24 +170,23 @@ public class EnemyAI : MonoBehaviour
     //Return to the home
     void StopFollow()
     {
+        shooting = false;
         if(!agent.hasPath)
             agent.SetDestination(oldPosition);
         following = false;
         
 
     }
-
-    //TODO: Cover and shoot
+    
     void Cover()
     {
+        
         if (!covering)
         {
-
-
             double distanceToCover = -1;
             Vector3 coverPos = Vector3.zero;
 
-            //Look for suitiable places to shoot
+            //Look for suitable places to shoot
             foreach (GameObject place in coverPlaces)
             {
                 double temp = Vector3.Distance(player.transform.position, place.transform.position);
@@ -163,17 +198,20 @@ public class EnemyAI : MonoBehaviour
                 }
             }
 
-            //If found a place, go to there
+            //If found a place, go there
             if (distanceToCover > 0)
             {
-                //If we have a cover object which the gun can shoot go to there
+                //If we have a cover object which the gun can shoot go there
                 agent.SetDestination(coverPos); //We can't use hasPath bcz player can shoot while moving
                 covering = true;
+                normalCollider.enabled = false;
+                coverCollider.enabled = true; 
+                //Cover animation
+                animations.Cover(true);
             }
+            
+            
         }
-
-
-
     }
 
   
@@ -182,20 +220,48 @@ public class EnemyAI : MonoBehaviour
     {
         if (!following && !agent.hasPath && !covering) //If enemy currently does not moving, make a patrol
         {
+            shooting = false;
                 Vector3 randomDirection = Random.insideUnitSphere * range;
                 randomDirection += transform.position;
                 NavMeshHit hit;
                 NavMesh.SamplePosition(randomDirection, out hit, range, 1);
                 patrolDest = hit.position;
+                
                 agent.SetDestination(patrolDest);
 
         }
         
     }
+
+    void Shoot()
+    {
+        if (!shooting)
+        {
+            //Place animation here Aykan if singular
+            shooting = true;
+            Debug.Log("Shooting");
+            animations.Aim(true);
+           
+        }
+        //Place animation here Aykan if in every frame
+        
+
+
+    }
     
     void SetDamaging(bool damaging)
     {
         this.damaging = damaging;
+    }
+
+    void DisableCoverCollider()
+    {
+        if (coverCollider.enabled)
+        {
+            
+            coverCollider.enabled = false;
+            normalCollider.enabled = true;
+        }
     }
     
     private void OnTriggerEnter(Collider other)
