@@ -22,6 +22,8 @@ TagManager:
   - FlashBang
   - CameraDontMoveZone
   - Ladder_Up
+  - LeftBorder
+  - RightBorder
   layers:
   - Default
   - TransparentFX
