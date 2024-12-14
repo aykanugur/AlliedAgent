@@ -10,13 +10,13 @@ public class EnemyAI : MonoBehaviour
     public float maxSpeed = 30;
     public float actionDistance = 10;
    
-    [SerializeField] private float minDistance = 0.2f; //Stop distance
+    [SerializeField] private float minDistance = 1f; //Stop distance
     [SerializeField] private float minSpeed = 2.6f;
-    [SerializeField] private float range = 10; //Range to patrol
-    [SerializeField] private double gunRange = 10;
+    [SerializeField] private float range = 7; //Range to patrol
+    [SerializeField] private double gunRange = 2;
 
-    [SerializeField] private CapsuleCollider coverCollider;
-    [SerializeField] private CapsuleCollider normalCollider;
+    [SerializeField] private CapsuleCollider coverCollider; //Collider active in cover
+    [SerializeField] private CapsuleCollider normalCollider; //Collider active normal
 
     
     
@@ -34,16 +34,21 @@ public class EnemyAI : MonoBehaviour
     private GameObject player;
     private GameObject[] coverPlaces;
 
-    private EnemyAnimations animations;
+    private EnemyAnimations animations; //Enemy animations script
+    private EnemyGun gun;
     
     // Start is called before the first frame update
     void Start()
     {
         animations = GetComponent<EnemyAnimations>();
+        gun = GetComponentInChildren<EnemyGun>();
+        if (gun.GetRange() > 0.1) //Set gun range
+            gunRange = gun.GetRange();
+        
         coverPlaces = GameObject.FindGameObjectsWithTag("cover");
         agent = transform.gameObject.GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player");
-        following = false;
+        player = GameObject.FindGameObjectWithTag("Player"); //Our okayer
+        following = false; //Enemy is following player
         damaging = false; //Player is shooting to us
         covering = false;
         oldPosition = transform.position; //Spawn position
@@ -56,6 +61,7 @@ public class EnemyAI : MonoBehaviour
         {
             agent.isStopped = false;
         }
+        
         //Stop cover if player is too far away
         double enemyDistance = Vector3.Distance(transform.position, player.transform.position);
         if (enemyDistance > gunRange)
@@ -73,6 +79,7 @@ public class EnemyAI : MonoBehaviour
             transform.LookAt(player.transform.position);
         if (!covering)
         {
+            DisableCoverCollider();
             
             //Enemy follows player
             RaycastHit hitInfo;
@@ -95,10 +102,12 @@ public class EnemyAI : MonoBehaviour
 
             
         }
-        else
+
+        if (agent.hasPath && !covering)
         {
-            DisableCoverCollider();
+            //Movement animation
         }
+            
 
 
 
@@ -127,6 +136,7 @@ public class EnemyAI : MonoBehaviour
                 agent.speed = agent.speed > maxSpeed ? maxSpeed : agent.speed + (0.001f * hitInfo.distance);
                 if (hitInfo.distance < minDistance)
                 {
+                    transform.LookAt(player.transform);
                     agent.isStopped = true;
                 }
 
@@ -184,11 +194,13 @@ public class EnemyAI : MonoBehaviour
                 //If we have a cover object which the gun can shoot go to there
                 agent.SetDestination(coverPos); //We can't use hasPath bcz player can shoot while moving
                 covering = true;
+                normalCollider.enabled = false;
+                coverCollider.enabled = true; 
+                //Cover animation
+                animations.Cover(true);
             }
-
-            normalCollider.enabled = false;
-            coverCollider.enabled = true; 
-            animations.Cover(true);
+            
+            
         }
     }
 
@@ -219,6 +231,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (coverCollider.enabled)
         {
+            
             coverCollider.enabled = false;
             normalCollider.enabled = true;
         }
