@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour
     public Material[] materials;
     public int tracerInterval = 5;
     public float time = 0.05f;
+    public float bulletDamage;
     
     private float currentCooldown;
     public int currentCapacity;
@@ -79,6 +80,7 @@ public class Gun : MonoBehaviour
         currentCapacity--;
         Vector3 direction = bulletSpawnPoint.forward;
         GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
+        currentBullet.GetComponent<BulletCollision>().hp = bulletDamage;
         if (tracerCount <= 0)
         {
             tracerCount = tracerInterval;

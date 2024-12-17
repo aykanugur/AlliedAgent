@@ -11,7 +11,7 @@ public class BulletCollision : MonoBehaviour
     public GameObject blood;
     private Rigidbody rb;
     private Transform tf;
-    public int hp;
+    public float hp;
     
     // Start is called before the first frame update
     void Start()

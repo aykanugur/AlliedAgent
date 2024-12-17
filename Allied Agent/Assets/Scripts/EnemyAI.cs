@@ -62,28 +62,51 @@ public class EnemyAI : MonoBehaviour
             agent.isStopped = false;
         }
         
-        //Stop cover if player is too far away
+        if (damaging)
+        {
+            //Look the player when it shoots us.
+            transform.LookAt(player.transform); 
+        }
+        
+
+        //Stop cover or shoot if player is too far away
         double enemyDistance = Vector3.Distance(transform.position, player.transform.position);
         if (enemyDistance > gunRange)
         {
+            shooting = false;
+            animations.Aim(false);
+            animations.Cover(false);
             covering = false;
         }
         else if (!covering && damaging)
         {
             //Cover if not covering and player is shooting to us
             Cover();
-            //TODO: Stop covering and shoot in intervals
-            
         }
-        
-        if(covering && agent.pathStatus == NavMeshPathStatus.PathComplete) //If we completed covering, look at player
+
+        if (covering && agent.remainingDistance <= agent.stoppingDistance) //We are in cover place
+        {
+            //If we completed covering, look at player
             transform.LookAt(player.transform.position);
+            
+            //Cover collider
+            normalCollider.enabled = false;
+            coverCollider.enabled = true; 
+            //Cover animation
+            animations.Cover(true);
+            
+            //Shoot at intervals
+            Shoot();
+        }
+
         if (!covering)
         {
-            if (agent.hasPath && !shooting)
+            animations.Cover(false);
+            
+            if (agent.hasPath && !shooting) //If agent hasPath, animation
             {
-                animations.ChangeMovement(agent.speed);
-                Debug.Log("Moving");
+                animations.Aim(false);
+                animations.ChangeMovement(maxSpeed);
             }
             
             DisableCoverCollider();
@@ -204,14 +227,13 @@ public class EnemyAI : MonoBehaviour
                 //If we have a cover object which the gun can shoot go there
                 agent.SetDestination(coverPos); //We can't use hasPath bcz player can shoot while moving
                 covering = true;
-                normalCollider.enabled = false;
-                coverCollider.enabled = true; 
-                //Cover animation
-                animations.Cover(true);
+                
+                
             }
             
             
         }
+        
     }
 
   
@@ -237,14 +259,35 @@ public class EnemyAI : MonoBehaviour
     {
         if (!shooting)
         {
-            //Place animation here Aykan if singular
             shooting = true;
-            Debug.Log("Shooting");
-            animations.Aim(true);
+            
            
         }
-        //Place animation here Aykan if in every frame
-        
+
+        if (!gun.getCoolDown())
+        {
+
+            following = false;
+            
+            if (gun.currentCapacity > 1 )
+            {
+                animations.Aim(true);
+                animations.Cover(false);
+                gun.Shoot();
+                //TODO: Stuck moving while aiming problem
+            }
+            else //Reload
+            {
+                //Debug.Log("reload");
+                animations.Aim(false);
+                animations.ChangeMovement(0);
+                
+                
+                gun.Reload();
+            }
+        }
+
+
 
 
     }
@@ -252,6 +295,7 @@ public class EnemyAI : MonoBehaviour
     void SetDamaging(bool damaging)
     {
         this.damaging = damaging;
+        
     }
 
     void DisableCoverCollider()
@@ -270,6 +314,7 @@ public class EnemyAI : MonoBehaviour
         if (other.gameObject.tag.Equals("Player"))
         {
             transform.LookAt(other.gameObject.transform.position); //If player is too close, look at them
+            following = true;
         }
     }
 }
