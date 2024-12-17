@@ -1646,12 +1646,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa41b2644c024d498b81837b0523f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistance: 33.7
-  maxSpeed: 30
+  maxDistance: 30.4
+  maxSpeed: 12
   actionDistance: 10
   minSpeed: 2.6
-  range: 9.28
-  gunRange: 3.18
+  range: 6.72
+  gunRange: 3.88
   coverCollider: {fileID: 8687122091910332802}
   normalCollider: {fileID: 7081471939667994522}
   damaging: 0
