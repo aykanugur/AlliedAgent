@@ -14,6 +14,6 @@ public class ToNextScene : MonoBehaviour
     IEnumerator ToTheNextScene()
     {
         yield return new WaitForSeconds(10);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 }

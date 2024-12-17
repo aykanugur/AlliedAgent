@@ -1,54 +1,64 @@
 
 using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 public class PlayerController : MonoBehaviour
 {
-    private Animator _animator;
-    private float _velocityZ,_velocityX,_acc,_maxRun,_maxWalk,_maxVelocity; // float
-    private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover,_nearEnemy,_knifeTime,_grenade,_reload; // bool
-    [SerializeField] private GameObject[] flashlights; // game objects arrays
+    // animator
+    private Animator _animator; 
+    //float
+    private float _velocityZ,_velocityX,_acc,_maxRun,_maxWalk,_maxVelocity;
+    // bool
+    private bool _forward,_left,_right,_run,_hasGun,_aim,_jump,_crouch,_doubleJump,_backWard,_flashlightButton,_coverDetected,_inCover,_nearEnemy,_knifeTime,_grenade,_reload;
     private bool _grenadeAim;
-    private RigBuilder _rigBuilder; 
-    private Rigidbody _rb; // rb
-    private GameObject _target,_crossHair,_magazine; // gameObject
-    private Transform _coverTransform,_coverSide,_nearEnemyTransform;
+    private bool _ladderDown,_ladderUp;
+    // gameobjects
+    [SerializeField] private GameObject[] flashlights;
     public GameObject currentGun;
-    private Camera _mainCamera; // camera
-    private BoxCollider _boxCollider;
-    private CapsuleCollider _capsuleCollider;
+    private GameObject _target,_crossHair,_magazine; 
+    private GameObject _lastHitObject;
+    [SerializeField]private GameObject[] weapons,weaponsV,weaponsGrenade;
+    [SerializeField] private GameObject secondHand;
+    public GameObject childMagazine;
+    private GameObject _ladderDownObject, _ladderUpObject;
+    public GameObject freeCamera;
+    public GameObject tutor;
+    
+    //rigid
+    private RigBuilder _rigBuilder; 
+    //rb
+    private Rigidbody _rb; 
+    //transform
+    private Transform _coverTransform,_coverSide,_nearEnemyTransform;
+    //camera
+    private Camera _mainCamera; 
+    //hash
     private static readonly int Crouch = Animator.StringToHash("crouch");
     private static readonly int Aim = Animator.StringToHash("aim");
     private static readonly int HasGun = Animator.StringToHash("hasGun");
     private static readonly int Jump = Animator.StringToHash("jump");
-    private static readonly int Ladder = Animator.StringToHash("ladder");
     private static readonly int Property1 = Animator.StringToHash("velocity x");
     private static readonly int Property2 = Animator.StringToHash("velocity z");
-    [SerializeField] private LayerMask layerMask;
-    private GameObject _lastHitObject; // Önceki çarpılan nesne
-    private Color _originalColor;
-    [SerializeField]private GameObject[] weapons,weaponsV,weaponsGrenade;
-    [SerializeField] private GameObject secondHand;
-    public GameObject childMagazine;
     private static readonly int Knife1 = Animator.StringToHash("knife");
     private static readonly int Grenade1 = Animator.StringToHash("grenade");
     private static readonly int Reload = Animator.StringToHash("Reload");
-    private int _currentGunIndex;
-    public GameObject tutor;
     private static readonly int StopReload1 = Animator.StringToHash("StopReload");
-    [SerializeField] private GrenadeThrow _grenadeThrow;
-    private bool _coverTime,_ladderDown,_ladderUp;
-    private GameObject _ladderDownObject, _ladderUpObject;
-    public GameObject freeCamera;
-
+    //layermask
+    [SerializeField] private LayerMask layerMask;
+    //color
+    private Color _originalColor;
+    //int
+    private int _currentGunIndex;
+    //grenadeScript
+    [SerializeField] private GrenadeThrow grenadeThrow;
+    
     
     public bool GetCrouch()
     {
         return _crouch;
     }
-    public bool GetGranade()
+    public bool GetGrenade()
     {
         return _grenade;
     }
@@ -64,8 +74,6 @@ public class PlayerController : MonoBehaviour
         _maxWalk = 0.7f;
         _maxRun = 2f;
         _acc = 2f;
-        _boxCollider = GetComponent<BoxCollider>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
         _crossHair = GameObject.FindWithTag("CrossHair");
     }
     
@@ -252,8 +260,7 @@ public class PlayerController : MonoBehaviour
     public void StartThrowGrenade()
     {
         // animation throw  end call will's code 
-        Debug.Log("Start throw granade");
-        _grenadeThrow.Throw();
+        grenadeThrow.Throw();
     }
 
     private IEnumerator Grenade(int val)
@@ -276,12 +283,7 @@ public class PlayerController : MonoBehaviour
         {
             GunStatusChange();
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if(_hasGun) GunStatusChange();
-            if(_crouch) ChangeCrouchStatus();
-        }
+        
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && _reload == false && _crouch == false)
         {
@@ -339,7 +341,6 @@ public class PlayerController : MonoBehaviour
                 if (_coverDetected)
                 {
                     transform.position = _coverSide.position;
-                    _coverTime = true;
                     _coverDetected = false;
                     _coverTransform.GetComponent<CoverTriggerArea>().ActiveOrDeactiveText(false);
                     if (!_hasGun)
@@ -679,7 +680,8 @@ public class PlayerController : MonoBehaviour
             if (raycastHit.transform.gameObject.layer == 6 || raycastHit.transform.gameObject.layer == 7)
             {
                 var position = _target.transform.position;
-                position = new Vector3(raycastHit.transform.position.x,position.y,raycastHit.transform.position.z );
+                var position1 = raycastHit.transform.position;
+                position = new Vector3(position1.x,position.y,position1.z );
                 _target.transform.position = position;
             }
             currentGun.transform.GetChild(4).transform.LookAt(_target.transform);

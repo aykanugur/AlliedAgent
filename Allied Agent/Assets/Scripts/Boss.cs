@@ -8,15 +8,37 @@ public class Boss : MonoBehaviour
 
     public int hp = 500;
     public GameObject player;
-    public Transform muzzle;
+    public Transform muzzle,muzzle2;
     public bool[] forms;
     private float timer = 0f;
     public Rigidbody rb;
     public int horizontalSpeed;
-    public void ShootPlayer()
+    public GameObject bismarck;
+    public GameObject shield;
+    public bool shieldBool;
     
+    IEnumerator Shoot()
     {
-        muzzle.LookAt(player.transform.position);
+        while (true)
+        {
+            muzzle.LookAt(player.transform.position);
+            muzzle2.LookAt(player.transform.position);
+            // write basic shoot code here pls !! 
+            // with red tail
+            if (shieldBool)
+            {
+                shield.SetActive(false);
+                StartCoroutine(OpenShield());
+            }
+            yield return new WaitForSeconds(3);
+        }
+    }
+
+    IEnumerator OpenShield()
+    {
+        yield return new WaitForSeconds(2);
+        Debug.Log("shiled activated");
+        shield.SetActive(true);
     }
 
     private void Form1()
@@ -24,6 +46,7 @@ public class Boss : MonoBehaviour
         if (forms[0] == false)
         {
             forms[0] = true;
+            StartCoroutine(Shoot());
         }
     }
 
@@ -49,6 +72,26 @@ public class Boss : MonoBehaviour
     {
        rb.AddForce(Vector3.up * 10000);
     }
+
+    private void Form3()
+    {
+        if (forms[2] == false)
+        {
+            forms[2] = true;
+            bismarck.SetActive(true);
+            bismarck.GetComponent<Bismarck>().shootSpeed = 5;
+        }
+    }
+
+    private void Form4()
+    {
+        if (forms[3] == false)
+        {
+            Debug.Log("FORM 4 ");
+            forms[3] = true;
+            bismarck.GetComponent<Bismarck>().shootSpeed = 3;
+        }
+    }
     
 
     private void Update()
@@ -69,17 +112,19 @@ public class Boss : MonoBehaviour
              break;
          
          case > 200 :
-             
+             Form3();
              // form 3 call bismarck
              // bismarck speed is 1 ammo 5 second
              // walk right left and jump sometimes and shoot player
          break;
          
          case > 100:
+             Form4();
              //last form
              // bismarck shoot speed 1 ammo 3 second
              // walk right left and jump sometimes and shoot player
              // also use shield while not shooting 
+             shieldBool = true;
          break;
          
          case < 0:

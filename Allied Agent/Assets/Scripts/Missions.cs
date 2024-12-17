@@ -37,7 +37,7 @@ public class Missions : MonoBehaviour
                 }
                 break;
             case 3 :
-                if (playerController.GetGranade()&& active)
+                if (playerController.GetGrenade()&& active)
                 {
                     changeMissions();
                 }
