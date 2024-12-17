@@ -111,11 +111,11 @@ MonoBehaviour:
   onGunShoot:
     m_PersistentCalls:
       m_Calls: []
-  timeBetweenShots: 0
+  timeBetweenShots: 1
   isAuto: 0
   shootForce: 0
   projectileMass: 0
-  magazineCapacity: 0
+  magazineCapacity: 10
   materials: []
   tracerInterval: 5
   time: 0.05
@@ -1719,7 +1719,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.45
+  m_Radius: 2.42
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
