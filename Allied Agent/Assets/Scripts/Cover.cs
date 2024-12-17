@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Cover : MonoBehaviour
 {
-    public int hp = 100;
+    public float hp = 100f;
    
 
 

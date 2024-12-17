@@ -8,7 +8,7 @@ public class EnemyAnimations : MonoBehaviour
 
     public Animator animator;
 
-    public int hp;
+    public float hp;
     private SkinnedMeshRenderer _meshRenderer;
     public float red;
 
