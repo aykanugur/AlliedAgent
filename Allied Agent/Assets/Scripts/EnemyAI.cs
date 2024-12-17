@@ -61,7 +61,14 @@ public class EnemyAI : MonoBehaviour
         {
             agent.isStopped = false;
         }
-        
+
+        if (Vector3.Distance(player.transform.position, transform.position) > gunRange)
+        {
+            shooting = false;
+            animations.Aim(false);
+            animations.ChangeMovement(maxSpeed);
+        }
+
         //Stop cover if player is too far away
         double enemyDistance = Vector3.Distance(transform.position, player.transform.position);
         if (enemyDistance > gunRange)
@@ -82,8 +89,7 @@ public class EnemyAI : MonoBehaviour
         {
             if (agent.hasPath && !shooting)
             {
-                animations.ChangeMovement(agent.speed);
-                Debug.Log("Moving");
+                animations.ChangeMovement(maxSpeed);
             }
             
             DisableCoverCollider();
@@ -237,14 +243,28 @@ public class EnemyAI : MonoBehaviour
     {
         if (!shooting)
         {
-            //Place animation here Aykan if singular
             shooting = true;
-            Debug.Log("Shooting");
-            animations.Aim(true);
            
         }
-        //Place animation here Aykan if in every frame
-        
+
+        if (!gun.getCoolDown())
+        {
+            
+            if (gun.currentCapacity > 1)
+            {
+                animations.Aim(true);
+                gun.Shoot();
+            }
+            else
+            {
+                //Debug.Log("reload");
+                animations.Aim(false);
+                animations.ChangeMovement(0);
+                gun.Reload();
+            }
+        }
+
+
 
 
     }
