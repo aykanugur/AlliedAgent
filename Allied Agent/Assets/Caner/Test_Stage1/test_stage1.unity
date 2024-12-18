@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17053331, g: 0.16542697, b: 0.1600613, a: 1}
+  m_IndirectSpecularColor: {r: 0.17053787, g: 0.16542515, b: 0.1600636, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -781,6 +781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitSecond: 50
+  bum: 0
   _planes: {fileID: 8419888332224174060, guid: 189ab1c5e11644d139beed58f74225b3, type: 3}
 --- !u!4 &66765037 stripped
 Transform:
@@ -13886,6 +13887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitSecond: 10
+  bum: 0
   _planes: {fileID: 4997455854552708693, guid: c75c3412b4c584d8da77e70f917b7815, type: 3}
 --- !u!1 &1070314055 stripped
 GameObject:

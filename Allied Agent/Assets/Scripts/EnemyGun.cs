@@ -17,9 +17,11 @@ public class EnemyGun : MonoBehaviour
     private float currentCooldown;
     public int currentCapacity;
     private int tracerCount = 0;
+    private bool cooldown = false;
     
     public GameObject bullet;
     public Transform bulletSpawnPoint;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -29,34 +31,43 @@ public class EnemyGun : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        if (cooldown && Time.time - currentCooldown >= timeBetweenShots)
+        {
+            cooldown = false;
+        }
     }
-    
+
     public void Shoot()
     {
-        currentCapacity--;
-        Vector3 direction = bulletSpawnPoint.forward;
-        GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
-        if (tracerCount <= 0)
+        if (!cooldown)
         {
-            tracerCount = tracerInterval;
-            currentBullet.gameObject.GetComponent<BulletCollision>().MakeTracer();
+            cooldown = true;
+            currentCooldown = Time.time;
+            currentCapacity--;
+            Vector3 direction = bulletSpawnPoint.forward;
+            GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
+            if (tracerCount <= 0)
+            {
+                tracerCount = tracerInterval;
+                currentBullet.gameObject.GetComponent<BulletCollision>().MakeTracer();
+            }
+            else
+            {
+                currentBullet.gameObject.GetComponent<BulletCollision>().makeNonTracer();
+            }
+
+            if (Random.Range(0, 5) == 0) // aykan kod
+            {
+                int random = Random.Range(0, 2);
+                currentBullet.GetComponent<Renderer>().material = materials[random];
+            }
+
+            currentBullet.GetComponent<Rigidbody>().mass = projectileMass;
+            currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
+            tracerCount--;
         }
-        else
-        {
-            currentBullet.gameObject.GetComponent<BulletCollision>().makeNonTracer();
-        }
-        
-        if (Random.Range(0, 5) == 0) // aykan kod
-        {
-            int random = Random.Range(0, 2);
-            currentBullet.GetComponent<Renderer>().material = materials[random];
-        }
-        currentBullet.GetComponent<Rigidbody>().mass = projectileMass;
-        currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
-        tracerCount--;
     }
     
     public void Reload()
@@ -103,5 +114,10 @@ public class EnemyGun : MonoBehaviour
         float sin2Teta = Mathf.Sin(90 * Mathf.Deg2Rad);
         
         return (v * v * sin2Teta) / Mathf.Abs(Physics.gravity.y);
+    }
+
+    public bool getCoolDown()
+    {
+        return cooldown;
     }
 }
