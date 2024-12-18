@@ -24,7 +24,15 @@ public class GrenadeThrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.G) && ableToThrow)
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                molotofActive = !molotofActive;
+            }
+        }
+        
+        if (Input.GetKeyUp(KeyCode.G) && ableToThrow && !Input.GetKey(KeyCode.LeftControl))
         {
             ableToThrow = false;
         }
