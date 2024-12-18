@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7183821553022797461}
   - component: {fileID: 30263153993703363}
   - component: {fileID: 745967952052108866}
+  - component: {fileID: -6035790608728433643}
   m_Layer: 0
   m_Name: Hand Grenade
   m_TagString: Untagged
@@ -151,3 +152,15 @@ MonoBehaviour:
   countdownTime: 4.8
   explosionForce: 50
   explosion: {fileID: 100004, guid: b46890100828db6429ff69c322b45893, type: 3}
+--- !u!114 &-6035790608728433643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3536027690015404519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ca4ca7803b1b1429c5b78690b4a03e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -33,40 +33,43 @@ public class Grenade : MonoBehaviour
         foreach (Collider hit in hitColliders)
         {
             float distance = Vector3.Distance(transform.position, hit.transform.position);
-            switch (hit.gameObject.tag)
+            if (hit.gameObject != null)
             {
-                case "Player":
-                    //damage the player here
+                switch (hit.gameObject.tag)
+                {
+                    case "Player":
+                        //damage the player here
                     
-                    break;
+                        break;
                 
-                case "Enemy":
-                    hit.gameObject.GetComponent<EnemyAnimations>().hp -= damage/(distance * distance);
-                    if (hit.gameObject.GetComponent<EnemyAnimations>().hp <= 0)
-                    {
-                        Vector3 direction = hit.transform.position - transform.position;
-                        direction = direction.normalized;
-                        hit.GameObject().GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance, ForceMode.Impulse);
-                    }
-                    break;
-                
-                case "cover":
-                    if (hit.gameObject.GetComponent<Cover>() != null)
-                    {
-                        hit.gameObject.GetComponent<Cover>().hp = hit.gameObject.GetComponent<Cover>().hp - damage/(distance * distance);
-                        hit.GetComponent<Cover>().CheckHp();
-                        if (hit.GetComponent<Cover>().hp > 0)
+                    case "Enemy":
+                        hit.gameObject.GetComponent<EnemyAnimations>().hp -= damage/(distance * distance);
+                        if (hit.gameObject.GetComponent<EnemyAnimations>().hp <= 0)
                         {
                             Vector3 direction = hit.transform.position - transform.position;
                             direction = direction.normalized;
-                            hit.GameObject().GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance * distance, ForceMode.Impulse);
+                            hit.GameObject().GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance, ForceMode.Impulse);
                         }
-                    }
-                    break;
+                        break;
                 
-                default:
+                    case "cover":
+                        if (hit.gameObject.GetComponent<Cover>() != null)
+                        {
+                            hit.gameObject.GetComponent<Cover>().hp = hit.gameObject.GetComponent<Cover>().hp - damage/(distance * distance);
+                            hit.GetComponent<Cover>().CheckHp();
+                            if (hit.GetComponent<Cover>().hp > 0)
+                            {
+                                Vector3 direction = hit.transform.position - transform.position;
+                                direction = direction.normalized;
+                                hit.GameObject().GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance * distance, ForceMode.Impulse);
+                            }
+                        }
+                        break;
+                
+                    default:
                     
-                    break;
+                        break;
+                }
             }
         }
         
