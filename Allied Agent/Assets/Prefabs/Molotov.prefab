@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 47.546875, y: -0.8497556, z: -0.005594922}
-  m_LocalScale: {x: 0.08892253, y: 0.08892253, z: 0.08892253}
+  m_LocalScale: {x: 0.022, y: 0.022, z: 0.022}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireDPS: 5
-  fireRadius: 7.5
+  fireScale: 1
   fireDuration: 5
-  fireEffect: {fileID: 0}
+  fireEffect: {fileID: 9083275279219973740, guid: 71a0b89b5bbf1e54ea39198d2bc67025,
+    type: 3}
