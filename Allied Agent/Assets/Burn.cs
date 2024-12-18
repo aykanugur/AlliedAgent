@@ -26,7 +26,7 @@ public class Burn : MonoBehaviour
         oneSecond -= Time.deltaTime;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         switch (other.gameObject.tag)
         {

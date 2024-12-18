@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 180429411665973859}
   - component: {fileID: 2461841436140977874}
   - component: {fileID: 4869880950285856506}
+  - component: {fileID: 8353482522063058108}
   m_Layer: 0
   m_Name: Molotov
   m_TagString: Untagged
@@ -151,3 +152,16 @@ MonoBehaviour:
   fireDuration: 5
   fireEffect: {fileID: 9083275279219973740, guid: 71a0b89b5bbf1e54ea39198d2bc67025,
     type: 3}
+--- !u!114 &8353482522063058108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371906072012252954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ca4ca7803b1b1429c5b78690b4a03e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRotationSpeed: 20
