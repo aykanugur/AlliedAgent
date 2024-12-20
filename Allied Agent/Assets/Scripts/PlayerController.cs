@@ -52,6 +52,12 @@ public class PlayerController : MonoBehaviour
     private int _currentGunIndex;
     //grenadeScript
     [SerializeField] private GrenadeThrow grenadeThrow;
+    //colliders
+
+    public CapsuleCollider[] colliders;
+    
+    //UI
+    public Manager manager;
     
     
     public bool GetCrouch()
@@ -86,12 +92,29 @@ public class PlayerController : MonoBehaviour
         CheckFlashlight();
         CheckCover();
         ChangeWeapons();
+        GunUI();
+    }
+
+    private void GunUI()
+    {
+        manager.gunGameObject.SetActive(_hasGun);
+        manager.ammo.SetActive(_hasGun);
     }
     private void FixedUpdate()
     {
         if (_knifeTime == false && (_reload && _crouch) == false)
         {
             animation_movement();
+            if (_crouch)
+            {
+                colliders[0].enabled = false;
+                colliders[1].enabled = true;
+            }
+            else
+            {
+                colliders[0].enabled = true;
+                colliders[1].enabled = false;
+            }
         }
         CheckCross();
     }
@@ -145,6 +168,7 @@ public class PlayerController : MonoBehaviour
                 secondHand.transform.localRotation = Quaternion.Euler(62.834f,-208.042f,-35.346f);
             }
         }
+        manager.ChangeWeapon(currentGun);
     }
 
     private void CheckCover()
@@ -230,6 +254,7 @@ public class PlayerController : MonoBehaviour
     private void Knife()
     {
         //test it with jump 
+        _nearEnemyTransform.gameObject.GetComponent<EnemyAnimations>().hp = -1;
         _aim = false;
         _velocityX = 0;
         _velocityZ = 0;
@@ -284,7 +309,6 @@ public class PlayerController : MonoBehaviour
             GunStatusChange();
         }
         
-
         if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && _reload == false && _crouch == false)
         {
             if(_hasGun) GunStatusChange();
@@ -295,43 +319,46 @@ public class PlayerController : MonoBehaviour
     private void GetInputsFunction()
     {
         PositionCorrector();
-        if (Input.GetKey(KeyCode.G)&& _hasGun && _reload == false && _crouch == false)
+        if (Input.GetKey(KeyCode.LeftControl) == false)
         {
-            //grenade aim
-            _grenadeAim = true;
-        }
-        else
-        {
-            _grenadeAim = false;
-        }
-
-        if (Input.GetKeyUp(KeyCode.G)&& _hasGun  && _reload == false && _crouch == false)
-        {
-            _grenade = true;
-            _aim = false;
-            var val = 0;
-            _animator.SetTrigger(Grenade1);
-            currentGun.SetActive(false);
-            if (currentGun == weapons[0])
+            if (Input.GetKey(KeyCode.G)&& _hasGun && _reload == false && _crouch == false)
             {
-                // set active 
-                weaponsGrenade[0].SetActive(true);
+                //grenade aim
+                _grenadeAim = true;
             }
             else
             {
-                if (currentGun == weapons[1])
-                {
-                    weaponsGrenade[1].SetActive(true);
-                    val = 1;
-                }
+                _grenadeAim = false;
             }
 
-            StartCoroutine(Grenade(val));
+            if (Input.GetKeyUp(KeyCode.G)&& _hasGun  && _reload == false && _crouch == false)
+            {
+                _grenade = true;
+                _aim = false;
+                var val = 0;
+                _animator.SetTrigger(Grenade1);
+                currentGun.SetActive(false);
+                if (currentGun == weapons[0])
+                {
+                    // set active 
+                    weaponsGrenade[0].SetActive(true);
+                }
+                else
+                {
+                    if (currentGun == weapons[1])
+                    {
+                        weaponsGrenade[1].SetActive(true);
+                        val = 1;
+                    }
+                }
+
+                StartCoroutine(Grenade(val));
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.E) && _grenade == false)
         {
-            if (_nearEnemy && _knifeTime == false)
+            if (_nearEnemy && _knifeTime == false && _nearEnemyTransform.gameObject.GetComponent<EnemyAI>().enabled)
             {
                 _knifeTime = true;
                 Knife();

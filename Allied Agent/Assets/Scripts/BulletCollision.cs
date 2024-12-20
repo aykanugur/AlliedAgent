@@ -39,13 +39,15 @@ public class BulletCollision : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Enemy":
-                Debug.Log("enemy hit");
                 GameObject child = Instantiate(blood, other.transform);
                 var transform1 = transform;
                 child.transform.position = new Vector3(other.transform.position.x,transform1.position.y,transform1.position.z);
                 child.transform.eulerAngles = transform1.eulerAngles;
-                other.gameObject.GetComponent<EnemyAnimations>().hp -= hp; 
-                Destroy(this.gameObject);
+                child.transform.SetParent(other.transform);
+                if (other.gameObject.GetComponent<HpManager>() != null)
+                {
+                    other.gameObject.GetComponent<HpManager>().Decreasehp(hp);
+                }
                 break;
             
             case "Reflective":
@@ -55,9 +57,12 @@ public class BulletCollision : MonoBehaviour
             case  "cover":
                 if (other.gameObject.GetComponent<Cover>() != null)
                 {
-                    other.gameObject.GetComponent<Cover>().hp = other.gameObject.GetComponent<Cover>().hp - hp;
-                    other.GetComponent<Cover>().CheckHp();
-                    Destroy(this.gameObject);
+                    if (other.gameObject.GetComponent<HpManager>() != null)
+                    {
+                        other.gameObject.GetComponent<HpManager>().Decreasehp(hp);
+                        other.GetComponent<Cover>().CheckHp();
+                        Destroy(this.gameObject);
+                    }
                 }
                 break;
             case "DoNotDestroy":
