@@ -1722,6 +1722,7 @@ GameObject:
   - component: {fileID: 2807516448452063097}
   - component: {fileID: 6348131841990903078}
   - component: {fileID: 6877135238856327473}
+  - component: {fileID: 1747836759528779040}
   m_Layer: 7
   m_Name: PT_Crate_Seperated
   m_TagString: cover
@@ -1790,3 +1791,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
+--- !u!114 &1747836759528779040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9046834994006609047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7beb7628561d478cba77149524a6f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  script: {fileID: 6877135238856327473}

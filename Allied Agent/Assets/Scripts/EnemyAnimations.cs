@@ -7,18 +7,27 @@ public class EnemyAnimations : MonoBehaviour
 {
 
     public Animator animator;
+    public EnemyAI enemyAI;
+    public Collider collider,collider2;
 
     public float hp;
     private SkinnedMeshRenderer _meshRenderer;
     public float red;
 
+    private bool firstTime;
+    
+
     private void Start()
     {
+        firstTime = true;
         _meshRenderer = transform.GetChild(0).GetComponent<SkinnedMeshRenderer>();
     }
 
     public void Die()
     {
+        collider2.enabled = false;
+        collider.enabled = false;
+        enemyAI.enabled = false;
         animator.SetTrigger("Death");
     }
     public void Pray()
@@ -43,7 +52,11 @@ public class EnemyAnimations : MonoBehaviour
 
     private void Update()
     {
-
+        if (hp != 100 && firstTime)
+        {
+            firstTime = false;
+            enemyAI.SetDamaging(true);
+        }
         if (hp >= 0)
         {
             red = 1f - (hp / 100f);

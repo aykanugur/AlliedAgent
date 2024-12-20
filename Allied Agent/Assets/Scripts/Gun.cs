@@ -28,6 +28,8 @@ public class Gun : MonoBehaviour
     
     public AudioClip[] _audioClips;
     private AudioSource _audioSource;
+
+    public Manager manager;
     
     // Start is called before the first frame update
     void Start()
@@ -78,6 +80,7 @@ public class Gun : MonoBehaviour
         _audioSource.clip = _audioClips[0];
         _audioSource.Play();
         currentCapacity--;
+        manager.ChangeAmmo(currentCapacity);
         Vector3 direction = bulletSpawnPoint.forward;
         GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
         currentBullet.GetComponent<BulletCollision>().hp = bulletDamage;
@@ -107,6 +110,7 @@ public class Gun : MonoBehaviour
         currentCapacity = magazineCapacity;
         tracerCount = tracerInterval;
         _playerController.StartReload();
+        manager.ChangeAmmo(currentCapacity);
     }
 
     public float GetRange()

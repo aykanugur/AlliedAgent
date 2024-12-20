@@ -28689,6 +28689,11 @@ PrefabInstance:
       propertyPath: fadeOut
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 4620348247849531012, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
+        type: 3}
+      propertyPath: bulletDamage
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 4902618923447973259, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
         type: 3}
       propertyPath: m_Intensity
@@ -28788,6 +28793,11 @@ PrefabInstance:
         type: 3}
       propertyPath: fadeOut
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6687054502529439406, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
+        type: 3}
+      propertyPath: bulletDamage
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8172873772604778860, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
         type: 3}

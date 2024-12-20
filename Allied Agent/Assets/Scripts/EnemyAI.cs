@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations.Rigging;
 using Random = UnityEngine.Random;
 
 public class EnemyAI : MonoBehaviour
@@ -16,7 +17,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private CapsuleCollider coverCollider; //Collider active in cover
     [SerializeField] private CapsuleCollider normalCollider; //Collider active normal
 
-    
+
+    [SerializeField] private RigBuilder _rigBuilder; // caner its me aykan
+    // pls eneable this comp. when enemy aim to player ok ? disable when not aim ok ?
     
     private NavMeshAgent agent;
     
@@ -292,7 +295,7 @@ public class EnemyAI : MonoBehaviour
 
     }
     
-    void SetDamaging(bool damaging)
+   public void SetDamaging(bool damaging)
     {
         this.damaging = damaging;
         

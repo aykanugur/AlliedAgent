@@ -10,7 +10,6 @@ public class Boss : MonoBehaviour
     public GameObject player;
     public Transform muzzle,muzzle2;
     public bool[] forms;
-    private float timer = 0f;
     public Rigidbody rb;
     public int horizontalSpeed;
     public GameObject bismarck;
