@@ -67,6 +67,10 @@ public class BulletCollision : MonoBehaviour
                 break;
             case "DoNotDestroy":
                 break;
+            case "ammo":
+                break;
+            case "CameraDontMoveZone":
+                break;
             
             default:
                 Destroy(this.gameObject);

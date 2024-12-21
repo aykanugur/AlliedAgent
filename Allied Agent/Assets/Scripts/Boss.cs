@@ -6,7 +6,7 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
 
-    public int hp = 500;
+    public float hp = 1000;
     public GameObject player;
     public Transform muzzle,muzzle2;
     public bool[] forms;
@@ -15,6 +15,7 @@ public class Boss : MonoBehaviour
     public GameObject bismarck;
     public GameObject shield;
     public bool shieldBool;
+    public GameObject box;
     
     IEnumerator Shoot()
     {
@@ -69,7 +70,13 @@ public class Boss : MonoBehaviour
 
     void Jump()
     {
-       rb.AddForce(Vector3.up * 10000);
+       rb.AddForce(Vector3.up * 5000);
+    }
+
+    public void Die()
+    {
+        box.SetActive(false);
+        Destroy(this.gameObject);
     }
 
     private void Form3()
@@ -97,27 +104,27 @@ public class Boss : MonoBehaviour
     {
         switch (hp)
         {
-         case > 400 :
+         case > 800 :
              Form1();
              // form 1 
              
              // walk right left and shoot player
              break;
          
-         case > 300 :
+         case > 600 :
              //form 2 
              Form2();
              // walk right left and jump sometimes and shoot player
              break;
          
-         case > 200 :
+         case > 400 :
              Form3();
              // form 3 call bismarck
              // bismarck speed is 1 ammo 5 second
              // walk right left and jump sometimes and shoot player
          break;
          
-         case > 100:
+         case > 200:
              Form4();
              //last form
              // bismarck shoot speed 1 ammo 3 second
@@ -128,6 +135,8 @@ public class Boss : MonoBehaviour
          
          case < 0:
              // die 
+             Die();
+             
          break;
         }
     }
@@ -136,6 +145,7 @@ public class Boss : MonoBehaviour
     {
         if (other.gameObject.CompareTag("LeftBorder") || other.gameObject.CompareTag("RightBorder"))
         {
+            Debug.Log("test");
             horizontalSpeed *= -1;
         }
     }

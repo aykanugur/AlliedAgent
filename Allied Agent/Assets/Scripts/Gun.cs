@@ -16,6 +16,8 @@ public class Gun : MonoBehaviour
     public int tracerInterval = 5;
     public float time = 0.05f;
     public float bulletDamage;
+    public int currentAmmo;
+    
     
     private float currentCooldown;
     public int currentCapacity;
@@ -35,9 +37,14 @@ public class Gun : MonoBehaviour
     void Start()
     {
         currentCooldown = timeBetweenShots;
-        currentCapacity = magazineCapacity;
         _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         _audioSource = GetComponent<AudioSource>();
+    }
+
+    public void AddAmmo()
+    {
+        currentAmmo += magazineCapacity;
+        manager.ChangeCurrentAmmo(currentAmmo);
     }
 
     // Update is called once per frame
@@ -107,10 +114,25 @@ public class Gun : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     private void Reload()
     {
-        currentCapacity = magazineCapacity;
-        tracerCount = tracerInterval;
-        _playerController.StartReload();
-        manager.ChangeAmmo(currentCapacity);
+        if (currentAmmo > 0)
+        {
+            if((magazineCapacity - currentCapacity) < currentAmmo)
+            {
+                currentAmmo = currentAmmo - (magazineCapacity - currentCapacity);
+                currentCapacity = magazineCapacity;
+                                   
+            }
+            else
+            {
+                currentCapacity = currentAmmo;
+                currentAmmo = 0;
+            }
+            tracerCount = tracerInterval;
+            _playerController.StartReload();
+            manager.ChangeAmmo(currentCapacity);
+            manager.ChangeCurrentAmmo(currentAmmo);
+        }
+        
     }
 
     public float GetRange()

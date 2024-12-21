@@ -15,5 +15,9 @@ public class Shield : MonoBehaviour
             red = 1f - (hp / 1000f);
         }
         meshRenderer.materials[0].color = new Vector4(red, 0, 0, 1);
+        if (hp < 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
