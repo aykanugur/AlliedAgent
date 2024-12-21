@@ -1,17 +1,12 @@
 
 using UnityEngine;
-using UnityEngine.Events;
 
-public class Rocket : MonoBehaviour
+public class ProjectileRocket : MonoBehaviour
 {
     public TrailRenderer fireTrail;
     public TrailRenderer smokeTrail;
-    public UnityEvent onRocketShoot;
-    public float shootForce;
-    public float rocketMass;
     public float fireTrailTime = 0.25f;
-
-    private bool hasFired = false;
+    
     private Rigidbody rb;
     private Transform tf;
     private float timeSinceFired = 0f;
@@ -26,23 +21,12 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hasFired)
-        {
-            ActivateTrail();
-        }
-        if (Input.GetButtonDown("Fire1") && Input.GetButton("Fire2") && !hasFired)
-        {
-            hasFired = true;
-            Fire();
-        }
+        ActivateTrail();
     }
 
     void FixedUpdate()
     {
-        if (hasFired)
-        {
-            PointNoseToMovementVector();
-        }
+        PointNoseToMovementVector();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -55,15 +39,6 @@ public class Rocket : MonoBehaviour
         //call DrawCircle here to deal splash damage
         
         Destroy(this.gameObject);
-    }
-
-    private void Fire()
-    {
-        onRocketShoot?.Invoke();
-        tf.SetParent(null);
-        rb.isKinematic = false;
-        rb.mass = rocketMass;
-        rb.AddForce(transform.TransformDirection(-Vector3.right).normalized * shootForce, ForceMode.Impulse);
     }
 
     private void PointNoseToMovementVector()

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17053331, g: 0.16542697, b: 0.1600613, a: 1}
+  m_IndirectSpecularColor: {r: 0.17053787, g: 0.16542515, b: 0.1600636, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7438,6 +7438,12 @@ Transform:
   - {fileID: 2076128012}
   m_Father: {fileID: 1952852834}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &596669795 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1185357101088574156, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 6389664524440020706}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &607395715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6862753382757015887, guid: ed2b753036d9c463a94174a6ea7eb6ff,
@@ -14738,7 +14744,7 @@ GameObject:
   - component: {fileID: 1114122510}
   - component: {fileID: 1114122509}
   - component: {fileID: 1114122508}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23470,6 +23476,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2111219410}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1747422364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8975061648236931269, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 6389664524440020706}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1747422368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747422364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e14eeadadbac974cb49d6425d0239b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onRocketShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  shootForce: 125
+  rocketMass: 2.5
+  projectileRocket: {fileID: 5629590322254022325, guid: 23780484298ea3644bafdf98092e53b2,
+    type: 3}
+  pseudoRocket: {fileID: 596669795}
+  reloadTime: 1.5
 --- !u!4 &1749883010 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6862753382757015887, guid: ed2b753036d9c463a94174a6ea7eb6ff,
@@ -29685,6 +29718,11 @@ PrefabInstance:
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
       objectReference: {fileID: 439021796}
+    - target: {fileID: 5565300181747907207, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
+        type: 3}
+      propertyPath: m_Effectors.Array.data[1].m_Transform
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5611531386516814870, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
         type: 3}
       propertyPath: hitMarker
@@ -29700,10 +29738,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_New
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 8975061648236931269, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1375596491800573823, guid: 6cf7dee6ca0564878b3d8bd34897d0b9, type: 3}
+    - {fileID: 7827772192912172956, guid: 6cf7dee6ca0564878b3d8bd34897d0b9, type: 3}
+    - {fileID: 1103141722435108583, guid: 6cf7dee6ca0564878b3d8bd34897d0b9, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 2220500365084446736, guid: 6cf7dee6ca0564878b3d8bd34897d0b9, type: 3}
+    - {fileID: 3059703712109696104, guid: 6cf7dee6ca0564878b3d8bd34897d0b9, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8975061648236931269, guid: 6cf7dee6ca0564878b3d8bd34897d0b9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1747422368}
   m_SourcePrefab: {fileID: 100100000, guid: 6cf7dee6ca0564878b3d8bd34897d0b9, type: 3}
 --- !u!1001 &7399465524171749671
 PrefabInstance:
