@@ -24,7 +24,11 @@ public class HpManager : MonoBehaviour
             }
             else
             {
-                var x = (PlayerController)script;
+                if (script.GetType() == typeof(Boss))
+                {
+                    var x = (Boss)script;
+                    x.hp -= hp;
+                }
             }
         }
         

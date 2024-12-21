@@ -24,6 +24,10 @@ TagManager:
   - Ladder_Up
   - LeftBorder
   - RightBorder
+  - ammo
+  - grenadeAmmo
+  - END
+  - shield
   layers:
   - Default
   - TransparentFX

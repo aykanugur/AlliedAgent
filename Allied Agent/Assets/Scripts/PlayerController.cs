@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
     
     //UI
     public Manager manager;
+
+    public GameObject boss;
     
     
     public bool GetCrouch()
@@ -254,6 +256,7 @@ public class PlayerController : MonoBehaviour
     private void Knife()
     {
         //test it with jump 
+        _nearEnemyTransform.gameObject.GetComponent<EnemyAI>().enabled = false;
         _nearEnemyTransform.gameObject.GetComponent<EnemyAnimations>().hp = -1;
         _aim = false;
         _velocityX = 0;
@@ -612,6 +615,23 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("LeftBorder"))
+        {
+            other.gameObject.transform.position = new Vector3(120,other.transform.position.y,other.transform.position.z);
+            other.gameObject.GetComponent<BoxCollider>().isTrigger = false;
+            boss.SetActive(true);
+            
+        }
+        if (other.CompareTag("END"))
+        {
+            manager.StartNext();
+            Debug.Log("test");
+        }
+        if (other.gameObject.CompareTag("ammo"))
+        {
+            currentGun.GetComponent<Gun>().AddAmmo();
+            Destroy(other.gameObject);
+        }
         if (other.gameObject.CompareTag("ladder"))
         {
             _ladderDownObject = other.transform.GetChild(0).gameObject;
