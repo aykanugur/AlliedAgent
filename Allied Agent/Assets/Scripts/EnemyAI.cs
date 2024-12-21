@@ -276,8 +276,10 @@ public class EnemyAI : MonoBehaviour
             {
                 animations.Aim(true);
                 animations.Cover(false);
-                gun.Shoot();
-                //TODO: Stuck moving while aiming problem
+                
+                //TODO: Enemy shoot itself, either enemybullet or disable rigidbody
+                gun.Shoot(player.transform);
+                
             }
             else //Reload
             {
