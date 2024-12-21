@@ -44,6 +44,10 @@ public class BossBullet : MonoBehaviour
                 }
                 break;
             
+            case "Enemy":
+                
+                break;
+            
             default:
                 Destroy(gameObject);
                 break;
