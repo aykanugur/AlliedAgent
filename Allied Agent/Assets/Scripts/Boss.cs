@@ -16,6 +16,8 @@ public class Boss : MonoBehaviour
     public GameObject shield;
     public bool shieldBool;
     public GameObject box;
+    public GameObject bullet;
+    public float bulletSpeed = 5f;
     
     IEnumerator Shoot()
     {
@@ -25,6 +27,13 @@ public class Boss : MonoBehaviour
             muzzle2.LookAt(player.transform.position);
             // write basic shoot code here pls !! 
             // with red tail
+            GameObject currentBullet1 = Instantiate(bullet, muzzle.position, Quaternion.Euler(0, 90, 90));
+            currentBullet1.GetComponent<Rigidbody>().velocity = transform.forward.normalized * bulletSpeed;
+            GameObject currentBullet2 = Instantiate(bullet, muzzle2.position, Quaternion.Euler(0, 90, 90));
+            currentBullet2.GetComponent<Rigidbody>().velocity = transform.forward.normalized * bulletSpeed;
+            // basic shoot code has been written (:
+            // with red tail
+            
             if (shieldBool)
             {
                 shield.SetActive(false);

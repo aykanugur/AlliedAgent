@@ -8,10 +8,12 @@ public class GrenadeThrow : MonoBehaviour
     public float throwDelay=2.7f;
     public GameObject grenade;
     public GameObject molotof;
+    public int maxGrenadeCount = 6;
 
     private float currentDelay;
     private bool ableToThrow;
     private bool molotofActive = false;
+    private int currentGrenadeCount;
     
     
     // Start is called before the first frame update
@@ -19,6 +21,7 @@ public class GrenadeThrow : MonoBehaviour
     {
         ableToThrow = true;
         currentDelay = throwDelay;
+        currentGrenadeCount = maxGrenadeCount;
     }
 
     // Update is called once per frame
@@ -32,9 +35,10 @@ public class GrenadeThrow : MonoBehaviour
             }
         }
         
-        if (Input.GetKeyUp(KeyCode.G) && ableToThrow && !Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyUp(KeyCode.G) && ableToThrow && !Input.GetKey(KeyCode.LeftControl) && currentGrenadeCount > 0)
         {
             ableToThrow = false;
+            currentGrenadeCount--;
         }
         
         
