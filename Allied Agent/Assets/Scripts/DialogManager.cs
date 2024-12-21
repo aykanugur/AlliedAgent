@@ -27,6 +27,7 @@ public class DialogManager : MonoBehaviour
     public Missions missions;
     public GameObject wall;
     public GameObject bismarck;
+    public Manager manager;
     
     private void Start()
     {
@@ -63,6 +64,11 @@ public class DialogManager : MonoBehaviour
 
     public void ContDialog()
     {
+        if (manager != null)
+        {
+            manager.gunGameObject.SetActive(false);
+            manager.ammo.SetActive(false);
+        }
         playerController.currentGun.GetComponent<Gun>().enabled = false;
         playerController.enabled = false;
         _index++;
@@ -95,6 +101,11 @@ public class DialogManager : MonoBehaviour
         }
         else
         {
+            if (manager != null)
+            {
+                manager.gunGameObject.SetActive(true);
+                manager.ammo.SetActive(true);
+            }
             if (checkpoints[_index])
             {
                 gameObject.SetActive(false);
@@ -110,6 +121,7 @@ public class DialogManager : MonoBehaviour
                 playerController.currentGun.GetComponent<Gun>().enabled = true;
                 Destroy(wall);
                 Destroy(this.gameObject);
+                
             }
         }
     }

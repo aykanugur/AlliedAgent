@@ -2460,7 +2460,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 765c61d40414943baa01df4eb09e0af7, type: 2}
   tracerInterval: 5
   time: 0.05
+  bulletDamage: 10
   currentCapacity: 0
+  magn: 0.5
+  rough: 5
+  fadeIn: 0.3
+  fadeOut: 0.1
   bullet: {fileID: 2032689912584210912, guid: 2af6ce20103ce2448bb9e176f99cff09, type: 3}
   bulletSpawnPoint: {fileID: 6907403947920371448}
   _audioClips:
@@ -2469,6 +2474,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 35eefbeeb49fc4277a06f20f9815845a, type: 3}
   - {fileID: 8300000, guid: 35eefbeeb49fc4277a06f20f9815845a, type: 3}
   - {fileID: 8300000, guid: 2f2bd0339427c4eae8458842813cf345, type: 3}
+  manager: {fileID: 0}
 --- !u!82 &5074281820888504224
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8486,7 +8492,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 765c61d40414943baa01df4eb09e0af7, type: 2}
   tracerInterval: 5
   time: 0.05
+  bulletDamage: 20
   currentCapacity: 0
+  magn: 0.5
+  rough: 10
+  fadeIn: 0.3
+  fadeOut: 0.1
   bullet: {fileID: 2032689912584210912, guid: 2af6ce20103ce2448bb9e176f99cff09, type: 3}
   bulletSpawnPoint: {fileID: 5738525129805987331}
   _audioClips:
@@ -8494,6 +8505,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 976459fe9e5ed48c5b6aaa3fa951a250, type: 3}
   - {fileID: 8300000, guid: ec3b9232c5ff64bcfb27a72c50730ee4, type: 3}
   - {fileID: 8300000, guid: c16c8f3bd468240f4a8b30e5a69039b2, type: 3}
+  manager: {fileID: 0}
 --- !u!82 &3696592661838679259
 AudioSource:
   m_ObjectHideFlags: 0
@@ -20100,7 +20112,7 @@ MonoBehaviour:
   grenadeMass: 1
   throwForce: 10
   throwDelay: 2
-  grenade: {fileID: 1110313022349748024, guid: c774da8728cfa62408d541525b2ca1b8, type: 3}
+  grenade: {fileID: 8908433765125011149, guid: 2738fd3a2b17844e2bc978465422465f, type: 3}
   molotof: {fileID: 1110313022349748024, guid: c774da8728cfa62408d541525b2ca1b8, type: 3}
 --- !u!1 &6882416834504987956
 GameObject:
@@ -25929,13 +25941,13 @@ GameObject:
   - component: {fileID: 4435812188145956969}
   - component: {fileID: 5580269436160308246}
   - component: {fileID: 5898430502611226600}
-  - component: {fileID: 4433727187191885184}
   - component: {fileID: 5565300181747907207}
   - component: {fileID: 8223426711218807976}
   - component: {fileID: 2654399913314615479}
   - component: {fileID: 7157493144333711248}
   - component: {fileID: 9132752272798186097}
-  - component: {fileID: 6450178617617922986}
+  - component: {fileID: 1940423974469885356}
+  - component: {fileID: 2306469978154253277}
   m_Layer: 3
   m_Name: Player_New
   m_TagString: Player
@@ -26000,9 +26012,6 @@ MonoBehaviour:
   - {fileID: 8639208406025643914}
   - {fileID: 8172873772604778860}
   currentGun: {fileID: 4384383091093713195}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 65
   weapons:
   - {fileID: 4384383091093713195}
   - {fileID: 2673445091462799430}
@@ -26017,9 +26026,16 @@ MonoBehaviour:
   - {fileID: 6235577781773893174}
   secondHand: {fileID: 2154650421837154734}
   childMagazine: {fileID: 0}
-  tutor: {fileID: 0}
-  _grenadeThrow: {fileID: 0}
   freeCamera: {fileID: 0}
+  tutor: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 193
+  grenadeThrow: {fileID: 0}
+  colliders:
+  - {fileID: 5898430502611226600}
+  - {fileID: 2306469978154253277}
+  manager: {fileID: 0}
 --- !u!54 &5580269436160308246
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26070,27 +26086,6 @@ CapsuleCollider:
   m_Height: 1.76
   m_Direction: 1
   m_Center: {x: 0, y: 0.92, z: 0}
---- !u!65 &4433727187191885184
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8534337631839018516}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.2842441, y: 1.0057142, z: 0.31493774}
-  m_Center: {x: -0.010233179, y: 1.9702457, z: -0.08098492}
 --- !u!114 &5565300181747907207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26327,7 +26322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 465283c44ed0d4dc2af742d09f3e1eed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6450178617617922986
+--- !u!114 &1940423974469885356
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -26355,6 +26350,29 @@ MonoBehaviour:
   playerController: {fileID: 4435812188145956969}
   box: {fileID: 0}
   active: 1
+--- !u!136 &2306469978154253277
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8534337631839018516}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.09
+  m_Height: 1.08
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.59, z: 0}
 --- !u!1 &8535537872548542620
 GameObject:
   m_ObjectHideFlags: 0
