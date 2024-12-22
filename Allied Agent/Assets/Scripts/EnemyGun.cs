@@ -39,13 +39,14 @@ public class EnemyGun : MonoBehaviour
         }
     }
 
-    public void Shoot()
+    public void Shoot(Transform target)
     {
         if (!cooldown)
         {
             cooldown = true;
             currentCooldown = Time.time;
             currentCapacity--;
+            transform.localEulerAngles.Set(transform.localEulerAngles.x,CalculateShootAngle(target),transform.localEulerAngles.z);
             Vector3 direction = bulletSpawnPoint.forward;
             GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
             if (tracerCount <= 0)
@@ -67,6 +68,8 @@ public class EnemyGun : MonoBehaviour
             currentBullet.GetComponent<Rigidbody>().mass = projectileMass;
             currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
             tracerCount--;
+
+            
         }
     }
     

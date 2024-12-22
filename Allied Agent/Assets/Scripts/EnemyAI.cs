@@ -59,7 +59,7 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //TODO: automatize Shooting=false
+        
         if (agent.isStopped)
         {
             agent.isStopped = false;
@@ -263,8 +263,7 @@ public class EnemyAI : MonoBehaviour
         if (!shooting)
         {
             shooting = true;
-            
-           
+
         }
 
         if (!gun.getCoolDown())
@@ -274,10 +273,13 @@ public class EnemyAI : MonoBehaviour
             
             if (gun.currentCapacity > 1 )
             {
+                _rigBuilder.enabled = true; //Enable aim rigidbody, disable when animation is stopped
                 animations.Aim(true);
                 animations.Cover(false);
-                gun.Shoot();
-                //TODO: Stuck moving while aiming problem
+                
+                //TODO: Enemy shoot itself, either enemybullet or disable rigidbody
+                gun.Shoot(player.transform);
+                
             }
             else //Reload
             {
