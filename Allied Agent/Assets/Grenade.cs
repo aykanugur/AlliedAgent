@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Grenade : MonoBehaviour
@@ -33,7 +30,7 @@ public class Grenade : MonoBehaviour
         foreach (Collider hit in hitColliders)
         {
             float distance = Vector3.Distance(transform.position, hit.transform.position);
-            if (hit.gameObject != null)
+            if (!hit.gameObject.CompareTag(null))
             {
                 switch (hit.gameObject.tag)
                 {
@@ -48,7 +45,7 @@ public class Grenade : MonoBehaviour
                         {
                             Vector3 direction = hit.transform.position - transform.position;
                             direction = direction.normalized;
-                            hit.GameObject().GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance, ForceMode.Impulse);
+                            hit.gameObject.GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance, ForceMode.Impulse);
                         }
                         break;
                 
@@ -61,7 +58,7 @@ public class Grenade : MonoBehaviour
                             {
                                 Vector3 direction = hit.transform.position - transform.position;
                                 direction = direction.normalized;
-                                hit.GameObject().GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance * distance, ForceMode.Impulse);
+                                hit.gameObject.GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance * distance, ForceMode.Impulse);
                             }
                         }
                         break;
@@ -75,6 +72,7 @@ public class Grenade : MonoBehaviour
         
         //create explosion effect below
         Instantiate(explosion, transform.position, Quaternion.identity);
+        //add grenade sound effect here
         
         Destroy(gameObject);
     }
