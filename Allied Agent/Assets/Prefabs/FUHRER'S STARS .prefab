@@ -1680,6 +1680,7 @@ GameObject:
   - component: {fileID: 5717433995977045238}
   - component: {fileID: 6310743054195835715}
   - component: {fileID: 5526823210760762762}
+  - component: {fileID: 7699281770052449754}
   m_Layer: 6
   m_Name: 'FUHRER''S STARS '
   m_TagString: Enemy
@@ -1767,6 +1768,9 @@ MonoBehaviour:
   collider2: {fileID: 7619474226898918592}
   hp: 100
   red: 0
+  ammo: {fileID: 2472954966340404023, guid: a81289e1a2b40437fb43d5b1b0f6ed0c, type: 3}
+  rigBuilder: {fileID: 6310743054195835715}
+  gun: {fileID: 7885434341461954355}
 --- !u!114 &2141069041557283023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1971,6 +1975,20 @@ MonoBehaviour:
   - {fileID: 5027025973789297383}
   - {fileID: 191569986894446051}
   - {fileID: 5677233772115082518}
+--- !u!114 &7699281770052449754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6640415007836730109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4d36c09c3713934085140c5c2b4a85b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trigCollider: {fileID: 7619474226898918592}
+  behaviour: {fileID: 2141069041557283023}
 --- !u!1 &6677573498304416931
 GameObject:
   m_ObjectHideFlags: 0

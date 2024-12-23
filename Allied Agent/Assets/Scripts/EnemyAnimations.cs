@@ -21,6 +21,7 @@ public class EnemyAnimations : MonoBehaviour
     private bool firstTime;
     public GameObject gun;
     
+    
 
     private void Start()
     {

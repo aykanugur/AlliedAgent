@@ -217,9 +217,18 @@ public class EnemyAI : MonoBehaviour
                 double temp = Vector3.Distance(player.transform.position, place.transform.position);
                 if (temp < gunRange)
                 {
-                    distanceToCover = temp;
-                    coverPos = place.transform.position;
-                    break;
+                    if (coverPos == Vector3.zero) //If we have initial
+                    {
+                        distanceToCover = temp;
+                        coverPos = place.transform.position;
+                    }
+                    else if(Vector3.Distance(transform.position,coverPos) > Vector3.Distance(transform.position,place.transform.position))
+                    //Select nearest place
+                    {
+                        
+                        coverPos = place.transform.position;
+                        distanceToCover = temp;
+                    }
                 }
             }
 
@@ -229,7 +238,6 @@ public class EnemyAI : MonoBehaviour
                 //If we have a cover object which the gun can shoot go there
                 agent.SetDestination(coverPos); //We can't use hasPath bcz player can shoot while moving
                 covering = true;
-                
                 
             }
             
