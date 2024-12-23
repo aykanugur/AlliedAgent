@@ -285,7 +285,7 @@ public class EnemyAI : MonoBehaviour
                 animations.Cover(false);
                 
                 //TODO: Enemy shoot itself, either enemybullet or disable rigidbody
-                gun.Shoot(player.transform);
+                gun.Shoot();
                 
             }
             else //Reload
