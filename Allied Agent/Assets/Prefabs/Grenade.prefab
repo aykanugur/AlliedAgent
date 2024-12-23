@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2164250903856997120}
   - component: {fileID: 5988516306483463911}
   - component: {fileID: 8282216513575881652}
-  m_Layer: 0
+  - component: {fileID: 1453017537812383363}
+  m_Layer: 2
   m_Name: Grenade
-  m_TagString: Untagged
+  m_TagString: grenadeAmmo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3278867904975056926}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 29.68, y: 0.44788006, z: -4.7089157}
   m_LocalScale: {x: 0.26, y: 0.26, z: 0.26}
   m_ConstrainProportionsScale: 1
@@ -84,6 +85,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1453017537812383363
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3278867904975056926}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.6387289, y: 1.695466, z: 33.93549}
+  m_Center: {x: 0.060110826, y: 0.70578873, z: 5.2975125}
 --- !u!1 &8133299224614710304
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8925960600937710951}
   - component: {fileID: 8653632096400718852}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

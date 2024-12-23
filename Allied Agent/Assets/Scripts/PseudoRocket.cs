@@ -14,6 +14,9 @@ public class PseudoRocket : MonoBehaviour
     private float currentReloadTime = 0f;
     private bool isReloading = false;
     private Transform tf;
+    public Manager manager;
+
+    public int rocketCount;
 
     void Start()
     {
@@ -22,6 +25,15 @@ public class PseudoRocket : MonoBehaviour
     
     void Update()
     {
+        manager.ChangeCurrentAmmo(rocketCount);
+        if (needsReload)
+        {
+            manager.ChangeAmmo(0);
+        }
+        else
+        {
+            manager.ChangeAmmo(1);
+        }
         if (isReloading)
         {
             currentReloadTime -= Time.deltaTime;
@@ -37,10 +49,13 @@ public class PseudoRocket : MonoBehaviour
             Fire();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && needsReload && !isReloading)
+        if (Input.GetKeyDown(KeyCode.Q) && needsReload && !isReloading && rocketCount > 0)
         {
+            
             isReloading = true;
             currentReloadTime = reloadTime;
+            rocketCount = rocketCount - 1;
+            manager.ChangeCurrentAmmo(1);
         }
     }
     
@@ -53,6 +68,7 @@ public class PseudoRocket : MonoBehaviour
         rb.mass = rocketMass;
         rb.AddForce(-tf.right.normalized * shootForce, ForceMode.Impulse);
         pseudoRocket.SetActive(false);
+        manager.ChangeCurrentAmmo(0);
     }
 
     private void Reload()

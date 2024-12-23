@@ -33,7 +33,7 @@ public class EnemyAI : MonoBehaviour
     
     [SerializeField] private bool damaging; //If player shooting to us
 
-    private GameObject player;
+    public GameObject player;
     private GameObject[] coverPlaces;
 
     private EnemyAnimations animations; //Enemy animations script
@@ -123,7 +123,6 @@ public class EnemyAI : MonoBehaviour
             if (hit)
             {
                 MoveToPlayer(hitInfo);
-                
             }
             else
             {
@@ -278,7 +277,7 @@ public class EnemyAI : MonoBehaviour
                 animations.Cover(false);
                 
                 //TODO: Enemy shoot itself, either enemybullet or disable rigidbody
-                gun.Shoot(player.transform);
+                gun.Shoot();
                 
             }
             else //Reload

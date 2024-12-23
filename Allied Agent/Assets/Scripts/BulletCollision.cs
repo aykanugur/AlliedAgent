@@ -1,10 +1,9 @@
 
+using System;
 using UnityEngine;
 
 public class BulletCollision : MonoBehaviour
 {
-    
-    
     public bool isTracer = false;
     public TrailRenderer trail;
     public float tracerTimeout = 3.5f;
@@ -12,6 +11,7 @@ public class BulletCollision : MonoBehaviour
     private Rigidbody rb;
     private Transform tf;
     public float hp;
+    public bool enemy;
     
     // Start is called before the first frame update
     void Start()
@@ -32,21 +32,24 @@ public class BulletCollision : MonoBehaviour
     {
         PointNoseToMovementVector();
     }
-
     
     private void OnTriggerEnter(Collider other)
     {
         switch (other.gameObject.tag)
         {
             case "Enemy":
-                GameObject child = Instantiate(blood, other.transform);
-                var transform1 = transform;
-                child.transform.position = new Vector3(other.transform.position.x,transform1.position.y,transform1.position.z);
-                child.transform.eulerAngles = transform1.eulerAngles;
-                child.transform.SetParent(other.transform);
-                if (other.gameObject.GetComponent<HpManager>() != null)
+                if (enemy == false)
                 {
-                    other.gameObject.GetComponent<HpManager>().Decreasehp(hp);
+                    GameObject child = Instantiate(blood, other.transform);
+                    var transform1 = transform;
+                    child.transform.position = new Vector3(other.transform.position.x,transform1.position.y,transform1.position.z);
+                    child.transform.eulerAngles = transform1.eulerAngles;
+                    child.transform.SetParent(other.transform);
+                    if (other.gameObject.GetComponent<HpManager>() != null)
+                    {
+                        other.gameObject.GetComponent<HpManager>().Decreasehp(hp);
+                    }
+                    Destroy(this.gameObject);
                 }
                 break;
             
@@ -61,8 +64,8 @@ public class BulletCollision : MonoBehaviour
                     {
                         other.gameObject.GetComponent<HpManager>().Decreasehp(hp);
                         other.GetComponent<Cover>().CheckHp();
-                        Destroy(this.gameObject);
                     }
+                    Destroy(this.gameObject);
                 }
                 break;
             case "DoNotDestroy":
@@ -71,11 +74,22 @@ public class BulletCollision : MonoBehaviour
                 break;
             case "CameraDontMoveZone":
                 break;
-            
-            default:
-                Destroy(this.gameObject);
+            case "Player":
+                if (enemy)
+                {
+                    GameObject child = Instantiate(blood, other.transform);
+                    var transform1 = transform;
+                    child.transform.position = new Vector3(other.transform.position.x,transform1.position.y,transform1.position.z);
+                    child.transform.eulerAngles = transform1.eulerAngles;
+                    child.transform.SetParent(other.transform);
+                    if (other.gameObject.GetComponent<HpManager>() != null)
+                    {
+                        other.gameObject.GetComponent<HpManager>().Decreasehp(hp);
+                    }
+                    Debug.Log("playerhit");
+                    Destroy(this.gameObject);
+                }
                 break;
-                
         }
     }
 

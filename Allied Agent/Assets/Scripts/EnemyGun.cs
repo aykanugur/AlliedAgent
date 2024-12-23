@@ -18,9 +18,10 @@ public class EnemyGun : MonoBehaviour
     public int currentCapacity;
     private int tracerCount = 0;
     private bool cooldown = false;
+    public Transform muzzle;
     
     public GameObject bullet;
-    public Transform bulletSpawnPoint;
+    
     
     
     // Start is called before the first frame update
@@ -39,17 +40,22 @@ public class EnemyGun : MonoBehaviour
         }
     }
 
-    public void Shoot(Transform target)
+    public void Shoot()
     {
+        Transform target = GameObject.FindGameObjectWithTag("PlayerTarget").transform;
         if (!cooldown)
         {
             cooldown = true;
             currentCooldown = Time.time;
             currentCapacity--;
-            transform.localEulerAngles.Set(transform.localEulerAngles.x,CalculateShootAngle(target),transform.localEulerAngles.z);
-            Vector3 direction = bulletSpawnPoint.forward;
-            GameObject currentBullet = Instantiate(bullet, bulletSpawnPoint.position, Quaternion.Euler(0, 90, 90));
-            if (tracerCount <= 0)
+            //muzzle.LookAt(target);
+            //muzzle.rotation = Quaternion.Euler(-muzzle.rotation.eulerAngles.x, CalculateShootAngle(target), -muzzle.rotation.eulerAngles.z);
+            //Vector3 direction = -muzzle.forward;
+            Vector3 directionToPlayer = (target.position - muzzle.position).normalized;
+            muzzle.rotation = Quaternion.LookRotation(directionToPlayer);
+            GameObject currentBullet = Instantiate(bullet, muzzle.position, Quaternion.Euler(0, 90, 90));
+            currentBullet.GetComponent<BulletCollision>().enemy = true;
+            if (1==1)//tracerCount <= 0
             {
                 tracerCount = tracerInterval;
                 currentBullet.gameObject.GetComponent<BulletCollision>().MakeTracer();
@@ -59,14 +65,9 @@ public class EnemyGun : MonoBehaviour
                 currentBullet.gameObject.GetComponent<BulletCollision>().makeNonTracer();
             }
 
-            if (Random.Range(0, 5) == 0) // aykan kod
-            {
-                int random = Random.Range(0, 2);
-                currentBullet.GetComponent<Renderer>().material = materials[random];
-            }
-
-            currentBullet.GetComponent<Rigidbody>().mass = projectileMass;
-            currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
+            currentBullet.GetComponent<Renderer>().material = materials[0];
+            
+            currentBullet.GetComponent<Rigidbody>().AddForce(muzzle.forward * shootForce, ForceMode.Impulse);
             tracerCount--;
 
             

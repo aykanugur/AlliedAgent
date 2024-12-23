@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
+using Random = UnityEngine.Random;
 
 public class EnemyAnimations : MonoBehaviour
 {
@@ -13,26 +15,38 @@ public class EnemyAnimations : MonoBehaviour
     public float hp;
     private SkinnedMeshRenderer _meshRenderer;
     public float red;
-
+    public GameObject ammo;
+    private bool firstTimeCry;
+    public RigBuilder rigBuilder;
     private bool firstTime;
+    public GameObject gun;
     
 
     private void Start()
     {
+        firstTimeCry = true;
         firstTime = true;
         _meshRenderer = transform.GetChild(0).GetComponent<SkinnedMeshRenderer>();
     }
 
     public void Die()
     {
+        Instantiate(ammo, transform.position, ammo.transform.rotation);
         collider2.enabled = false;
         collider.enabled = false;
         enemyAI.enabled = false;
         animator.SetTrigger("Death");
+        GetComponent<EnemyAnimations>().enabled = false;
     }
     public void Pray()
     {
+        rigBuilder.enabled = false;
+        gun.SetActive(false);
         animator.SetTrigger("WarCrime");
+        Instantiate(ammo, transform.position, ammo.transform.rotation);
+        collider2.enabled = false;
+        collider.enabled = false;
+        enemyAI.enabled = false;
     }
 
     public void Aim(bool status)
@@ -52,6 +66,15 @@ public class EnemyAnimations : MonoBehaviour
 
     private void Update()
     {
+        if (firstTimeCry && hp < 20)
+        {
+            int chance = Random.Range(0, 10);
+            if (chance == 5)
+            {
+                Pray();
+                firstTimeCry = false;
+            }
+        }
         if (hp != 100 && firstTime)
         {
             firstTime = false;

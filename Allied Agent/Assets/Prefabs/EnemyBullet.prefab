@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 497023973541082698}
   - component: {fileID: 2781561922931021855}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 75e241e5dee654478abca372c5c66e63, type: 2}
+  - {fileID: 2100000, guid: 5149aeb9b7415454aa566a0083f72a98, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,7 +104,7 @@ MonoBehaviour:
   tracerTimeout: 1.232
   blood: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
   hp: 10
-  enemy: 0
+  enemy: 1
 --- !u!136 &497023973541082698
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -150,7 +150,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 2
   m_Constraints: 0
@@ -208,7 +208,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 765c61d40414943baa01df4eb09e0af7, type: 2}
+  - {fileID: 2100000, guid: 5149aeb9b7415454aa566a0083f72a98, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -251,8 +251,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.2509804, g: 1, b: 0.3137255, a: 1}
-      key1: {r: 0.2509804, g: 1, b: 0.3137255, a: 1}
+      key0: {r: 1, g: 0, b: 0, a: 1}
+      key1: {r: 1, g: 0, b: 0, a: 1}
       key2: {r: 1, g: 1, b: 1, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

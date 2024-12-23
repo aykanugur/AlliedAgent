@@ -6,14 +6,16 @@ public class GrenadeThrow : MonoBehaviour
     public float grenadeMass = 30f;
     public float throwForce = 10f;
     public float throwDelay=2.7f;
-    public GameObject grenade;
-    public GameObject molotof;
+    public GameObject[] bombs;
     public int maxGrenadeCount = 6;
 
     private float currentDelay;
     private bool ableToThrow;
-    private bool molotofActive = false;
-    private int currentGrenadeCount;
+    public int bombIndex; // 0 grenade 1 molotof 2 flash
+    public int currentGrenadeCount;
+
+    public Manager manager;
+    
     
     
     // Start is called before the first frame update
@@ -26,16 +28,24 @@ public class GrenadeThrow : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   manager.ChangeCurrentBombCount(currentGrenadeCount);
         if (Input.GetKey(KeyCode.LeftControl))
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
-                molotofActive = !molotofActive;
+                if (bombIndex != 2)
+                {
+                    bombIndex++;
+                }
+                else
+                {
+                    bombIndex = 0;
+                }
             }
+            manager.ChangeBomb(bombIndex);
         }
         
-        if (Input.GetKeyUp(KeyCode.G) && ableToThrow && !Input.GetKey(KeyCode.LeftControl) && currentGrenadeCount > 0)
+        if (Input.GetKeyUp(KeyCode.G) && ableToThrow && Input.GetKey(KeyCode.LeftControl)== false && currentGrenadeCount > 0)
         {
             ableToThrow = false;
             currentGrenadeCount--;
@@ -54,15 +64,9 @@ public class GrenadeThrow : MonoBehaviour
 
     public void Throw()
     {
+        Debug.Log("throw");
         GameObject grenadeInUse;
-        if (molotofActive)
-        {
-            grenadeInUse = molotof;
-        }
-        else
-        {
-            grenadeInUse = grenade;
-        }
+        grenadeInUse = bombs[bombIndex];
         GameObject currentGrenade = Instantiate(grenadeInUse, transform.position, Quaternion.identity);
         currentGrenade.GetComponent<Rigidbody>().AddForce(transform.right.normalized * throwForce, ForceMode.Impulse);
         currentGrenade.GetComponent<Rigidbody>().mass = grenadeMass;

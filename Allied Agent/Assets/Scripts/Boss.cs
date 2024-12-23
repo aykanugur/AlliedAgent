@@ -14,41 +14,35 @@ public class Boss : MonoBehaviour
     public int horizontalSpeed;
     public GameObject bismarck;
     public GameObject shield;
-    public bool shieldBool;
     public GameObject box;
     public GameObject bullet;
-    public float bulletSpeed = 5f;
     
     IEnumerator Shoot()
     {
+        
         while (true)
         {
             muzzle.LookAt(player.transform.position);
             muzzle2.LookAt(player.transform.position);
             // write basic shoot code here pls !! 
             // with red tail
-            GameObject currentBullet1 = Instantiate(bullet, muzzle.position, Quaternion.Euler(0, 90, 90));
-            currentBullet1.GetComponent<Rigidbody>().velocity = transform.forward.normalized * bulletSpeed;
+            Transform target = GameObject.FindGameObjectWithTag("PlayerTarget").transform;
+            Vector3 directionToPlayer = (target.position - muzzle.position).normalized;
+            muzzle.rotation = Quaternion.LookRotation(directionToPlayer);
+            muzzle2.rotation = Quaternion.LookRotation(directionToPlayer);
+            GameObject currentBullet = Instantiate(bullet, muzzle.position, Quaternion.Euler(0, 90, 90));
             GameObject currentBullet2 = Instantiate(bullet, muzzle2.position, Quaternion.Euler(0, 90, 90));
-            currentBullet2.GetComponent<Rigidbody>().velocity = transform.forward.normalized * bulletSpeed;
+            currentBullet.GetComponent<Rigidbody>().AddForce(muzzle.forward * 0.5f, ForceMode.Impulse);
+            currentBullet2.GetComponent<Rigidbody>().AddForce(muzzle2.forward * 0.5f, ForceMode.Impulse);
+            Debug.Log("shoot");
             // basic shoot code has been written (:
             // with red tail
             
-            if (shieldBool)
-            {
-                shield.SetActive(false);
-                StartCoroutine(OpenShield());
-            }
+            
             yield return new WaitForSeconds(3);
         }
     }
-
-    IEnumerator OpenShield()
-    {
-        yield return new WaitForSeconds(2);
-        Debug.Log("shiled activated");
-        shield.SetActive(true);
-    }
+    
 
     private void Form1()
     {
@@ -139,7 +133,7 @@ public class Boss : MonoBehaviour
              // bismarck shoot speed 1 ammo 3 second
              // walk right left and jump sometimes and shoot player
              // also use shield while not shooting 
-             shieldBool = true;
+             shield.SetActive(true);
          break;
          
          case < 0:

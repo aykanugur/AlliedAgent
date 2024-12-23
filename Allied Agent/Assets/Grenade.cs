@@ -30,7 +30,7 @@ public class Grenade : MonoBehaviour
         foreach (Collider hit in hitColliders)
         {
             float distance = Vector3.Distance(transform.position, hit.transform.position);
-            if (!hit.gameObject.CompareTag(null))
+            if (hit.gameObject != null)
             {
                 switch (hit.gameObject.tag)
                 {
@@ -41,12 +41,6 @@ public class Grenade : MonoBehaviour
                 
                     case "Enemy":
                         hit.gameObject.GetComponent<EnemyAnimations>().hp -= damage/(distance * distance);
-                        if (hit.gameObject.GetComponent<EnemyAnimations>().hp <= 0)
-                        {
-                            Vector3 direction = hit.transform.position - transform.position;
-                            direction = direction.normalized;
-                            hit.gameObject.GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance, ForceMode.Impulse);
-                        }
                         break;
                 
                     case "cover":
@@ -54,12 +48,6 @@ public class Grenade : MonoBehaviour
                         {
                             hit.gameObject.GetComponent<Cover>().hp = hit.gameObject.GetComponent<Cover>().hp - damage/(distance * distance);
                             hit.GetComponent<Cover>().CheckHp();
-                            if (hit.GetComponent<Cover>().hp > 0)
-                            {
-                                Vector3 direction = hit.transform.position - transform.position;
-                                direction = direction.normalized;
-                                hit.gameObject.GetComponent<Rigidbody>().AddForce(direction * explosionForce / distance * distance, ForceMode.Impulse);
-                            }
                         }
                         break;
                 
