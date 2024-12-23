@@ -6,6 +6,7 @@ public class BossBullet : MonoBehaviour
 
     private Rigidbody rb;
     private Transform tf;
+    public GameObject blood;    
     
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,11 @@ public class BossBullet : MonoBehaviour
             case "Player":
                 if (other.gameObject.GetComponent<HpManager>() != null)
                 {
+                    GameObject child = Instantiate(blood, other.transform);
+                    var transform1 = transform;
+                    child.transform.position = new Vector3(other.transform.position.x,transform1.position.y,transform1.position.z);
+                    child.transform.eulerAngles = transform1.eulerAngles;
+                    child.transform.SetParent(other.transform);
                     other.gameObject.GetComponent<HpManager>().Decreasehp(damage);
                     Destroy(this.gameObject);
                 }
