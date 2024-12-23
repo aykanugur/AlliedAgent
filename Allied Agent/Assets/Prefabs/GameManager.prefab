@@ -46,9 +46,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gun: {fileID: 0}
   ammoText: {fileID: 0}
+  currentAmmoText: {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: 5f5d42802a400487a8e9977c557be424, type: 3}
   - {fileID: 21300000, guid: 26456592236404ab18605de71672bc38, type: 3}
+  - {fileID: 21300000, guid: bc7369ceae53443ecbb4afe1e126fcbc, type: 3}
   gunGameObject: {fileID: 0}
   ammo: {fileID: 0}
+  currentAmmoGameObject: {fileID: 0}
   shootSpeed: 0
+  black: {fileID: 0}
+  audioSource: {fileID: 0}

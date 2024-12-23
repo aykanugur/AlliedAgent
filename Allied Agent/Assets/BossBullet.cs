@@ -15,10 +15,6 @@ public class BossBullet : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -48,9 +44,7 @@ public class BossBullet : MonoBehaviour
                 
                 break;
             
-            default:
-                Destroy(gameObject);
-                break;
+            
         }
     }
 }

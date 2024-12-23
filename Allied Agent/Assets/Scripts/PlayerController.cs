@@ -60,7 +60,9 @@ public class PlayerController : MonoBehaviour
     public Manager manager;
 
     public GameObject boss;
-    
+
+    public float hp;
+    public GameObject end;
     
     public bool GetCrouch()
     {
@@ -95,6 +97,19 @@ public class PlayerController : MonoBehaviour
         CheckCover();
         ChangeWeapons();
         GunUI();
+        CheckHp();
+    }
+
+    private void CheckHp()
+    {
+        if (hp < 0)
+        {
+            // play die animation
+            _animator.SetTrigger("Die");
+            end.SetActive(true);
+            StartCoroutine(manager.EndGameSequance());
+            GetComponent<PlayerController>().enabled = false;
+        }
     }
 
     private void GunUI()
@@ -239,9 +254,12 @@ public class PlayerController : MonoBehaviour
         {
             weaponsV[1].SetActive(false);
         }
-        currentGun.GetComponent<AudioSource>().clip = currentGun.GetComponent<Gun>()._audioClips[3];
-        currentGun.GetComponent<AudioSource>().Play();
 
+        if (currentGun.name != "rocketlauncher")
+        {
+            currentGun.GetComponent<AudioSource>().clip = currentGun.GetComponent<Gun>()._audioClips[3];
+            currentGun.GetComponent<AudioSource>().Play();
+        }
         if (_hasGun == false)
         {
             foreach (var wv in weaponsV)
@@ -287,8 +305,7 @@ public class PlayerController : MonoBehaviour
 
     public void StartThrowGrenade()
     {
-        // animation throw  end call will's code 
-        grenadeThrow.Throw();
+        // animation throw  end call will's code    
     }
 
     private IEnumerator Grenade(int val)
@@ -322,7 +339,7 @@ public class PlayerController : MonoBehaviour
     private void GetInputsFunction()
     {
         PositionCorrector();
-        if (Input.GetKey(KeyCode.LeftControl) == false)
+        if (Input.GetKey(KeyCode.LeftControl) == false && grenadeThrow.currentGrenadeCount > 0)
         {
             if (Input.GetKey(KeyCode.G)&& _hasGun && _reload == false && _crouch == false)
             {
@@ -627,9 +644,22 @@ public class PlayerController : MonoBehaviour
             manager.StartNext();
             Debug.Log("test");
         }
+
+        if (other.gameObject.CompareTag("grenadeAmmo"))
+        {
+            grenadeThrow.currentGrenadeCount++;
+            Destroy(other.gameObject);
+        }
         if (other.gameObject.CompareTag("ammo"))
         {
-            currentGun.GetComponent<Gun>().AddAmmo();
+            if (currentGun.name !=  "rocketlauncher")
+            {
+                currentGun.GetComponent<Gun>().AddAmmo();
+            }
+            else
+            {
+                currentGun.GetComponent<PseudoRocket>().rocketCount++;
+            }
             Destroy(other.gameObject);
         }
         if (other.gameObject.CompareTag("ladder"))
@@ -731,7 +761,11 @@ public class PlayerController : MonoBehaviour
                 position = new Vector3(position1.x,position.y,position1.z );
                 _target.transform.position = position;
             }
-            currentGun.transform.GetChild(4).transform.LookAt(_target.transform);
+
+            if (currentGun.name != "rocketlauncher")
+            {
+                currentGun.transform.GetChild(4).transform.LookAt(_target.transform);
+            }
         }
     }
     public void StartReload()

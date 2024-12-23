@@ -7,21 +7,34 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-
 public class Manager : MonoBehaviour
 {
-   public Image gun;
-   public TextMeshProUGUI ammoText,currentAmmoText;
-   public Sprite[] sprites;
-   public GameObject gunGameObject, ammo,currentAmmoGameObject;
+   public Image gun,bombI;
+   public TextMeshProUGUI ammoText,currentAmmoText,bombtext;
+   public Sprite[] sprites,bombsprites;
+   public GameObject gunGameObject, ammo,currentAmmoGameObject,bombO;
    public float shootSpeed;
    public GameObject black;
    public AudioSource audioSource;
+   public GameObject[] guns;
 
    private void Start()
    {
       StartCoroutine(StartGameSequance());
+      if (PlayerPrefs.GetInt("ak47C") != null)
+      {
+         guns[0].GetComponent<Gun>().currentAmmo = PlayerPrefs.GetInt("ak47C");
+         guns[0].GetComponent<Gun>().currentCapacity = PlayerPrefs.GetInt("ak47M");
+         guns[1].GetComponent<Gun>().currentAmmo = PlayerPrefs.GetInt("macC");
+         guns[1].GetComponent<Gun>().currentCapacity = PlayerPrefs.GetInt("macM");
+         guns[2].GetComponent<PseudoRocket>().rocketCount = PlayerPrefs.GetInt("rpgC");
+         guns[3].GetComponent<GrenadeThrow>().currentGrenadeCount = PlayerPrefs.GetInt("bombC");
+         ChangeBomb(PlayerPrefs.GetInt("bombC"));
+         ChangeCurrentAmmo(guns[0].GetComponent<Gun>().currentAmmo);
+         ChangeAmmo(guns[0].GetComponent<Gun>().currentCapacity);
+      }
    }
+   
 
    public void ChangeCurrentAmmo(int current)
    {
@@ -40,6 +53,16 @@ public class Manager : MonoBehaviour
       ammoText.text = currentAmmo.ToString();
       
       
+   }
+
+   public void ChangeBomb(int index)
+   {
+      bombI.sprite = bombsprites[index];
+   }
+
+   public void ChangeCurrentBombCount(int current)
+   {
+      bombtext.text = current.ToString();
    }
    
    private IEnumerator ChangeToRedTemporarily(Color color)
@@ -69,8 +92,8 @@ public class Manager : MonoBehaviour
          }
          else
          {
+            ChangeCurrentAmmo(currentGun.GetComponent<PseudoRocket>().rocketCount);
             gun.sprite = sprites[2];
-            ammoText.text = "-";
          }
       }
    }
@@ -86,10 +109,17 @@ public class Manager : MonoBehaviour
    IEnumerator Next()
    {
       yield return new WaitForSeconds(4);
+      PlayerPrefs.SetInt("ak47C",guns[0].GetComponent<Gun>().currentAmmo);
+      PlayerPrefs.SetInt("ak47M",guns[0].GetComponent<Gun>().currentCapacity);
+      PlayerPrefs.SetInt("macC",guns[1].GetComponent<Gun>().currentAmmo);
+      PlayerPrefs.SetInt("macM",guns[1].GetComponent<Gun>().currentCapacity);
+      PlayerPrefs.SetInt("rpgC",guns[2].GetComponent<PseudoRocket>().rocketCount);
+      PlayerPrefs.SetInt("bombC",guns[3].GetComponent<GrenadeThrow>().currentGrenadeCount);
       SceneManager.LoadScene(3);
    }
-   IEnumerator EndGameSequance()
+   public IEnumerator EndGameSequance()
    {
+      black.SetActive(true);
         
       while (black.GetComponent<Image>().color.a >= 1 == false)
       {

@@ -28,6 +28,7 @@ TagManager:
   - grenadeAmmo
   - END
   - shield
+  - PlayerTarget
   layers:
   - Default
   - TransparentFX

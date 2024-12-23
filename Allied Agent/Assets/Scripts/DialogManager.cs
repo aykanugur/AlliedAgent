@@ -69,7 +69,14 @@ public class DialogManager : MonoBehaviour
             manager.gunGameObject.SetActive(false);
             manager.ammo.SetActive(false);
         }
-        playerController.currentGun.GetComponent<Gun>().enabled = false;
+        if (playerController.currentGun.name != "rocketlauncher")
+        {
+            playerController.currentGun.GetComponent<Gun>().enabled = false;
+        }
+        else
+        {
+            playerController.currentGun.GetComponent<PseudoRocket>().enabled = false;
+        }
         playerController.enabled = false;
         _index++;
         text.text = String.Empty;
@@ -110,7 +117,14 @@ public class DialogManager : MonoBehaviour
             {
                 gameObject.SetActive(false);
                 playerController.enabled = true;
-                playerController.currentGun.GetComponent<Gun>().enabled = true;
+                if (playerController.currentGun.name != "rocketlauncher")
+                {
+                    playerController.currentGun.GetComponent<Gun>().enabled = true;
+                }
+                else
+                {
+                    playerController.currentGun.GetComponent<PseudoRocket>().enabled = true;
+                }
                 missions.changeMissions();
             }
             else
@@ -118,7 +132,14 @@ public class DialogManager : MonoBehaviour
                 bismarck.SetActive(true);
                 missions.changeMissions();
                 playerController.enabled = true;
-                playerController.currentGun.GetComponent<Gun>().enabled = true;
+                if (playerController.currentGun.name != "rocketlauncher")
+                {
+                    playerController.currentGun.GetComponent<Gun>().enabled = true;
+                }
+                else
+                {
+                    playerController.currentGun.GetComponent<PseudoRocket>().enabled = true;
+                }
                 Destroy(wall);
                 Destroy(this.gameObject);
                 

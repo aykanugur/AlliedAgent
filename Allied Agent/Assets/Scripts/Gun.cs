@@ -19,6 +19,7 @@ public class Gun : MonoBehaviour
     public int currentAmmo;
     
     
+    
     private float currentCooldown;
     public int currentCapacity;
     private int tracerCount = 0;
