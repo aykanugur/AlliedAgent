@@ -17,7 +17,8 @@ public class Bismarck : MonoBehaviour
     public GameObject fire;
     private PlayerController _playerController;
     public float shootSpeed = 10;
-    public LayerMask layerMask;  
+    public LayerMask layerMask;
+    public bool boss;
     
     private void Start()
     {
@@ -45,13 +46,15 @@ public class Bismarck : MonoBehaviour
     IEnumerator BismarckStart()
     {
         yield return new WaitForSeconds(5);
-        _playerController.SetAim(false);
-        _playerController.currentGun.GetComponent<Gun>().enabled = false;
-        _playerController.enabled = false;
-        
         _start = true;
-        cameras[0].SetActive(false);
-        cameras[1].SetActive(true);
+        if (boss == false)
+        {
+            cameras[0].SetActive(false);
+            cameras[1].SetActive(true);
+            _playerController.SetAim(false);
+            _playerController.currentGun.GetComponent<Gun>().enabled = false;
+            _playerController.enabled = false;
+        }
         GetComponent<AudioSource>().Play();
         StartCoroutine(startPlayOtherSound());
         StartCoroutine(BismarckStop());
@@ -68,10 +71,13 @@ public class Bismarck : MonoBehaviour
     IEnumerator BismarckStop()
     {
         yield return new WaitForSeconds(5);
-        cameras[1].SetActive(false);
-        cameras[0].SetActive(true);
-        player.GetComponent<PlayerController>().enabled = true;
-        _playerController.currentGun.GetComponent<Gun>().enabled = true;
+        if (boss == false)
+        {
+            cameras[1].SetActive(false);
+            cameras[0].SetActive(true);
+            player.GetComponent<PlayerController>().enabled = true;
+            _playerController.currentGun.GetComponent<Gun>().enabled = true;
+        }
         Destroy(ships);
     }
     
@@ -92,7 +98,8 @@ public class Bismarck : MonoBehaviour
     IEnumerator BumbumTime()
     {
         yield return new WaitForSeconds(2);
-        Instantiate(fire, bismarckTarget.transform.position,fire.transform.rotation);
+        GameObject firex = Instantiate(fire, bismarckTarget.transform.position,fire.transform.rotation);
+        if(boss) firex.transform.GetChild(8).gameObject.SetActive(false);
         _start = true;
         Hit();
     }

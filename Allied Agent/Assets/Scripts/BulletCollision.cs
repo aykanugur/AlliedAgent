@@ -53,6 +53,10 @@ public class BulletCollision : MonoBehaviour
                 }
                 break;
             
+            case "Shield":
+                Debug.Log("shield");
+                break;
+            
             case "Reflective":
                 ReflectBullet(other.gameObject.transform.forward);
                 break;

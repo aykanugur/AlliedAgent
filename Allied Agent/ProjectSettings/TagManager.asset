@@ -29,6 +29,7 @@ TagManager:
   - END
   - shield
   - PlayerTarget
+  - FINISH
   layers:
   - Default
   - TransparentFX

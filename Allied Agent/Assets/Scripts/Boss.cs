@@ -16,6 +16,8 @@ public class Boss : MonoBehaviour
     public GameObject shield;
     public GameObject box;
     public GameObject bullet;
+    public GameObject nein;
+    public GameObject wall;
     
     IEnumerator Shoot()
     {
@@ -79,6 +81,8 @@ public class Boss : MonoBehaviour
     public void Die()
     {
         box.SetActive(false);
+        nein.SetActive(true);
+        wall.SetActive(false);
         Destroy(this.gameObject);
     }
 
@@ -96,9 +100,21 @@ public class Boss : MonoBehaviour
     {
         if (forms[3] == false)
         {
-            Debug.Log("FORM 4 ");
+            shield.SetActive(true);
             forms[3] = true;
             bismarck.GetComponent<Bismarck>().shootSpeed = 3;
+        }
+    }
+
+    public void DecreaseHp(float dmg )
+    {
+        if (forms[3] && shield != null)
+        {
+            shield.GetComponent<Shield>().hp -= dmg;
+        }
+        else
+        {
+            hp = hp - dmg;
         }
     }
     
@@ -133,7 +149,6 @@ public class Boss : MonoBehaviour
              // bismarck shoot speed 1 ammo 3 second
              // walk right left and jump sometimes and shoot player
              // also use shield while not shooting 
-             shield.SetActive(true);
          break;
          
          case < 0:

@@ -1,5 +1,6 @@
 
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -62,7 +63,7 @@ public class PlayerController : MonoBehaviour
     public GameObject boss;
 
     public float hp;
-    public GameObject end;
+    public GameObject end,finish;
     
     public bool GetCrouch()
     {
@@ -632,6 +633,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            finish.SetActive(true);
+        }
         if (other.CompareTag("LeftBorder"))
         {
             other.gameObject.transform.position = new Vector3(120,other.transform.position.y,other.transform.position.z);
@@ -783,10 +788,20 @@ public class PlayerController : MonoBehaviour
         _magazine.GetComponent<BoxCollider>().enabled = true;
         _magazine.transform.SetParent(null);
         childMagazine = child;
+        Invoke("CheckAnim",10f);
+    }
+
+    private void CheckAnim()
+    {
+        if (_reload)
+        {
+            StopReload();
+        }
     }
     
     public void StopReload()
     {
+        Debug.Log("reloadStop");
         _reload = false;
         _animator.SetTrigger(StopReload1);
         childMagazine.SetActive(true);
