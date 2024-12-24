@@ -279,7 +279,8 @@ public class EnemyAI : MonoBehaviour
 
         }
 
-        agent.isStopped = true;
+        agent.ResetPath();
+        animations.Aim(true);
 
         if (!gun.getCoolDown())
         {
@@ -315,7 +316,11 @@ public class EnemyAI : MonoBehaviour
    public void SetDamaging(bool damaging)
     {
         this.damaging = damaging;
-        
+        if (damaging)
+        {
+            transform.LookAt(player.transform);
+        }
+
     }
 
     void DisableCoverCollider()
@@ -334,7 +339,7 @@ public class EnemyAI : MonoBehaviour
         if (other.gameObject.tag.Equals("Player"))
         {
             transform.LookAt(other.gameObject.transform.position); //If player is too close, look at them
-            following = true;
+            Shoot();
         }
     }
 }
