@@ -272,15 +272,11 @@ public class EnemyAI : MonoBehaviour
 
     void Shoot()
     {
-        Debug.Log("Shoot");
         if (!shooting)
         {
             shooting = true;
 
         }
-
-        agent.ResetPath();
-        animations.Aim(true);
 
         if (!gun.getCoolDown())
         {
