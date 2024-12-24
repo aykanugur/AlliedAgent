@@ -1868,6 +1868,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5465537209549141546}
   enemyAI: {fileID: 2141069041557283023}
+  agent: {fileID: 2097415869130252877}
   collider: {fileID: 8687122091910332802}
   collider2: {fileID: 7619474226898918592}
   hp: 100
