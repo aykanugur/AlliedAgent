@@ -5092,6 +5092,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 122420809}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &379751296 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8909539551073018558, guid: b8e1fbc63eba34a23b4dadf7ad05e46d,
+    type: 3}
+  m_PrefabInstance: {fileID: 8462421275134519380}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &383401396 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6862753382757015887, guid: ed2b753036d9c463a94174a6ea7eb6ff,
@@ -33603,10 +33609,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: target
       objectReference: {fileID: 0}
+    - target: {fileID: 1573636990501355758, guid: eb83a5eebd18e44f7a3556063ffd6f83,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7963520801945593270, guid: eb83a5eebd18e44f7a3556063ffd6f83,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33741,6 +33752,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 507364839459496507, guid: b8e1fbc63eba34a23b4dadf7ad05e46d,
+        type: 3}
+      propertyPath: prayTexts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 507364839459496507, guid: b8e1fbc63eba34a23b4dadf7ad05e46d,
+        type: 3}
+      propertyPath: prayTexts.Array.data[0]
+      value: I Surrender
+      objectReference: {fileID: 0}
     - target: {fileID: 1638460659793721985, guid: b8e1fbc63eba34a23b4dadf7ad05e46d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -33802,6 +33823,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2472954966340404023, guid: a81289e1a2b40437fb43d5b1b0f6ed0c,
         type: 3}
+    - target: {fileID: 4090726403198729992, guid: b8e1fbc63eba34a23b4dadf7ad05e46d,
+        type: 3}
+      propertyPath: text
+      value: 
+      objectReference: {fileID: 379751296}
     - target: {fileID: 4090726403198729992, guid: b8e1fbc63eba34a23b4dadf7ad05e46d,
         type: 3}
       propertyPath: rigBuilder
@@ -33900,6 +33926,11 @@ PrefabInstance:
       propertyPath: bombI
       value: 
       objectReference: {fileID: 2124393310}
+    - target: {fileID: 8478203226165464768, guid: 34f5832de1b9544b98f97179f717bc42,
+        type: 3}
+      propertyPath: first
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8478203226165464768, guid: 34f5832de1b9544b98f97179f717bc42,
         type: 3}
       propertyPath: ammoText
