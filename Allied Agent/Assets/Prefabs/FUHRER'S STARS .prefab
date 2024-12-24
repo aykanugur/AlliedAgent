@@ -1876,6 +1876,7 @@ MonoBehaviour:
   rigBuilder: {fileID: 6310743054195835715}
   gun: {fileID: 7885434341461954355}
   randomSpeech: {fileID: 507364839459496507}
+  text: {fileID: 8909539551073018558}
 --- !u!114 &2141069041557283023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2121,7 +2122,8 @@ MonoBehaviour:
   - Dein Ende ist gekommen, armselige Kreatur!
   - "Ich habe dich gesehen! Jetzt ist es Zeit f\xFCr einen Kampf!"
   - Dein Mut beeindruckt mich, aber es wird dich teuer zu stehen kommen!
-  prayTexts: []
+  prayTexts:
+  - I Surrender
   idle: 1
   pray: 0
   text: {fileID: 422436012483945571}

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Animations.Rigging;
 using Random = UnityEngine.Random;
 
@@ -10,6 +11,7 @@ public class EnemyAnimations : MonoBehaviour
 
     public Animator animator;
     public EnemyAI enemyAI;
+    public NavMeshAgent agent;
     public Collider collider,collider2;
 
     public float hp;
@@ -43,6 +45,7 @@ public class EnemyAnimations : MonoBehaviour
         randomSpeech.enabled = false;
         animator.SetTrigger("Death");
         GetComponent<EnemyAnimations>().enabled = false;
+        agent.enabled = false;
     }
     public void Pray()
     {
@@ -53,6 +56,7 @@ public class EnemyAnimations : MonoBehaviour
         animator.SetTrigger("WarCrime");
         Instantiate(ammo, transform.position, ammo.transform.rotation);
         enemyAI.enabled = false;
+        agent.enabled = false;
     }
 
     public void Aim(bool status)
