@@ -38,6 +38,8 @@ public class EnemyAI : MonoBehaviour
 
     private EnemyAnimations animations; //Enemy animations script
     private EnemyGun gun;
+
+    public RandomSpeech randomSpeech;
     
     // Start is called before the first frame update
     void Start()
@@ -146,6 +148,9 @@ public class EnemyAI : MonoBehaviour
     {
         if (hitInfo.transform.gameObject.tag.Equals("Player"))
         {
+            randomSpeech.idle = false;
+            randomSpeech.pray = false;
+            
             following = true; //States: following / covering
 
             transform.LookAt(hitInfo.transform.gameObject.transform.position); //Look to the player

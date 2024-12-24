@@ -48,8 +48,20 @@ public class FlashBang : MonoBehaviour
                 lightObject.SetActive(true);
                 StartCoroutine(Fade(whiteLight,lightObject));
             }
-            // disable enemy vision
+
+            if (collider.gameObject.CompareTag("Enemy") && collider.gameObject.name != "CUBITTLER")
+            {
+                _fadeTime = 1 / Vector3.Distance(collider.transform.position, transform.position);
+                collider.GetComponent<EnemyDamager>().SetFlashBanged(true);
+                StartCoroutine(FlashTime(_fadeTime,collider.GetComponent<EnemyDamager>()));
+            }
         }
+    }
+
+    IEnumerator FlashTime(float time,EnemyDamager dmgr)
+    {
+        yield return new WaitForSeconds(time);
+        dmgr.SetFlashBanged(false);
     }
     
 

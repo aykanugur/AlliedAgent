@@ -17,11 +17,12 @@ public class Manager : MonoBehaviour
    public GameObject black;
    public AudioSource audioSource;
    public GameObject[] guns;
+   public bool first;
 
    private void Start()
    {
       StartCoroutine(StartGameSequance());
-      if (PlayerPrefs.GetInt("ak47C") != null)
+      if (first == false)
       {
          guns[0].GetComponent<Gun>().currentAmmo = PlayerPrefs.GetInt("ak47C");
          guns[0].GetComponent<Gun>().currentCapacity = PlayerPrefs.GetInt("ak47M");
