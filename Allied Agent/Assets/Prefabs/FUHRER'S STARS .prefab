@@ -1894,7 +1894,7 @@ MonoBehaviour:
   maxSpeed: 12
   actionDistance: 10
   minSpeed: 2.6
-  range: 6.72
+  range: 3.26
   gunRange: 3.88
   coverCollider: {fileID: 8687122091910332802}
   normalCollider: {fileID: 7081471939667994522}

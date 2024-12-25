@@ -2494,6 +2494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 2559935903362500241}
   enemyAI: {fileID: 7424385468912722177}
+  agent: {fileID: 0}
   collider: {fileID: 9104248176374758105}
   collider2: {fileID: 7931528783926420754}
   hp: 100
@@ -2519,7 +2520,7 @@ MonoBehaviour:
   maxSpeed: 12
   actionDistance: 10
   minSpeed: 2.6
-  range: 6.72
+  range: 3.49
   gunRange: 3.88
   coverCollider: {fileID: 9104248176374758105}
   normalCollider: {fileID: 1995025220955139053}
