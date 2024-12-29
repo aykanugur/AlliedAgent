@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3519397505277034739}
   - component: {fileID: 5849719591560387957}
   - component: {fileID: 560979509585096805}
+  - component: {fileID: 8578148266520077694}
   m_Layer: 0
   m_Name: Boss Bullet
   m_TagString: Untagged
@@ -151,6 +152,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 50
   blood: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
+--- !u!114 &8578148266520077694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2199862600957481027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c140b6e661be7245b6ec0a5b28dddac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadow: {fileID: 3942310181142617161, guid: 85ef88ad613e0d444a9485d6cb4e7c8f, type: 3}
 --- !u!1 &4147373515881027943
 GameObject:
   m_ObjectHideFlags: 0
