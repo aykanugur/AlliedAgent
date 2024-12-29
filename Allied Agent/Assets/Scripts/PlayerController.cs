@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour
 
     public float hp;
     public GameObject end,finish;
+
+    public GameObject checkpoint;
     
     public bool GetCrouch()
     {
@@ -291,10 +293,6 @@ public class PlayerController : MonoBehaviour
         weaponsV[1].SetActive(true);
         weapons[3].SetActive(true);
         SendVarToAnimator();
-        var transform1 = transform;
-        transform1.eulerAngles = new Vector3(0,90,0);
-        var position = _nearEnemyTransform.position;
-        transform1.position = new Vector3(position.x - 0.5f, transform1.position.y, position.z);
         _animator.SetTrigger(Knife1);
     }
     public void StopKnife()
@@ -629,10 +627,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    IEnumerator Cp()
+    {
+        yield return new WaitForSeconds(2);
+        checkpoint.SetActive(false);
+    }
+
+    private void DecreaseHp()
+    {
+        GetComponent<HpManager>().Decreasehp(5);
+    }
     
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("fire"))
+        {
+            Debug.Log("test");
+            InvokeRepeating("DecreaseHp",1,1);
+        }
+        if (other.gameObject.CompareTag("cp"))
+        {
+            PlayerPrefs.SetInt("save",1);
+            checkpoint.SetActive(true);
+            StartCoroutine(Cp());
+        }
         if (other.gameObject.CompareTag("Finish"))
         {
             finish.SetActive(true);
@@ -714,6 +733,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.gameObject.CompareTag("fire"))
+        {
+            CancelInvoke("DecreaseHp");
+        }
         if (other.gameObject.CompareTag("CameraDontMoveZone"))
         {
             freeCamera.GetComponent<Camerafollow>().cameraDontMove = false;   

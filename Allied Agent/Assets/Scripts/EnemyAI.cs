@@ -17,6 +17,8 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private CapsuleCollider coverCollider; //Collider active in cover
     [SerializeField] private CapsuleCollider normalCollider; //Collider active normal
 
+    public AudioSource audioSource;
+
 
     [SerializeField] private RigBuilder _rigBuilder; // caner its me aykan
     // pls eneable this comp. when enemy aim to player ok ? disable when not aim ok ?
@@ -277,7 +279,6 @@ public class EnemyAI : MonoBehaviour
             shooting = true;
 
         }
-
         if (!gun.getCoolDown())
         {
 
@@ -290,6 +291,7 @@ public class EnemyAI : MonoBehaviour
                 animations.Cover(false);
                 
                 //TODO: Enemy shoot itself, either enemybullet or disable rigidbody
+                audioSource.Play();
                 gun.Shoot();
                 
             }

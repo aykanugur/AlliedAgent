@@ -8,7 +8,7 @@ public class Missions : MonoBehaviour
 {
     public TextMeshProUGUI text;
     public String[] missions;
-    [SerializeField]private int index = 0;
+    public int index = 0;
     public DialogManager _dialogManager;
     public GameObject tutor;
     public PlayerController playerController;
@@ -75,7 +75,7 @@ public class Missions : MonoBehaviour
         }
     }
 
-    IEnumerator WaitBeforeStartOtherMission(int time)
+     IEnumerator WaitBeforeStartOtherMission(int time)
     {
         yield return new WaitForSeconds(time);
         tutor.SetActive(true);

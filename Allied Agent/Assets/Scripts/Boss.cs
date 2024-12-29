@@ -18,12 +18,14 @@ public class Boss : MonoBehaviour
     public GameObject bullet;
     public GameObject nein;
     public GameObject wall;
+    public AudioSource audioSource;
     
     IEnumerator Shoot()
     {
         
         while (true)
         {
+            audioSource.Play();
             muzzle.LookAt(player.transform.position);
             muzzle2.LookAt(player.transform.position);
             // write basic shoot code here pls !! 

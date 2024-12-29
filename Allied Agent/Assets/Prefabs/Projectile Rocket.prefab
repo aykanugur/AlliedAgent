@@ -285,13 +285,13 @@ MonoBehaviour:
   fireTrail: {fileID: 3986954724971120034}
   smokeTrail: {fileID: 8359655954607185875}
   fireTrailTime: 0.25
-  damage: 1000
+  damage: 100
   explosion: {fileID: 100008, guid: 1dbc518224e49f34095aab42fe05751a, type: 3}
   explosionRadius: 10
   explosionForce: 70
   layers:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 4294967295
 --- !u!136 &5662395315655317350
 CapsuleCollider:
   m_ObjectHideFlags: 0

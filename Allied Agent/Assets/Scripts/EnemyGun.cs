@@ -42,6 +42,7 @@ public class EnemyGun : MonoBehaviour
 
     public void Shoot()
     {
+   
         Transform target = GameObject.FindGameObjectWithTag("PlayerTarget").transform;
         if (!cooldown)
         {

@@ -18,6 +18,10 @@ public class Manager : MonoBehaviour
    public AudioSource audioSource;
    public GameObject[] guns;
    public bool first;
+   public GameObject player;
+   public GameObject checkpoint;
+   public GameObject tutor;
+   public Missions Missions;
 
    private void Start()
    {
@@ -29,10 +33,17 @@ public class Manager : MonoBehaviour
          guns[1].GetComponent<Gun>().currentAmmo = PlayerPrefs.GetInt("macC");
          guns[1].GetComponent<Gun>().currentCapacity = PlayerPrefs.GetInt("macM");
          guns[2].GetComponent<PseudoRocket>().rocketCount = PlayerPrefs.GetInt("rpgC");
-         guns[3].GetComponent<GrenadeThrow>().currentGrenadeCount = PlayerPrefs.GetInt("bombC");
-         ChangeBomb(PlayerPrefs.GetInt("bombC"));
          ChangeCurrentAmmo(guns[0].GetComponent<Gun>().currentAmmo);
          ChangeAmmo(guns[0].GetComponent<Gun>().currentCapacity);
+      }
+      Debug.Log(PlayerPrefs.GetInt("save"));
+
+      if (PlayerPrefs.GetInt("save") == 1)
+      {
+         Destroy(tutor);
+         Missions.index = 6;
+         Missions.changeMissions();
+         player.transform.position = new Vector3(checkpoint.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
       }
    }
    
@@ -115,8 +126,8 @@ public class Manager : MonoBehaviour
       PlayerPrefs.SetInt("macC",guns[1].GetComponent<Gun>().currentAmmo);
       PlayerPrefs.SetInt("macM",guns[1].GetComponent<Gun>().currentCapacity);
       PlayerPrefs.SetInt("rpgC",guns[2].GetComponent<PseudoRocket>().rocketCount);
-      PlayerPrefs.SetInt("bombC",guns[3].GetComponent<GrenadeThrow>().currentGrenadeCount);
       SceneManager.LoadScene(3);
+      PlayerPrefs.SetInt("save",0);
    }
    public IEnumerator EndGameSequance()
    {
@@ -140,5 +151,10 @@ public class Manager : MonoBehaviour
       }
       black.SetActive(false);
         
+   }
+
+   public void ReloadScene()
+   {
+      SceneManager.LoadScene(SceneManager.GetActiveScene().name);
    }
 }
