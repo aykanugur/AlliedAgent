@@ -94,6 +94,9 @@ public class BulletCollision : MonoBehaviour
                     Destroy(this.gameObject);
                 }
                 break;
+            default:
+                Destroy(this.gameObject);
+                break;
         }
     }
 

@@ -117,7 +117,7 @@ public class Bismarck : MonoBehaviour
     private void Hit()
     {
         
-        Collider[] hitColliders = Physics.OverlapSphere(bismarckTarget.position, 3, layerMask);
+        Collider[] hitColliders = Physics.OverlapSphere(bismarckTarget.position, 2, layerMask);
 
         foreach (Collider collider in hitColliders)
         {
@@ -131,6 +131,11 @@ public class Bismarck : MonoBehaviour
                     coverComponent.hp = -1;
                     coverComponent.CheckHp();
                 }
+            }
+
+            if (collider.CompareTag("Player"))
+            {
+                collider.GetComponent<HpManager>().Decreasehp(50);
             }
         }
     }

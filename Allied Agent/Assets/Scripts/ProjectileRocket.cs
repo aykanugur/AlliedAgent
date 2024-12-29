@@ -6,7 +6,7 @@ public class ProjectileRocket : MonoBehaviour
     public TrailRenderer fireTrail;
     public TrailRenderer smokeTrail;
     public float fireTrailTime = 0.25f;
-    public float damage = 100f;
+    public float damage = 100;
     public GameObject explosion;
     public float explosionRadius = 10f;
     public float explosionForce = 70f;
@@ -36,12 +36,18 @@ public class ProjectileRocket : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("DoNotDestroy"))
+        if (other.gameObject.CompareTag("Enemy") )
         {
-            
+            Explode();
         }
-        
-        Explode();
+        if (other.gameObject.CompareTag("ground") )
+        {
+            Explode();
+        }
+        if (other.gameObject.CompareTag("shield") )
+        {
+            Explode();
+        }
     }
 
     private void Explode()
@@ -60,14 +66,14 @@ public class ProjectileRocket : MonoBehaviour
                         break;
                 
                     case "Enemy":
-                        hit.gameObject.GetComponent<EnemyAnimations>().hp -= damage/(distance * distance);
-                        
+                        hit.gameObject.GetComponent<HpManager>().Decreasehp(damage/(distance * distance));
+                        Debug.Log("hit");
                         break;
                 
                     case "cover":
                         if (hit.gameObject.GetComponent<Cover>() != null)
                         {
-                            hit.gameObject.GetComponent<Cover>().hp = hit.gameObject.GetComponent<Cover>().hp - damage/(distance * distance);
+                            hit.gameObject.GetComponent<HpManager>().Decreasehp(damage/(distance * distance));
                             hit.GetComponent<Cover>().CheckHp();
                             
                         }

@@ -6,6 +6,8 @@ using Object = UnityEngine.Object;
 public class HpManager : MonoBehaviour
 {
     public Object script;
+    public AudioSource audioSource;
+    public AudioClip audioClip;
 
     public void Decreasehp(float hp)
     {
@@ -35,6 +37,9 @@ public class HpManager : MonoBehaviour
                     {
                         var x = (PlayerController)script;
                         x.hp -= hp;
+                        audioSource.clip = audioClip;
+                        audioSource.Play();
+
                     }
                     else
                     {

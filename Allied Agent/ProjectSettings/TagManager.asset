@@ -30,6 +30,8 @@ TagManager:
   - shield
   - PlayerTarget
   - FINISH
+  - cp
+  - fire
   layers:
   - Default
   - TransparentFX

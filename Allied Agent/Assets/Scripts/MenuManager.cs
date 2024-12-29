@@ -22,9 +22,12 @@ public class MenuManager : MonoBehaviour
 
     public AudioSource audioSource;
     
+    
+    
 
     private void Start()
     {
+        PlayerPrefs.SetInt("save",0);
         StartCoroutine(Fire());
     }
 

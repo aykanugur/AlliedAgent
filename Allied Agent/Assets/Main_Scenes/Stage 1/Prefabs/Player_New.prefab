@@ -25697,8 +25697,10 @@ MonoBehaviour:
   - {fileID: 2306469978154253277}
   manager: {fileID: 0}
   boss: {fileID: 0}
-  hp: 0
+  hp: 100
   end: {fileID: 0}
+  finish: {fileID: 0}
+  checkpoint: {fileID: 0}
 --- !u!54 &5580269436160308246
 Rigidbody:
   m_ObjectHideFlags: 0

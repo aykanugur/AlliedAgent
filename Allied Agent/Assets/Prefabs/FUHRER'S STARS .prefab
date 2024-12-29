@@ -1784,6 +1784,7 @@ GameObject:
   - component: {fileID: 5526823210760762762}
   - component: {fileID: 7699281770052449754}
   - component: {fileID: 507364839459496507}
+  - component: {fileID: -8757875884146296219}
   m_Layer: 6
   m_Name: 'FUHRER''S STARS '
   m_TagString: Enemy
@@ -1892,12 +1893,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 30.4
   maxSpeed: 12
-  actionDistance: 10
+  actionDistance: 2
   minSpeed: 2.6
-  range: 3.26
-  gunRange: 3.88
+  range: 1
+  gunRange: 0.5
   coverCollider: {fileID: 8687122091910332802}
   normalCollider: {fileID: 7081471939667994522}
+  audioSource: {fileID: -8757875884146296219}
   _rigBuilder: {fileID: 6310743054195835715}
   damaging: 0
   player: {fileID: 0}
@@ -1983,6 +1985,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   script: {fileID: 4090726403198729992}
+  audioSource: {fileID: 0}
+  audioClip: {fileID: 0}
 --- !u!114 &6310743054195835715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2129,6 +2133,102 @@ MonoBehaviour:
   pray: 0
   text: {fileID: 422436012483945571}
   textO: {fileID: 8909539551073018558}
+--- !u!82 &-8757875884146296219
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6640415007836730109}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: fba6f5cd3d6264882b59a4f806ff09c1, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6677573498304416931
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,7 +3447,7 @@ MonoBehaviour:
       m_Calls: []
   timeBetweenShots: 2.3
   isAuto: 0
-  shootForce: 1
+  shootForce: 0.5
   projectileMass: 0.1
   magazineCapacity: 10
   materials:
