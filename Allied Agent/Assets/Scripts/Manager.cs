@@ -12,7 +12,7 @@ public class Manager : MonoBehaviour
    public Image gun,bombI;
    public TextMeshProUGUI ammoText,currentAmmoText,bombtext;
    public Sprite[] sprites,bombsprites;
-   public GameObject gunGameObject, ammo,currentAmmoGameObject,bombO;
+   public GameObject gunGameObject, ammo;
    public float shootSpeed;
    public GameObject black;
    public AudioSource audioSource;
@@ -22,6 +22,7 @@ public class Manager : MonoBehaviour
    public GameObject checkpoint;
    public GameObject tutor;
    public Missions Missions;
+   public GameObject bismarck;
 
    private void Start()
    {
@@ -33,6 +34,8 @@ public class Manager : MonoBehaviour
          guns[1].GetComponent<Gun>().currentAmmo = PlayerPrefs.GetInt("macC");
          guns[1].GetComponent<Gun>().currentCapacity = PlayerPrefs.GetInt("macM");
          guns[2].GetComponent<PseudoRocket>().rocketCount = PlayerPrefs.GetInt("rpgC");
+         guns[3].GetComponent<GrenadeThrow>().currentGrenadeCount = PlayerPrefs.GetInt("grd");
+         ChangeCurrentBombCount(guns[3].GetComponent<GrenadeThrow>().currentGrenadeCount);
          ChangeCurrentAmmo(guns[0].GetComponent<Gun>().currentAmmo);
          ChangeAmmo(guns[0].GetComponent<Gun>().currentCapacity);
       }
@@ -40,10 +43,13 @@ public class Manager : MonoBehaviour
 
       if (PlayerPrefs.GetInt("save") == 1)
       {
+         Debug.Log("checkpoint save activated");
          Destroy(tutor);
          Missions.index = 6;
          Missions.changeMissions();
          player.transform.position = new Vector3(checkpoint.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
+         bismarck.SetActive(true);
+         
       }
    }
    
@@ -69,6 +75,7 @@ public class Manager : MonoBehaviour
 
    public void ChangeBomb(int index)
    {
+      
       bombI.sprite = bombsprites[index];
    }
 
@@ -126,6 +133,7 @@ public class Manager : MonoBehaviour
       PlayerPrefs.SetInt("macC",guns[1].GetComponent<Gun>().currentAmmo);
       PlayerPrefs.SetInt("macM",guns[1].GetComponent<Gun>().currentCapacity);
       PlayerPrefs.SetInt("rpgC",guns[2].GetComponent<PseudoRocket>().rocketCount);
+      PlayerPrefs.SetInt("grd",guns[3].GetComponent<GrenadeThrow>().currentGrenadeCount);
       SceneManager.LoadScene(3);
       PlayerPrefs.SetInt("save",0);
    }
@@ -156,5 +164,10 @@ public class Manager : MonoBehaviour
    public void ReloadScene()
    {
       SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+   }
+
+   public void Exit()
+   {
+      Application.Quit(0);
    }
 }
